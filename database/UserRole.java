@@ -1,4 +1,4 @@
-package database.Tests;
+package database;
 
 import java.util.ArrayList;
 import java.util.HashMap;
