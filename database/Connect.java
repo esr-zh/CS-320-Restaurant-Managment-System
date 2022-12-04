@@ -9,11 +9,11 @@ public class Connect {
     private static String username = "root";
     private static String password = "mhd-0559116452";
     public Statement statement;
-    private static Connection connection;
+    public static Connection connection;
     private static Connect instance;
 
     private Connect() throws ClassNotFoundException, SQLException {
-        Class.forName("com.mysql.jdbc.Driver");
+        Class.forName("com.mysql.cj.jdbc.Driver");
         connection = DriverManager.getConnection(url,username,password);
         statement = connection.createStatement();
     }

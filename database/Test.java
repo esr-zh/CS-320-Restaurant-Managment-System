@@ -8,7 +8,16 @@ import java.util.List;
 
 public class Test {
     public static void main(String[] args) throws ClassNotFoundException, SQLException {
-       User new_user = User.createUser(new User("mhd", "1234", 2));
-        System.out.println(new_user);
+
+        try {
+            User r = User.createUser(new User("nhah","12345", 3));
+            System.out.println(r.getId());
+        }catch (Exception e){
+
+            System.out.println(e.getMessage());
+        }
+
+
+
     }
 }
