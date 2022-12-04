@@ -13,6 +13,10 @@ public class User {
         this.password = password;
         this.userRole = user_role;
     }
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
 
     public User(long id, String username, long user_role) {
         this.username = username;
@@ -73,6 +77,18 @@ public class User {
             return user;
         }
         throw new SQLException("username is already taken!");
+    }
+
+    public static boolean authUser(User user) throws SQLException, ClassNotFoundException{
+        String SQL_INSERT = "SELECT * FROM user WHERE username = ? AND password = ?";
+        Connect connect = Connect.getInstance();
+        PreparedStatement statement = connect.connection.prepareStatement(SQL_INSERT);
+        statement.setString(1, user.username);
+        statement.setString(2, user.password);
+
+        ResultSet rs = statement.executeQuery();
+
+        return rs.next();
     }
 
     public static User getUserById(long id) throws SQLException, ClassNotFoundException {
