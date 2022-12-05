@@ -1,5 +1,5 @@
 public class main {
-    public main() {
-        System.out.println("hello world!");
+    public static void main(String args[]) {
+        Login_UI.generate_login_ui();
     }
 }
