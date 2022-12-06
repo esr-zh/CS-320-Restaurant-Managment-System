@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Connect {
-    private static String url = "jdbc:mysql://localhost:3306/RMS";
-    private static String username = "root";
-    private static String password = "mhd-0559116452";
+    private static String url = "jdbc:mysql://us-east.connect.psdb.cloud";
+    private static String username = "pfq1o3esw8ppep0oklod";
+    private static String password = "pscale_pw_v869xGcV5DMV189VtTt4gbJvb11fyHjsJxc9Y13AgNP";
     public Statement statement;
     public static Connection connection;
     private static Connect instance;

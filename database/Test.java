@@ -5,9 +5,9 @@ import java.sql.*;
 public class Test {
     public static void main(String[] args) throws ClassNotFoundException, SQLException {
 
-        UserRole ur = new UserRole();
+        User user = User.createUser(new User("mhd", "123", 1));
 
-        System.out.println(ur.getUserRole(3));
+        System.out.println(user.getUserRole());
 
 
 
