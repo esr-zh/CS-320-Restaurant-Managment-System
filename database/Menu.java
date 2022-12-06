@@ -32,6 +32,10 @@ public class Menu {
         this.dishTypeId = dishTypeId;
     }
 
+    public Menu() {
+
+    }
+
     public long getId() {
         return id;
     }
@@ -142,13 +146,8 @@ public class Menu {
                     PreparedStatement statement = connect.connection.prepareStatement(SQL_QUERY,
                             Statement.RETURN_GENERATED_KEYS);
             ) {
-                statement.setString(1, menu.name);
-                statement.setString(2, menu.description);
-                statement.setLong(3, menu.servingAmount);
-                statement.setDouble(4, menu.price);
-                statement.setLong(5, menu.dishTypeId);
 
-                int affectedRows = statement.executeUpdate();
+                int affectedRows = execute(menu, statement);
 
                 if (affectedRows == 0) {
                     throw new SQLException("Creating menu failed, no rows affected.");
@@ -168,5 +167,61 @@ public class Menu {
         throw new SQLException("menu item already exists");
     }
     // delete menu
+    // it will return true if everything went successfully
+    public static boolean deleteMenu(Menu menu) throws SQLException, ClassNotFoundException {
+        String SQL_QUERY = "DELETE FROM menu WHERE menu.id = ? OR menu.name = ?";
+        Connect connect = Connect.getInstance();
+        if (doesMenuExist(menu.name)){
+            try (
+                    PreparedStatement statement = connect.connection.prepareStatement(SQL_QUERY,
+                            Statement.RETURN_GENERATED_KEYS);
+            ) {
+                statement.setLong(1, menu.id);
+                statement.setString(2, menu.name);
+
+                int affectedRows = statement.executeUpdate();
+
+                if (affectedRows == 0) {
+                    throw new SQLException("deleting menu failed, no rows affected.");
+                }
+
+            }
+            return true;
+        }
+
+        throw new SQLException("menu item doesn't exists");
+    }
     // update menu
+    // Menu object should pass all attribute
+    public static Menu updateMenu(Menu menu) throws SQLException, ClassNotFoundException {
+//        name,description,serving_amount,price,dish_type_id
+        String SQL_QUERY = "UPDATE menu SET name = ?, description = ?,serving_amount = ?," +
+                "price = ?,dish_type_id = ? WHERE menu.id = ? OR menu.name = ?";
+        Connect connect = Connect.getInstance();
+        if (doesMenuExist(menu.name)){
+            try (
+                    PreparedStatement statement = connect.connection.prepareStatement(SQL_QUERY,
+                            Statement.RETURN_GENERATED_KEYS);
+            ) {
+                statement.setLong(6, menu.id);
+                statement.setString(7, menu.name);
+                int affectedRows = execute(menu, statement);
+                if (affectedRows == 0) {
+                    throw new SQLException("deleting menu failed, no rows affected.");
+                }
+                return menu;
+            }
+        }
+        throw new SQLException("menu item doesn't exists");
+    }
+
+    private static int execute(Menu menu, PreparedStatement statement) throws SQLException {
+        statement.setString(1, menu.name);
+        statement.setString(2, menu.description);
+        statement.setLong(3, menu.servingAmount);
+        statement.setDouble(4, menu.price);
+        statement.setLong(5, menu.dishTypeId);
+
+        return statement.executeUpdate();
+    }
 }
