@@ -2,6 +2,8 @@ package database;
 
 import java.sql.*;
 
+import static database.Salter.salt;
+
 public class User {
     private long id;
     private String username;
@@ -57,7 +59,7 @@ public class User {
                             Statement.RETURN_GENERATED_KEYS);
             ) {
                 statement.setString(1, user.username);
-                statement.setString(2, user.password);
+                statement.setString(2, salt(user.password, "never_hack_me"));
                 statement.setString(3, String.valueOf(user.userRole));
 
                 int affectedRows = statement.executeUpdate();
@@ -84,7 +86,7 @@ public class User {
         Connect connect = Connect.getInstance();
         PreparedStatement statement = connect.connection.prepareStatement(SQL_INSERT);
         statement.setString(1, user.username);
-        statement.setString(2, user.password);
+        statement.setString(2, salt(user.password, "never_hack_me"));
 
         ResultSet rs = statement.executeQuery();
 
