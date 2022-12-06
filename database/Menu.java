@@ -24,7 +24,6 @@ public class Menu {
     }
 
     public Menu(String name, String description, long servingAmount, double price, long dishTypeId) {
-        this.id = id;
         this.name = name;
         this.description = description;
         this.servingAmount = servingAmount;
