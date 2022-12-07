@@ -193,7 +193,6 @@ public class Menu {
     // update menu
     // Menu object should pass all attribute
     public static Menu updateMenu(Menu menu) throws SQLException, ClassNotFoundException {
-//        name,description,serving_amount,price,dish_type_id
         String SQL_QUERY = "UPDATE menu SET name = ?, description = ?,serving_amount = ?," +
                 "price = ?,dish_type_id = ? WHERE menu.id = ? OR menu.name = ?";
         Connect connect = Connect.getInstance();

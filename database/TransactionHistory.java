@@ -151,7 +151,6 @@ public class TransactionHistory {
     }
 
     private static boolean doesUserPaidAll(long userId) throws SQLException, ClassNotFoundException {
-        System.out.println(doesUserHasTH(userId));
         if (!doesUserHasTH(userId))// check if the user has any TH
             return false;
 
@@ -171,6 +170,16 @@ public class TransactionHistory {
         Connect connect = Connect.getInstance();
         PreparedStatement statement = connect.connection.prepareStatement(SQL_QUERY);
         statement.setLong(1, userId);
+        ResultSet rs = statement.executeQuery();
+        return rs.next();
+    }
+
+    public static boolean doesTransactionHistoryExists(long id) throws SQLException, ClassNotFoundException {
+        String SQL_QUERY = "SELECT * FROM transaction_history WHERE " +
+                "transaction_history.id = ?";
+        Connect connect = Connect.getInstance();
+        PreparedStatement statement = connect.connection.prepareStatement(SQL_QUERY);
+        statement.setLong(1, id);
         ResultSet rs = statement.executeQuery();
         return rs.next();
     }
