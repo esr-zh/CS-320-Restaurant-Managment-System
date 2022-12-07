@@ -5,10 +5,17 @@ import java.sql.*;
 import static database.Salter.salt;
 
 public class User {
+
+    private Connection conn;
+
     private long id;
     private String username;
     private String password;
     private long userRole;
+
+    public User(Connection conn) {
+        this.conn = conn;
+    }
 
     public User(String username, String password, long user_role) {
         this.username = username;
@@ -42,6 +49,14 @@ public class User {
         this.username = username;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public long getUserRole() {
         return userRole;
     }
@@ -50,17 +65,17 @@ public class User {
         this.userRole = userRole;
     }
 
-    public static User createUser(User user) throws SQLException, ClassNotFoundException {
+    public  User createUser() throws SQLException, ClassNotFoundException {
         String SQL_INSERT = "INSERT INTO user(username,password,user_role) VALUES (?, ?, ?)";
-        Connect connect = Connect.getInstance();
-        if (!doesUserExists(user.username)) {
+//        Connect connect = Connect.getInstance();
+        if (!doesUserExists(username)) {
             try (
-                    PreparedStatement statement = connect.connection.prepareStatement(SQL_INSERT,
+                    PreparedStatement statement = conn.prepareStatement(SQL_INSERT,
                             Statement.RETURN_GENERATED_KEYS);
             ) {
-                statement.setString(1, user.username);
-                statement.setString(2, salt(user.password, "never_hack_me"));
-                statement.setString(3, String.valueOf(user.userRole));
+                statement.setString(1, username);
+                statement.setString(2, salt(password, "never_hack_me"));
+                statement.setString(3, String.valueOf(userRole));
 
                 int affectedRows = statement.executeUpdate();
 
@@ -70,27 +85,31 @@ public class User {
 
                 try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
                     if (generatedKeys.next()) {
-                        user.setId(generatedKeys.getLong(1));
+                        this.setId(generatedKeys.getLong(1));
                     } else {
                         throw new SQLException("Creating user failed, no ID obtained.");
                     }
                 }
             }
-            return user;
+            return this;
         }
         throw new SQLException("username is already taken!");
     }
 
-    public static boolean authUser(User user) throws SQLException, ClassNotFoundException{
+    public User authUser() throws SQLException{
         String SQL_INSERT = "SELECT * FROM user WHERE username = ? AND password = ?";
-        Connect connect = Connect.getInstance();
-        PreparedStatement statement = connect.connection.prepareStatement(SQL_INSERT);
-        statement.setString(1, user.username);
-        statement.setString(2, salt(user.password, "never_hack_me"));
+//        Connect connect = Connect.getInstance();
+        PreparedStatement statement = conn.prepareStatement(SQL_INSERT);
+        statement.setString(1, username);
+        statement.setString(2, salt(password, "never_hack_me"));
 
         ResultSet rs = statement.executeQuery();
 
-        return rs.next();
+        if (!rs.next())
+            throw new SQLException("user not found!");
+        setId(rs.getLong(1));
+        setUserRole(rs.getLong(4));
+        return this;
     }
 
     public static User getUserById(long id) throws SQLException, ClassNotFoundException {
