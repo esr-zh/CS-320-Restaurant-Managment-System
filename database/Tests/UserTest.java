@@ -1,27 +1,21 @@
 package database.Tests;
 
-import database.Connect;
+import database.utils.Connect;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.testng.AssertJUnit;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 import static org.testng.Assert.assertTrue;
 import static org.testng.AssertJUnit.assertEquals;
 
-public class UserTest {
-    Connection connection;
-    Statement statement;
+public class UserTest extends DBTestable{
 
     public UserTest() throws SQLException, ClassNotFoundException {
-        Connect connect = new Connect();
-        connection = connect.connection;
-        statement = connect.statement;
+       super();
     }
 
     @Before

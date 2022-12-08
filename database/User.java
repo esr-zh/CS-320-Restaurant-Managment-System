@@ -1,8 +1,10 @@
 package database;
 
+import database.utils.Connect;
+
 import java.sql.*;
 
-import static database.Salter.salt;
+import static database.utils.Salter.salt;
 
 public class User {
 

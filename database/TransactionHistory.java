@@ -1,5 +1,6 @@
 package database;
 
+import database.utils.Connect;
 import database.utils.Helper;
 import database.utils.Template;
 
@@ -7,11 +8,16 @@ import java.sql.*;
 import java.util.List;
 
 public class TransactionHistory implements Template,Cloneable{
+    Connection conn;
     private long id;
     private long userId;
     private long createdAt;
     private boolean hasPaid;
     private long paidAt;
+
+    public TransactionHistory(Connection conn) {
+        this.conn = conn;
+    }
 
     public TransactionHistory() {
 
@@ -20,6 +26,8 @@ public class TransactionHistory implements Template,Cloneable{
     public long getId() {
         return id;
     }
+
+
 
     public TransactionHistory(long userId, boolean hasPaid, long paidAt) {
         this.userId = userId;
@@ -65,6 +73,8 @@ public class TransactionHistory implements Template,Cloneable{
         this.hasPaid = hasPaid;
     }
 
+    public boolean getHasPaid(){return hasPaid;}
+
     public long getPaidAt() {
         return paidAt;
     }
@@ -74,14 +84,14 @@ public class TransactionHistory implements Template,Cloneable{
     }
 
     // list transaction history by user id
-    public static List<List<String>> getTransactionHistoryByUserId(int userId) throws SQLException, ClassNotFoundException {
+    public List<List<String>> getTransactionHistoryByUserId(int userId) throws SQLException, ClassNotFoundException {
 
         String SQL_QUERY = "SELECT * FROM transaction_history WHERE transaction_history.user_id = ? AND transaction_history.has_paid = true";
         return getLists(userId, SQL_QUERY);
     }
 
     // get add to card table
-    public static List<List<String>> getAddToCartTableByUserId(int userId) throws SQLException, ClassNotFoundException {
+    public List<List<String>> getAddToCartTableByUserId(int userId) throws SQLException, ClassNotFoundException {
 
         String SQL_QUERY = "SELECT transaction_history.id, name,price,quantity from transaction_history JOIN order_details od ON od.transaction_id = transaction_history.id\n" +
                 "JOIN menu m ON m.id = od.menu_id where transaction_history.user_id = ? \n" +
@@ -90,47 +100,41 @@ public class TransactionHistory implements Template,Cloneable{
     }
 
     // list transaction history by user id
-    public static TransactionHistory updatePaidStatus(TransactionHistory TH) throws SQLException, ClassNotFoundException {
-        Connect connect = Connect.getInstance();
+    public boolean updatePaidStatus() throws SQLException, ClassNotFoundException {
         String SQL_QUERY = "UPDATE transaction_history SET has_paid = ?,paid_at = ?  OR transaction_history.id = ? AND transaction_history.user_id = ?";
-        if (!doesUserPaidAll(TH.userId)){
+        System.out.println(doesTransactionHistoryExists(id));
+        if (doesTransactionHistoryExists(id)){
             try (
-                    PreparedStatement statement = connect.connection.prepareStatement(SQL_QUERY,
+                    PreparedStatement statement = conn.prepareStatement(SQL_QUERY,
                             Statement.RETURN_GENERATED_KEYS);
             ) {
                 long currentDate = new java.util.Date().getTime();
                 statement.setLong(1, 1);
                 statement.setLong(2, currentDate);
-                statement.setLong(3, TH.id);
-                statement.setLong(4, TH.userId);
+                statement.setLong(3, id);
+                statement.setLong(4, userId);
 
-                return Helper.executeAndGetId(TH,statement);
+                int affectedRows = statement.executeUpdate();
+                if (affectedRows == 0) {
+                    throw new SQLException("Creating transaction history failed, no rows affected.");
+                }
+
+                setHasPaid(true);
+                return true;
+//                try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+//                    if (generatedKeys.next()) {
+//                        this.setHasPaid(generatedKeys.getLong(4) == 1);
+//                    } else {
+//                        throw new SQLException("Creating transaction history failed, no ID obtained.");
+//                    }
+//                }
             }
         }
-
-        throw new SQLException("user should not create any new history if the user didn't pay the previous one");
-
+        throw new SQLException("transaction id does not exist");
     }
 
-//    private static void execute(TransactionHistory TH, PreparedStatement statement) throws SQLException {
-//        int affectedRows = statement.executeUpdate();
-//
-//        if (affectedRows == 0) {
-//            throw new SQLException("Creating transaction history failed, no rows affected.");
-//        }
-//
-//        try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
-//            if (generatedKeys.next()) {
-//                TH.setId(generatedKeys.getLong(1));
-//            } else {
-//                throw new SQLException("Creating transaction history failed, no ID obtained.");
-//            }
-//        }
-//    }
-
-    private static List<List<String>> getLists(int userId, String SQL_QUERY) throws SQLException, ClassNotFoundException {
-        Connect connect = Connect.getInstance();
-        PreparedStatement statement = connect.connection.prepareStatement(SQL_QUERY);
+    private List<List<String>> getLists(int userId, String SQL_QUERY) throws SQLException, ClassNotFoundException {
+        PreparedStatement statement = conn.prepareStatement(SQL_QUERY);
         statement.setInt(1, userId);
         ResultSet rs = statement.executeQuery();
         return Connect.returnArraylist(rs);
@@ -140,22 +144,22 @@ public class TransactionHistory implements Template,Cloneable{
 
     // create transaction history
     // user should not create any new history if the user didn't pay the previous one
-    public static TransactionHistory createTransactionHistory(TransactionHistory TH) throws SQLException, ClassNotFoundException {
+    public boolean createTransactionHistory() throws SQLException, ClassNotFoundException {
         String SQL_QUERY = "INSERT INTO transaction_history(user_id,created_at,has_paid,paid_at) VALUES (?, ?, ?, ?)";
-        Connect connect = Connect.getInstance();
-        if (!doesUserPaidAll(TH.userId)){
+        if (!doesUserPaidAll(userId)){
             try (
-                    PreparedStatement statement = connect.connection.prepareStatement(SQL_QUERY,
+                    PreparedStatement statement = conn.prepareStatement(SQL_QUERY,
                             Statement.RETURN_GENERATED_KEYS);
             ) {
                 long currentDate = new java.util.Date().getTime();
-                statement.setLong(1, TH.userId);
+                statement.setLong(1, userId);
                 statement.setLong(2, currentDate);
-                statement.setLong(3, TH.hasPaid ? 1 : 0);
-                statement.setLong(4, TH.paidAt);
+                statement.setLong(3, hasPaid ? 1 : 0);
+                statement.setLong(4, paidAt);
 
 
-                return Helper.executeAndGetId(TH,statement);
+//                return Helper.executeAndGetId(this,statement);
+                return true;
             }
         }
 
@@ -163,40 +167,38 @@ public class TransactionHistory implements Template,Cloneable{
 
     }
 
-    private static boolean doesUserPaidAll(long userId) throws SQLException, ClassNotFoundException {
+    private boolean doesUserPaidAll(long userId) throws SQLException, ClassNotFoundException {
         if (!doesUserHasTH(userId))// check if the user has any TH
             return false;
 
         String SQL_QUERY = "SELECT * FROM transaction_history WHERE " +
                     "transaction_history.user_id = ? AND transaction_history.has_paid = false;";
         Connect connect = Connect.getInstance();
-        PreparedStatement statement = connect.connection.prepareStatement(SQL_QUERY);
+        PreparedStatement statement = conn.prepareStatement(SQL_QUERY);
         statement.setLong(1, userId);
         ResultSet rs = statement.executeQuery();
         return rs.next();
 
     }
 
-    private static boolean doesUserHasTH(long userId) throws SQLException, ClassNotFoundException {
+    private boolean doesUserHasTH(long userId) throws SQLException {
         String SQL_QUERY = "SELECT * FROM transaction_history WHERE " +
                 "transaction_history.user_id = ?";
-        Connect connect = Connect.getInstance();
-        PreparedStatement statement = connect.connection.prepareStatement(SQL_QUERY);
+        PreparedStatement statement = conn.prepareStatement(SQL_QUERY);
         statement.setLong(1, userId);
         ResultSet rs = statement.executeQuery();
         return rs.next();
     }
 
-    public static boolean doesTransactionHistoryExists(long id) throws SQLException, ClassNotFoundException {
-        String SQL_QUERY = "SELECT * FROM transaction_history WHERE " +
-                "transaction_history.id = ?";
-        Connect connect = Connect.getInstance();
-        PreparedStatement statement = connect.connection.prepareStatement(SQL_QUERY);
+    public boolean doesTransactionHistoryExists(long id) throws SQLException, ClassNotFoundException {
+        System.out.println(id);
+        String SQL_QUERY = "SELECT * FROM transaction_history WHERE transaction_history.id = ?";
+        PreparedStatement statement = conn.prepareStatement(SQL_QUERY);
         statement.setLong(1, id);
         ResultSet rs = statement.executeQuery();
+//        System.out.println(Connect.returnArraylist(rs));
         return rs.next();
     }
-
 
     public boolean isHasPaid() {
         return hasPaid;

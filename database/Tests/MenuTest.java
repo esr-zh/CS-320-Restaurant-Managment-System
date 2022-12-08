@@ -1,6 +1,6 @@
 package database.Tests;
 
-import database.Connect;
+import database.utils.Connect;
 import database.Menu;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,14 +14,10 @@ import java.util.List;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
-class MenuTest {
-    Connection connection;
-    Statement statement;
+class MenuTest extends DBTestable{
 
     public MenuTest() throws SQLException, ClassNotFoundException {
-        Connect connect = new Connect();
-        connection = connect.connection;
-        statement = connect.statement;
+       super();
     }
 
     @BeforeEach

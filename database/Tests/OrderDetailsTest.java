@@ -1,35 +1,20 @@
 package database.Tests;
 
-import database.Connect;
-import database.User;
-import java.io.FileInputStream;
+import database.utils.Connect;
 
-import org.dbunit.DBTestCase;
-import org.dbunit.PropertiesBasedJdbcDatabaseTester;
-import org.dbunit.dataset.IDataSet;
-import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
-import org.dbunit.operation.DatabaseOperation;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Test;
 
-import java.io.FileInputStream;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.testng.AssertJUnit.assertEquals;
 
-public class OrderDetailsTest {
-    Connection connection;
-    Statement statement;
-
+public class OrderDetailsTest extends DBTestable{
     public OrderDetailsTest() throws SQLException, ClassNotFoundException {
-        Connect connect = new Connect();
-        connection = connect.connection;
-        statement = connect.statement;
+       super();
     }
 
     @Before

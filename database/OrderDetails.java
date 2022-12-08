@@ -1,5 +1,6 @@
 package database;
 
+import database.utils.Connect;
 import database.utils.Helper;
 import database.utils.Template;
 
@@ -47,10 +48,10 @@ public class OrderDetails implements Template,Cloneable {
     }
 
     // create order details
-    public static OrderDetails createOrderDetails(OrderDetails OD) throws SQLException, ClassNotFoundException {
+    public OrderDetails createOrderDetails(OrderDetails OD) throws SQLException, ClassNotFoundException {
         String SQL_QUERY = "INSERT INTO order_details(transaction_id,quantity,menu_id) VALUES (?, ?, ?)";
         Connect connect = Connect.getInstance();
-        if (TransactionHistory.doesTransactionHistoryExists(OD.transactionId)){
+        if (new TransactionHistory().doesTransactionHistoryExists(OD.transactionId)){
             try (
                     PreparedStatement statement = connect.connection.prepareStatement(SQL_QUERY,
                             Statement.RETURN_GENERATED_KEYS);
