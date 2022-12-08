@@ -1,4 +1,4 @@
-package database;
+package database.utils;
 
 public interface Template {
 

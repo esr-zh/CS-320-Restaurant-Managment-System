@@ -1,6 +1,7 @@
 package database;
 
 import database.utils.Helper;
+import database.utils.Template;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
