@@ -124,12 +124,13 @@ public class Menu {
         PreparedStatement statement = conn.prepareStatement(SQL_QUERY);
         statement.setString(1, String.valueOf(id));
         ResultSet rs = statement.executeQuery();
-        return rs.next();
+        if (!rs.next())
+            throw new SQLException("menu id not found");
+        return true;
     }
 
     private static Menu getAttribute(PreparedStatement statement) throws SQLException {
         ResultSet rs = statement.executeQuery();
-
         if (!rs.next()){
             throw new SQLException("menu item not found");
         }

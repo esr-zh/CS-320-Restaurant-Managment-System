@@ -15,7 +15,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 class MenuTest extends DBTestable{
-
+    Menu menu;
     public MenuTest() throws SQLException, ClassNotFoundException {
        super();
     }
@@ -23,6 +23,7 @@ class MenuTest extends DBTestable{
     @BeforeEach
     void setUp() throws SQLException {
         connection.setAutoCommit(false);
+        menu = new Menu(connection);
     }
 
     @AfterEach
@@ -35,7 +36,6 @@ class MenuTest extends DBTestable{
     void listAllMenu() throws SQLException {
         Menu menu = new Menu(connection);
         List<List<String>> result = menu.listAllMenu();
-
         assertTrue(result.get(0).get(1).contains("burger"));
         assertTrue(result.get(1).get(1).contains("USA"));
         assertTrue(result.get(2).get(1).contains("Tr"));
@@ -44,7 +44,6 @@ class MenuTest extends DBTestable{
 
     @Test
     void getMenuByName() throws SQLException, ClassNotFoundException {
-        Menu menu = new Menu(connection);
         Menu menu_ = menu.getMenuByName("burger USA");
         assertEquals(1,menu_.getDishTypeId());
         assertEquals(165,menu_.getPrice());
@@ -54,7 +53,6 @@ class MenuTest extends DBTestable{
 
     @Test
     void createMenu() throws SQLException, ClassNotFoundException {
-        Menu menu = new Menu(connection);
         menu.setName("penne");
         menu.setDescription("penne from dorm 4");
         menu.setPrice(55);
@@ -66,8 +64,7 @@ class MenuTest extends DBTestable{
     }
 
     @Test
-    void createMenuWithSameName() throws SQLException, ClassNotFoundException {
-        Menu menu = new Menu(connection);
+    void createMenuWithSameName()  {
         menu.setName("burger");
         menu.setDescription("burger from dorm 4");
         menu.setPrice(65);
@@ -82,14 +79,12 @@ class MenuTest extends DBTestable{
 
     @Test
     void deleteMenu() throws SQLException, ClassNotFoundException {
-        Menu menu = new Menu(connection);
         menu.setId(5);
         assertTrue(menu.deleteMenu());
     }
 
     @Test
     void updateMenu() throws SQLException, ClassNotFoundException {
-        Menu menu = new Menu(connection);
         menu.setId(1); // you passing existing id
         menu.setName("burger small");
         menu.setDescription("nice");

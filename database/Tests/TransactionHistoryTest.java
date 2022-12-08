@@ -67,8 +67,13 @@ class TransactionHistoryTest extends DBTestable{
     }
 
     @Test
-    void doesTransactionHistoryDoesntExistsTest() throws SQLException, ClassNotFoundException {
-        assertFalse(TH.doesTransactionHistoryExists(25));
+    void doesTransactionHistoryDoesntExistsTest()  {
+        try {
+            assertFalse(TH.doesTransactionHistoryExists(25));
+        }catch (Exception e){
+            assertEquals("transaction id does not exist",e.getMessage());
+        }
+
     }
 
     @Test

@@ -1,5 +1,6 @@
 package database.Tests;
 
+import database.User;
 import database.utils.Connect;
 import org.junit.After;
 import org.junit.Before;
@@ -13,7 +14,7 @@ import static org.testng.Assert.assertTrue;
 import static org.testng.AssertJUnit.assertEquals;
 
 public class UserTest extends DBTestable{
-
+    User user;
     public UserTest() throws SQLException, ClassNotFoundException {
        super();
     }
@@ -21,6 +22,7 @@ public class UserTest extends DBTestable{
     @Before
     public void init() throws SQLException {
         connection.setAutoCommit(false);
+        user = new database.User(connection);
     }
 
     @After
@@ -31,7 +33,7 @@ public class UserTest extends DBTestable{
     @Test
     public void createUserTest() throws SQLException, ClassNotFoundException {
         String username = "diamond3";
-        database.User user = new database.User(connection);
+
         user.setUsername(username);
         user.setUserRole(1);
         user.setPassword("1234");
@@ -42,7 +44,6 @@ public class UserTest extends DBTestable{
     @Test
     public void createUserTestWithSameUsername() throws SQLException, ClassNotFoundException {
         String username = "diamond2";
-        database.User user = new database.User(connection);
         user.setUsername(username);
         user.setUserRole(1);
         user.setPassword("1234");
@@ -56,7 +57,6 @@ public class UserTest extends DBTestable{
     @Test
     public void authUser() throws SQLException, ClassNotFoundException {
         String username = "diamond2";
-        database.User user = new database.User(connection);
         user.setUsername(username);
         user.setPassword("12345");
         user.authUser();
@@ -67,7 +67,6 @@ public class UserTest extends DBTestable{
     @Test
     public void authUserWithWrongCredentials() throws SQLException, ClassNotFoundException {
         String username = "diamond2";
-        database.User user = new database.User(connection);
         user.setUsername(username);
         user.setPassword("1234");
         try {

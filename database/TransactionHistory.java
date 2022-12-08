@@ -121,13 +121,6 @@ public class TransactionHistory implements Template,Cloneable{
 
                 setHasPaid(true);
                 return true;
-//                try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
-//                    if (generatedKeys.next()) {
-//                        this.setHasPaid(generatedKeys.getLong(4) == 1);
-//                    } else {
-//                        throw new SQLException("Creating transaction history failed, no ID obtained.");
-//                    }
-//                }
             }
         }
         throw new SQLException("transaction id does not exist");
@@ -190,14 +183,17 @@ public class TransactionHistory implements Template,Cloneable{
         return rs.next();
     }
 
-    public boolean doesTransactionHistoryExists(long id) throws SQLException, ClassNotFoundException {
+    public boolean doesTransactionHistoryExists(long id) throws SQLException {
         System.out.println(id);
         String SQL_QUERY = "SELECT * FROM transaction_history WHERE transaction_history.id = ?";
         PreparedStatement statement = conn.prepareStatement(SQL_QUERY);
         statement.setLong(1, id);
         ResultSet rs = statement.executeQuery();
 //        System.out.println(Connect.returnArraylist(rs));
-        return rs.next();
+        if (!rs.next()){
+            throw new SQLException("transaction id does not exist");
+        }
+        return true;
     }
 
     public boolean isHasPaid() {
