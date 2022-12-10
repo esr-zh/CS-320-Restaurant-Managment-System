@@ -101,7 +101,7 @@ public class TransactionHistory implements Template,Cloneable{
 
     // list transaction history by user id
     public boolean updatePaidStatus() throws SQLException, ClassNotFoundException {
-        String SQL_QUERY = "UPDATE transaction_history SET has_paid = ?,paid_at = ?  OR transaction_history.id = ? AND transaction_history.user_id = ?";
+        String SQL_QUERY = "UPDATE transaction_history SET has_paid = ?,paid_at = ?  WHERE transaction_history.id = ? AND transaction_history.user_id = ?";
         System.out.println(doesTransactionHistoryExists(id));
         if (doesTransactionHistoryExists(id)){
             try (
@@ -149,9 +149,6 @@ public class TransactionHistory implements Template,Cloneable{
                 statement.setLong(2, currentDate);
                 statement.setLong(3, hasPaid ? 1 : 0);
                 statement.setLong(4, paidAt);
-
-
-//                return Helper.executeAndGetId(this,statement);
                 return true;
             }
         }
@@ -166,7 +163,6 @@ public class TransactionHistory implements Template,Cloneable{
 
         String SQL_QUERY = "SELECT * FROM transaction_history WHERE " +
                     "transaction_history.user_id = ? AND transaction_history.has_paid = false;";
-        Connect connect = Connect.getInstance();
         PreparedStatement statement = conn.prepareStatement(SQL_QUERY);
         statement.setLong(1, userId);
         ResultSet rs = statement.executeQuery();
@@ -189,7 +185,6 @@ public class TransactionHistory implements Template,Cloneable{
         PreparedStatement statement = conn.prepareStatement(SQL_QUERY);
         statement.setLong(1, id);
         ResultSet rs = statement.executeQuery();
-//        System.out.println(Connect.returnArraylist(rs));
         if (!rs.next()){
             throw new SQLException("transaction id does not exist");
         }

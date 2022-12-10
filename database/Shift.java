@@ -85,4 +85,6 @@ public class Shift {
 
         return rs.getInt(2) - rs.getInt(1);
     }
+
+    // calculate expense per employee
 }

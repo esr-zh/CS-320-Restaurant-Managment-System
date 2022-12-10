@@ -38,14 +38,14 @@ public class Login_UI extends main implements ActionListener {
 
 
         login_button = new JButton("Login");
-        login_button.setBounds(100, 110, 90, 25);
+        login_button.setBounds(200, 110, 90, 25);
         login_button.setForeground(Color.WHITE);
         login_button.setBackground(Color.BLACK);
         login_button.addActionListener((ActionListener) new Login_UI());
         panel.add(login_button);
 
         register_button = new JButton("Register");
-        register_button.setBounds(200, 110, 90, 25);
+        register_button.setBounds(100, 110, 90, 25);
         register_button.setForeground(Color.WHITE);
         register_button.setBackground(Color.BLACK);
         register_button.addActionListener((ActionListener) new Login_UI());

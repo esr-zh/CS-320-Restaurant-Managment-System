@@ -67,4 +67,6 @@ public class Employee {
                 rs.getLong(2),
                 rs.getLong(4));
     }
+
+    // update salary by user id
 }
