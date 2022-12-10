@@ -14,7 +14,7 @@ import java.util.List;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
-class MenuTest extends DBTestable{
+class MenuTest extends database.Tests.DBTestable {
     Menu menu;
     public MenuTest() throws SQLException, ClassNotFoundException {
        super();

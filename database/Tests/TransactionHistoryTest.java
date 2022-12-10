@@ -14,7 +14,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class TransactionHistoryTest extends DBTestable{
+class TransactionHistoryTest extends database.Tests.DBTestable {
 
     TransactionHistory TH;
     public TransactionHistoryTest() throws SQLException, ClassNotFoundException {
@@ -35,7 +35,6 @@ class TransactionHistoryTest extends DBTestable{
 
     @Test
     void getTransactionHistoryByUserId() throws SQLException, ClassNotFoundException {
-
         List<List<String>> result = TH.getTransactionHistoryByUserId(2);
         System.out.println(result);
         assertEquals(1, result.size());

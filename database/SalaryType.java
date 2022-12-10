@@ -2,10 +2,10 @@ package database;
 
 import java.util.HashMap;
 
-public class salaryType {
+public class SalaryType {
     private HashMap<Integer,String> userRoleTable = new HashMap<>();
 
-    public salaryType() {
+    public SalaryType() {
         this.userRoleTable.put(1,"monthly");
         this.userRoleTable.put(2,"hourly");
     }

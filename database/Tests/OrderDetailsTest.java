@@ -16,7 +16,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.testng.AssertJUnit.assertEquals;
 
-public class OrderDetailsTest extends DBTestable{
+public class OrderDetailsTest extends database.Tests.DBTestable {
     OrderDetails OD;
     public OrderDetailsTest() throws SQLException, ClassNotFoundException {
        super();

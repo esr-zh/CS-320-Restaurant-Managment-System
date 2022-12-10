@@ -109,7 +109,6 @@ public class Menu {
         statement.setString(1, name);
         ResultSet rs = statement.executeQuery();
         return rs.next();
-
     }
     // get menu by id
     public Menu getMenuById(long id) throws SQLException, ClassNotFoundException {
