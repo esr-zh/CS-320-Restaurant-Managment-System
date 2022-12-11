@@ -87,4 +87,14 @@ public class Shift {
     }
 
     // calculate expense per employee
+    public int calculateExpensePerEmployeeMonthly(long userId) throws SQLException {
+        Employee employee = new Employee(conn).getEmployeeId(userId);
+        SalaryType salaryType = new SalaryType();
+        if (employee.getSalaryType() == salaryType.getSalaryType("monthly"))
+            return (int) (employee.getSalary() * 30);
+        if (employee.getSalaryType() == salaryType.getSalaryType("hourly"))
+            return (int) (getHowManyWorkingHoursByUserId(userId) * employee.getSalary() * 30);
+
+        return 0;
+    }
 }

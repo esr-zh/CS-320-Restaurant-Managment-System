@@ -37,4 +37,10 @@ public class EmployeeTest extends DBTestable{
         assertEquals(2,e.getSalaryType());
         assertEquals(15,e.getSalary());
     }
+    @Test
+    public void updateSalaryByUserIdTest() throws SQLException {
+        employee.setSalary(50);
+        employee.setUserId(15);
+        employee.updateSalaryByUserId();
+    }
 }

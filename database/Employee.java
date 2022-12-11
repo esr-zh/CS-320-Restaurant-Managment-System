@@ -1,9 +1,6 @@
 package database;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class Employee {
     private Connection conn;
@@ -69,4 +66,18 @@ public class Employee {
     }
 
     // update salary by user id
+    public boolean updateSalaryByUserId() throws SQLException {
+        String SQL_QUERY = "UPDATE employee SET salary = ? WHERE employee.user_id = ?";
+        try (
+                PreparedStatement statement = conn.prepareStatement(SQL_QUERY, Statement.RETURN_GENERATED_KEYS);
+        ) {
+            statement.setLong(1, salary);
+            statement.setLong(2, userId);
+            int affectedRows = statement.executeUpdate();
+            if (affectedRows == 0) {
+                throw new SQLException("updating salary failed, no rows affected.");
+            }
+            return true;
+        }
+    }
 }

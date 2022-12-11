@@ -50,6 +50,17 @@ public class ShiftTest extends DBTestable{
     @Test
     public void getHowManyWorkingHoursByUserIdTest() throws SQLException {
         int res = shift.getHowManyWorkingHoursByUserId(15);
-        Assertions.assertEquals(8, res);
+        assertEquals(8, res);
+    }
+
+    @Test
+    public void calculateExpensePerEmployeeMonthlyTest1() throws SQLException {
+        int result = shift.calculateExpensePerEmployeeMonthly(15);
+        assertEquals(8*15*30,result);
+    }
+    @Test
+    public void calculateExpensePerEmployeeMonthlyTest2() throws SQLException {
+        int result = shift.calculateExpensePerEmployeeMonthly(16);
+        assertEquals(50*30,result);
     }
 }
