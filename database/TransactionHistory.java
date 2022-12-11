@@ -102,7 +102,6 @@ public class TransactionHistory implements Template,Cloneable{
     // list transaction history by user id
     public boolean updatePaidStatus() throws SQLException {
         String SQL_QUERY = "UPDATE transaction_history SET has_paid = ?,paid_at = ?  WHERE transaction_history.id = ? AND transaction_history.user_id = ?";
-        System.out.println(doesTransactionHistoryExists(id));
         if (doesTransactionHistoryExists(id)){
             try (
                     PreparedStatement statement = conn.prepareStatement(SQL_QUERY,

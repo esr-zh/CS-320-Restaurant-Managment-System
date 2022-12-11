@@ -3,30 +3,27 @@ package database.Tests;
 import database.OrderDetails;
 import database.utils.Connect;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.testng.AssertJUnit.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class OrderDetailsTest extends database.Tests.DBTestable {
     OrderDetails OD;
     public OrderDetailsTest() throws SQLException, ClassNotFoundException {
        super();
     }
-    @Before
+    @BeforeEach
     public void init() throws SQLException {
         connection.setAutoCommit(false);
         OD = new OrderDetails(connection);
     }
-    @After
+    @BeforeEach
     public void rollBack() throws SQLException {
         connection.rollback();
         connection.setAutoCommit(true);
@@ -76,13 +73,20 @@ public class OrderDetailsTest extends database.Tests.DBTestable {
     }
 
     @Test
-    public void deleteOrderDetailsByIdWrongIdTest() throws SQLException {
+    public void deleteOrderDetailsByIdWrongIdTest()  {
         OD.setId(12);
         try {
             OD.deleteOrderDetailsById();
         }catch (Exception e){
             assertEquals("order details id not found",e.getMessage());
         }
+    }
+
+    @Test
+    public void getTotalPriceByTransactionIdTest() throws SQLException {
+        OD.setTransactionId(2);
+        int result = OD.getTotalPriceByTransactionId();
+        assertEquals(75+165,result);
     }
 
 }
