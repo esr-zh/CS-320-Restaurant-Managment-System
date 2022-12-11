@@ -1,7 +1,12 @@
+import database.User;
+import database.UserRole;
+import database.utils.Connect;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 
 public class Login_UI extends main implements ActionListener {
     public static JLabel password_label, username_label;
@@ -54,16 +59,41 @@ public class Login_UI extends main implements ActionListener {
     }
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == login_button) {
-            String current_username = username_input.getText().trim();
-            String current_password = String.valueOf(password_input.getPassword());
-            if (current_username.equals("admin") && current_password.equals("password"))
-                JOptionPane.showMessageDialog(null, "Login Successful");
-            else
-                JOptionPane.showMessageDialog(null, "Username or Password is incorrect");
+        Connect connect;
+        try {
+            connect = new Connect();
+        } catch (ClassNotFoundException | SQLException ex) {
+            throw new RuntimeException(ex);
         }
-        else {
-            JOptionPane.showMessageDialog(null, "Registered Successfully");
+        User user = new User(connect.connection);
+        String current_username = username_input.getText().trim();
+        String current_password = String.valueOf(password_input.getPassword());
+        if (e.getSource() == login_button) {
+            user.setUsername(current_username);
+            user.setPassword(current_password);
+            try {
+                user.authUser();
+                long userId = user.getId();
+                JOptionPane.showMessageDialog(null, "Login Successful");
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage());
+            }
+        }
+
+        if (e.getSource() == register_button){
+            user.setUsername(current_username);
+            user.setPassword(current_password);
+            user.setUserRole(1);
+            try {
+                user.createUser();
+                long userId = user.getId();
+                JOptionPane.showMessageDialog(null, "Registered Successfully");
+
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage());
+            } catch (ClassNotFoundException ex) {
+                throw new RuntimeException(ex);
+            }
         }
     }
 }
