@@ -11,10 +11,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
-class MenuTest extends DBTestable{
+class MenuTest extends database.Tests.DBTestable {
     Menu menu;
     public MenuTest() throws SQLException, ClassNotFoundException {
        super();
@@ -39,7 +38,6 @@ class MenuTest extends DBTestable{
         assertTrue(result.get(0).get(1).contains("burger"));
         assertTrue(result.get(1).get(1).contains("USA"));
         assertTrue(result.get(2).get(1).contains("Tr"));
-
     }
 
     @Test
@@ -58,6 +56,7 @@ class MenuTest extends DBTestable{
         menu.setPrice(55);
         menu.setDishTypeId(1);
         menu.setServingAmount(20);
+        menu.setQuantity(10);
         Menu createdMenu = menu.createMenu();
 
         assertEquals("penne", createdMenu.getName());
@@ -70,6 +69,7 @@ class MenuTest extends DBTestable{
         menu.setPrice(65);
         menu.setDishTypeId(1);
         menu.setServingAmount(20);
+        menu.setQuantity(10);
         try {
             menu.createMenu();
         }catch (Exception e){
@@ -88,7 +88,9 @@ class MenuTest extends DBTestable{
         menu.setId(1); // you passing existing id
         menu.setName("burger small");
         menu.setDescription("nice");
+        menu.setQuantity(10);
         assertTrue(menu.updateMenu());
         assertEquals(75.0,menu.getPrice());
+        assertEquals(10,menu.getQuantity());
     }
 }
