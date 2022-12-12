@@ -69,7 +69,6 @@ public class User {
 
     public  User createUser() throws SQLException, ClassNotFoundException {
         String SQL_INSERT = "INSERT INTO user(username,password,user_role) VALUES (?, ?, ?)";
-//        Connect connect = Connect.getInstance();
         if (!doesUserExists(username)) {
             try (
                     PreparedStatement statement = conn.prepareStatement(SQL_INSERT,
@@ -100,7 +99,6 @@ public class User {
 
     public User authUser() throws SQLException{
         String SQL_INSERT = "SELECT * FROM user WHERE username = ? AND password = ?";
-//        Connect connect = Connect.getInstance();
         PreparedStatement statement = conn.prepareStatement(SQL_INSERT);
         statement.setString(1, username);
         statement.setString(2, salt(password, "never_hack_me"));
