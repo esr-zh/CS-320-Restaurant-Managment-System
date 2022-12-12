@@ -19,8 +19,5 @@ public class TransactionHistUI extends JFrame {
         this.setVisible(true);
     }
 
-    public static void main(String[] args) {
-        new TransactionHistUI();
-    }
 
 }
