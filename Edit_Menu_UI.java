@@ -24,7 +24,6 @@ public class Edit_Menu_UI extends Login_UI implements ActionListener{
             // Frame Title
             frame.setTitle("Edit Menu");
 
-
             // Data to be displayed in the JTable
             String[][] data = {
                     {"Drink", "Water", "$0.5", "Edit", "Delete"},
