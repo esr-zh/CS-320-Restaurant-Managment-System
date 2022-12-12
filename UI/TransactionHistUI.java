@@ -6,7 +6,7 @@ public class TransactionHistUI extends JFrame {
 
     JTable t;
 
-    String[]columns= {"Date","Item","Total","Transaction ID"};
+    String[]columns= {"Transaction ID","Name","Price","Quantity"};
     String[][] cells= {{"12.12.2022","Pasta","500","12456"}};
 
     public TransactionHistUI() {
