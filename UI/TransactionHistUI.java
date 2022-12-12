@@ -1,8 +1,7 @@
 package UI;
 
 import javax.swing.*;
-import javax.swing.table.TableRowSorter;
-// nice work
+
 public class TransactionHistUI extends JFrame {
 
     JTable t;
