@@ -14,7 +14,7 @@ public class Login_UI extends main implements ActionListener {
         panel.setLayout(null);
 
         JFrame frame = new JFrame();
-        frame.setTitle("LOGIN PAGE");
+        frame.setTitle("RMS - Welcome");
         frame.setLocation(new Point(500, 300));
         frame.add(panel);
         frame.setSize(new Dimension(400, 200));
@@ -57,9 +57,11 @@ public class Login_UI extends main implements ActionListener {
         if (e.getSource() == login_button) {
             String current_username = username_input.getText().trim();
             String current_password = String.valueOf(password_input.getPassword());
-            if (current_username.equals("admin") && current_password.equals("password"))
+            if (current_username.equals("admin") && current_password.equals("password")) {
                 JOptionPane.showMessageDialog(null, "Login Successful");
-            else
+                Edit_Menu_UI.generate_table_ui();
+
+            }else
                 JOptionPane.showMessageDialog(null, "Username or Password is incorrect");
         }
         else {
