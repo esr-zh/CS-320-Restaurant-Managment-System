@@ -1,5 +1,8 @@
+import UI.TransactionHistUI;
+
 public class main {
-    public main() {
-        System.out.println("hello");
+    public static void main(String args[]) {
+        //Login_UI.generate_login_ui();
+        new TransactionHistUI();
     }
 }
