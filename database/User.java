@@ -69,7 +69,6 @@ public class User {
 
     public  User createUser() throws SQLException, ClassNotFoundException {
         String SQL_INSERT = "INSERT INTO user(username,password,user_role) VALUES (?, ?, ?)";
-//        Connect connect = Connect.getInstance();
         if (!doesUserExists(username)) {
             try (
                     PreparedStatement statement = conn.prepareStatement(SQL_INSERT,
@@ -100,7 +99,6 @@ public class User {
 
     public User authUser() throws SQLException{
         String SQL_INSERT = "SELECT * FROM user WHERE username = ? AND password = ?";
-//        Connect connect = Connect.getInstance();
         PreparedStatement statement = conn.prepareStatement(SQL_INSERT);
         statement.setString(1, username);
         statement.setString(2, salt(password, "never_hack_me"));
@@ -114,16 +112,17 @@ public class User {
         return this;
     }
 
-    public static User getUserById(long id) throws SQLException, ClassNotFoundException {
-        Connect connect = Connect.getInstance();
-        ResultSet resultSet = connect.statement.executeQuery(
-                String.format("SELECT * from user where user.id = %d",id));
-        if (!resultSet.next()){
+    public User getUserById(long id) throws SQLException {
+
+        String SQL_INSERT = "SELECT * from user WHERE user.id = ?";
+        PreparedStatement statement = conn.prepareStatement(SQL_INSERT);
+        statement.setLong(1, id);
+        ResultSet rs = statement.executeQuery();
+        if (!rs.next()){
             throw new SQLException("user id not found!");
         }
-        User return_user = new User(id,resultSet.getString(2), Long.parseLong(resultSet.getString(4)));
-        connect.closeConnection();
-        return return_user;
+
+        return new User(id,rs.getString(2), Long.parseLong(rs.getString(4)));
     }
 
     public static User getUserByUsername(String username) throws SQLException, ClassNotFoundException {
@@ -135,14 +134,14 @@ public class User {
         }
         User return_user = new User(resultSet.getString(1),resultSet.getString(2),
                 Long.parseLong(resultSet.getString(4)));
-//        connect.closeConnection();
         return return_user;
     }
 
-    public static Boolean doesUserExists(String username) throws SQLException, ClassNotFoundException {
-        Connect connect = Connect.getInstance();
-        ResultSet resultSet = connect.statement.executeQuery(
-                String.format("SELECT * from user where user.username = '%s'",username));
+    public Boolean doesUserExists(String username) throws SQLException {
+        String SQL_QUERY = "SELECT * from user where user.username = ?";
+        PreparedStatement statement = conn.prepareStatement(SQL_QUERY);
+        statement.setString(1,username);
+        ResultSet resultSet = statement.executeQuery();
         return resultSet.next();
     }
 
