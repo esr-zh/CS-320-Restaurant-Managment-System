@@ -7,11 +7,15 @@ public class TransactionHistUI extends JFrame {
     JTable table;
 
     String[]columns = {"Transaction ID","Name","Price","Quantity"};
-    String[][] cells= {
+    String[][] cells = {
             {"12.12.2022","Pasta","500","12456"}
     };
 
     public TransactionHistUI() {
+        // we call db statements
+    }
+
+    public void displayUi(){
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         table = new JTable(cells,columns);
         table.setBounds(200,200,200,200);
