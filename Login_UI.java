@@ -60,11 +60,7 @@ public class Login_UI extends main implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         Connect connect;
-        try {
-            connect = new Connect();
-        } catch (ClassNotFoundException | SQLException ex) {
-            throw new RuntimeException(ex);
-        }
+        connect = new Connect();
         User user = new User(connect.connection);
         String current_username = username_input.getText().trim();
         String current_password = String.valueOf(password_input.getPassword());

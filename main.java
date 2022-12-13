@@ -1,8 +1,11 @@
 import UI.TransactionHistUI;
 
+import java.sql.SQLException;
+
 public class main {
-    public static void main(String args[]) {
+    public static void main(String args[]){
         //Login_UI.generate_login_ui();
-        new TransactionHistUI();
+        TransactionHistUI transactionHistUI = new TransactionHistUI();
+        transactionHistUI.displayUi();
     }
 }

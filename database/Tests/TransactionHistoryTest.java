@@ -50,7 +50,7 @@ class TransactionHistoryTest extends database.Tests.DBTestable {
     void getAddToCartTableByUserId() throws SQLException, ClassNotFoundException {
         List<List<String>> result = TH.getAddToCartTableByUserId(4);
         System.out.println(result);
-        assertEquals(2,result.size());
+        assertEquals(0,result.size());
     }
 
     @Test

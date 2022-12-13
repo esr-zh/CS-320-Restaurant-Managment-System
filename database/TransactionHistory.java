@@ -93,9 +93,15 @@ public class TransactionHistory implements Template,Cloneable{
     // get add to card table
     public List<List<String>> getAddToCartTableByUserId(int userId) throws SQLException, ClassNotFoundException {
 
-        String SQL_QUERY = "SELECT transaction_history.id, name,price,quantity from transaction_history JOIN order_details od ON od.transaction_id = transaction_history.id\n" +
-                "JOIN menu m ON m.id = od.menu_id where transaction_history.user_id = ? \n" +
-                "AND transaction_history.has_paid = false;";
+        String SQL_QUERY = "SELECT TH.id, name,price,od.quantity from transaction_history as TH JOIN order_details od ON od.transaction_id = TH.id\n" +
+                "JOIN menu m ON m.id = od.menu_id where TH.user_id = ? AND has_paid = false;";
+        return getLists(userId, SQL_QUERY);
+    }
+
+    public List<List<String>> getTransactionHistoryTableByUserId(int userId) throws SQLException, ClassNotFoundException {
+
+        String SQL_QUERY = "SELECT TH.id, name,price,od.quantity from transaction_history as TH JOIN order_details od ON od.transaction_id = TH.id\n" +
+                "                JOIN menu m ON m.id = od.menu_id where TH.user_id = ? AND has_paid = true;";
         return getLists(userId, SQL_QUERY);
     }
 
