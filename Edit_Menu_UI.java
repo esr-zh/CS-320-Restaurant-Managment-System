@@ -5,9 +5,6 @@ import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.border.Border;
-import javax.swing.border.LineBorder;
-import javax.swing.table.TableColumnModel;
 
 public class Edit_Menu_UI extends Login_UI implements ActionListener{
     // frame
@@ -17,44 +14,66 @@ public class Edit_Menu_UI extends Login_UI implements ActionListener{
 
     public static JButton editButton, deleteButton;
 
-    // Constructor
     public static void generate_table_ui() {
         {
+            //used boxLayout: reference: https://docs.oracle.com/javase/tutorial/uiswing/layout/box.html
+            //all layouts available at: https://docs.oracle.com/javase/tutorial/uiswing/layout/using.html
+            JPanel tablePanel = new JPanel();
+            JPanel buttonPanel = new JPanel();
+
+            BoxLayout layout1 = new BoxLayout(tablePanel, BoxLayout.PAGE_AXIS);
+            BoxLayout layout2 = new BoxLayout(buttonPanel, BoxLayout.LINE_AXIS);
+            tablePanel.setLayout(layout1);
+            buttonPanel.setLayout(layout2);
+
+            tablePanel.setBorder(BorderFactory.createTitledBorder("Employee Table"));
+            buttonPanel.setBorder(BorderFactory.createTitledBorder("Select and Manage Employees"));
+            //panel.setLayout(null);
+
             // Frame initialization
             employeeFrame = new JFrame();
-
-            // Frame Title
+            employeeFrame.setLayout(new BorderLayout());
+            JFrame.setDefaultLookAndFeelDecorated(true);
             employeeFrame.setTitle("Edit Menu");
-
+            employeeFrame.setSize(700, 700);
+            employeeFrame.add(tablePanel);
+            employeeFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             // Data to be displayed in the JTable
             String[][] data = {
-                    {"Drink", "Water", "$0.5", "Edit", "Delete"},
-                    {"Dessert", "Cheesecake", "$5", "Edit", "Delete"},
-                    {"Dessert", "Cheesecake", "$5", "Edit", "Delete"},
-                    {"Dessert", "Cheesecake", "$5", "Edit", "Delete"},
-                    {"Dessert", "Cheesecake", "$5", "Edit", "Delete"}
+                    {"Drink", "Water", "$0.5"},
+                    {"Dessert", "Cheesecake", "$5"},
+                    {"Dessert", "Cheesecake", "$5"},
+                    {"Dessert", "Cheesecake", "$5"},
+                    {"Dessert", "Cheesecake", "$5"}
             };
 
             // Column Names
-            String[] columnNames = {"Type", "Name", "Price", "", ""};
+            String[] columnNames = {"Type", "Name", "Price"};
 
             // Initializing the JTable
             data_table = new JTable(data, columnNames);
             data_table.setBounds(30, 40, 200, 300);
-
             // adding it to JScrollPane
             JScrollPane sp = new JScrollPane(data_table);
-            employeeFrame.add(sp);
-            // Frame Size
-            employeeFrame.setSize(700, 700);
-            // Frame Visible = true
+            tablePanel.add(sp);
 
             editButton = new JButton("Edit");
-            editButton.setBounds(400, 410, 90, 25);
             editButton.setForeground(Color.WHITE);
             editButton.setBackground(Color.BLACK);
             editButton.addActionListener((ActionListener) new Edit_Menu_UI());
-            employeeFrame.add(editButton);
+            editButton.setAlignmentY(Component.CENTER_ALIGNMENT);
+            buttonPanel.add(editButton);
+
+            deleteButton = new JButton("Delete");
+            deleteButton.setForeground(Color.WHITE);
+            deleteButton.setBackground(Color.BLACK);
+            deleteButton.addActionListener((ActionListener) new Edit_Menu_UI());
+            deleteButton.setAlignmentY(Component.CENTER_ALIGNMENT);
+            buttonPanel.add(deleteButton);
+
+            employeeFrame.add(tablePanel, BorderLayout.CENTER);
+            employeeFrame.add(buttonPanel, BorderLayout.PAGE_END);
+            employeeFrame.pack();
             employeeFrame.setVisible(true);
         }
     }
