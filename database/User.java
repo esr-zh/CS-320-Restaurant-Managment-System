@@ -134,14 +134,14 @@ public class User {
         }
         User return_user = new User(resultSet.getString(1),resultSet.getString(2),
                 Long.parseLong(resultSet.getString(4)));
-//        connect.closeConnection();
         return return_user;
     }
 
-    public static Boolean doesUserExists(String username) throws SQLException, ClassNotFoundException {
-        Connect connect = Connect.getInstance();
-        ResultSet resultSet = connect.statement.executeQuery(
-                String.format("SELECT * from user where user.username = '%s'",username));
+    public Boolean doesUserExists(String username) throws SQLException {
+        String SQL_QUERY = "SELECT * from user where user.username = ?";
+        PreparedStatement statement = conn.prepareStatement(SQL_QUERY);
+        statement.setString(1,username);
+        ResultSet resultSet = statement.executeQuery();
         return resultSet.next();
     }
 

@@ -65,6 +65,48 @@ public class Employee {
                 rs.getLong(4));
     }
 
+    public Employee createEmployee() throws SQLException {
+        String SQL_INSERT = "INSERT INTO employee(salary,user_id,salary_type) VALUES (?, ?, ?)";
+        if (!doesEmployeeExists(userId)) {
+            try (
+                    PreparedStatement statement = conn.prepareStatement(SQL_INSERT,
+                            Statement.RETURN_GENERATED_KEYS);
+            ) {
+                statement.setLong(1, salary);
+                statement.setLong(2, userId);
+                statement.setLong(3, salary);
+
+                int affectedRows = statement.executeUpdate();
+
+                if (affectedRows == 0) {
+                    throw new SQLException("Creating user failed, no rows affected.");
+                }
+
+                try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        this.setId(generatedKeys.getLong(1));
+                    } else {
+                        throw new SQLException("Creating user failed, no ID obtained.");
+                    }
+                }
+            }
+            return this;
+        }
+
+        throw new SQLException("employee already exists!");
+
+
+    }
+
+    private boolean doesEmployeeExists(long userId) throws SQLException {
+        String SQL_QUERY = "SELECT * from employee where employee.user_id = ?";
+        PreparedStatement statement = conn.prepareStatement(SQL_QUERY);
+        statement.setLong(1,userId);
+        ResultSet resultSet = statement.executeQuery();
+        new User(conn).getUserById(userId);
+        return resultSet.next();
+    }
+
     // update salary by user id
     public boolean updateSalaryByUserId() throws SQLException {
         String SQL_QUERY = "UPDATE employee SET salary = ? WHERE employee.user_id = ?";

@@ -32,6 +32,27 @@ public class EmployeeTest extends DBTestable{
     }
 
     @Test
+    public void createEmployeeTest() throws SQLException {
+        employee.setUserId(17);
+        employee.setSalary(30);
+        SalaryType salaryType = new SalaryType();
+        employee.setSalaryType(salaryType.getSalaryType("monthly"));
+        employee.createEmployee();
+    }
+
+    @Test
+    public void createEmployeeTest2() {
+        employee.setUserId(16);
+        employee.setSalary(30);
+        SalaryType salaryType = new SalaryType();
+        employee.setSalaryType(salaryType.getSalaryType("monthly"));
+        try {
+            employee.createEmployee();
+        }catch (Exception e){
+            assertEquals("employee already exists!",e.getMessage());
+        }
+    }
+    @Test
     public void getEmployeeIdTest() throws SQLException {
         Employee e = employee.getEmployeeId(15);
         assertEquals(2,e.getSalaryType());
