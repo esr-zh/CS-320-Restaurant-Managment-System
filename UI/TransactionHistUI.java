@@ -4,10 +4,10 @@ import database.TransactionHistory;
 import database.utils.Connect;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.List;
 
 public class TransactionHistUI extends JFrame {
@@ -42,16 +42,35 @@ public class TransactionHistUI extends JFrame {
 
     }
 
-    public void displayUi(){
+    public JScrollPane getUIComponent(){
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         table = new JTable(model);
         System.out.println(model.getDataVector());
         table.setBounds(200,200,200,200);
         JScrollPane scrollPane = new JScrollPane(table);
+        scrollPane.setBorder(new EmptyBorder(10, 10, 10, 10));
         scrollPane.setBorder(BorderFactory.createTitledBorder("Transaction History Table"));
-        this.add(scrollPane);
-        this.setSize(800,800);
-        this.setVisible(true);
+        return scrollPane;
+    }
+
+    public static void main(String args[]){
+        JMenu menu, TH;
+        JFrame frame = new JFrame("Menu and MenuItem Example");
+
+        TransactionHistUI transactionHistUI = new TransactionHistUI();;
+        frame.add(transactionHistUI.getUIComponent());
+
+        JMenuBar mb = new JMenuBar();
+        menu = new JMenu("Menu");
+        TH = new JMenu("Transaction History");
+
+        mb.add(menu);
+        mb.add(TH);
+        frame.setJMenuBar(mb);
+
+        frame.setSize(800,800);
+        frame.setVisible(true);
+
     }
 
 
