@@ -11,18 +11,20 @@ import javax.swing.table.TableColumnModel;
 
 public class Edit_Menu_UI extends Login_UI implements ActionListener{
     // frame
-    static JFrame frame;
+    static JFrame employeeFrame;
     // Table
     static JTable data_table;
+
+    public static JButton editButton, deleteButton;
 
     // Constructor
     public static void generate_table_ui() {
         {
             // Frame initialization
-            frame = new JFrame();
+            employeeFrame = new JFrame();
 
             // Frame Title
-            frame.setTitle("Edit Menu");
+            employeeFrame.setTitle("Edit Menu");
 
             // Data to be displayed in the JTable
             String[][] data = {
@@ -42,20 +44,27 @@ public class Edit_Menu_UI extends Login_UI implements ActionListener{
 
             // adding it to JScrollPane
             JScrollPane sp = new JScrollPane(data_table);
-            frame.add(sp);
+            employeeFrame.add(sp);
             // Frame Size
-            frame.setSize(1000, 700);
+            employeeFrame.setSize(700, 700);
             // Frame Visible = true
-            frame.setVisible(true);
 
-            register_button = new JButton("Register");
-            register_button.setBounds(200, 110, 90, 25);
-            register_button.setForeground(Color.WHITE);
-            register_button.setBackground(Color.BLACK);
-            register_button.addActionListener((ActionListener) new Login_UI());
-            //panel.add(register_button);
-            frame.setVisible(true);
+            editButton = new JButton("Edit");
+            editButton.setBounds(400, 410, 90, 25);
+            editButton.setForeground(Color.WHITE);
+            editButton.setBackground(Color.BLACK);
+            editButton.addActionListener((ActionListener) new Edit_Menu_UI());
+            employeeFrame.add(editButton);
+            employeeFrame.setVisible(true);
         }
+    }
 
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == editButton) {
+            JOptionPane.showMessageDialog(null, "clicked Edit!");
+        } else {
+            JOptionPane.showMessageDialog(null, "Clicked delete!");
+        }
     }
 }
