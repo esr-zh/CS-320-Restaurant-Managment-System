@@ -7,7 +7,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-public class Edit_Menu_UI extends Login_UI implements ActionListener{
+public class Edit_Menu_UI implements ActionListener{
     // frame
     public static JFrame employeeFrame;
     // Table
@@ -104,12 +104,12 @@ public class Edit_Menu_UI extends Login_UI implements ActionListener{
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == editButton) {
             JOptionPane.showMessageDialog(null, "clicked Edit!");
-        } else { //else user clicked delete
-            if(data_table.getSelectedRow() != -1) {
-                // remove selected row from the tableModel
-                tableModel.removeRow(data_table.getSelectedRow());
-                JOptionPane.showMessageDialog(null, "Selected employee deleted successfully");
-            }
+        }
+
+        if (e.getSource() == deleteButton && data_table.getSelectedRow() != -1){
+            tableModel.removeRow(data_table.getSelectedRow());
+            JOptionPane.showMessageDialog(null, "Selected employee deleted successfully");
+
         }
     }
 }
