@@ -79,8 +79,7 @@ public class Edit_Menu_UI extends Login_UI implements ActionListener{
             buttonPanel.add(Box.createHorizontalGlue());
 
             editButton = new JButton("Edit");
-            editButton.setForeground(Color.WHITE);
-            editButton.setBackground(Color.BLACK);
+            btnProperties(editButton);
             editButton.setAlignmentX(Component.CENTER_ALIGNMENT);
             //editButton.setAlignmentY(Component.CENTER_ALIGNMENT);
             editButton.addActionListener((ActionListener) new Edit_Menu_UI());
@@ -90,8 +89,7 @@ public class Edit_Menu_UI extends Login_UI implements ActionListener{
             //buttonPanel.add(Box.createHorizontalGlue());
 
             deleteButton = new JButton("Delete");
-            deleteButton.setForeground(Color.WHITE);
-            deleteButton.setBackground(Color.BLACK);
+            btnProperties(deleteButton);
             deleteButton.setAlignmentX(Component.CENTER_ALIGNMENT);
             //deleteButton.setAlignmentY(Component.CENTER_ALIGNMENT);
             deleteButton.addActionListener((ActionListener) new Edit_Menu_UI());
@@ -105,6 +103,14 @@ public class Edit_Menu_UI extends Login_UI implements ActionListener{
             employeeFrame.setVisible(true);
         }
     }
+
+    private static void btnProperties(JButton deleteButton) {
+        deleteButton.setForeground(Color.WHITE);
+        deleteButton.setBackground(Color.BLACK);
+        deleteButton.setOpaque(true);
+        deleteButton.setBorderPainted(false);
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == editButton) {
