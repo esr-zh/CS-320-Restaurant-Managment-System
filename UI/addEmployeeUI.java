@@ -2,66 +2,63 @@ package UI;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class addEmployeeUI {
+public class addEmployeeUI implements ActionListener{
     public static JFrame addEmployeeFrame;
     public static JPanel employeePanel;
     public static JLabel nameLabel, roleLabel, workingHourLabel, contractLabel;
     public static JTextField inputName, inputRole, inputWorkingHour, inputContract;
     public static JButton submitButton;
 
-    public static void  generateEmployeeUI() {
+    public static void generateEmployeeUI() {
         JPanel employeePanel = new JPanel();
         employeePanel.setLayout(null);
 
         JFrame addEmployeeFrame = new JFrame();
-        addEmployeeFrame.setTitle("test");
-        addEmployeeFrame.setSize(200,200);
         setFrameProperties(addEmployeeFrame);
 
         addEmployeeFrame.add(employeePanel);
         nameLabel = new JLabel("Employee Name:");
-        nameLabel.setBounds(100, 8, 70, 20);
+        nameLabel.setBounds(150, 60, 150, 20);
         employeePanel.add(nameLabel);
 
         inputName = new JTextField();
-        inputName.setBounds(100, 27, 193, 28);
+        inputName.setBounds(250, 60, 193, 28);
         employeePanel.add(inputName);
 
         roleLabel = new JLabel("Role:");
-        roleLabel.setBounds(100, 55, 70, 20);
+        roleLabel.setBounds(150, 120, 150, 20);
         employeePanel.add(roleLabel);
 
-        inputName = new JTextField();
-        inputName.setBounds(100, 83, 193, 28);
-        employeePanel.add(inputName);
+        inputRole = new JTextField();
+        inputRole.setBounds(250, 120, 193, 28);
+        employeePanel.add(inputRole);
 
-        nameLabel = new JLabel("Working Hours:");
-        nameLabel.setBounds(100, 111, 70, 20);
-        employeePanel.add(nameLabel);
+        workingHourLabel = new JLabel("Working Hours:");
+        workingHourLabel.setBounds(150, 180, 150, 20);
+        employeePanel.add(workingHourLabel);
 
-        inputName = new JTextField();
-        inputName.setBounds(100, 27, 193, 28);
-        employeePanel.add(inputName);
+        inputWorkingHour = new JTextField();
+        inputWorkingHour.setBounds(250, 180, 193, 28);
+        employeePanel.add(inputWorkingHour);
 
-        roleLabel = new JLabel("Contract Type:");
-        roleLabel.setBounds(100, 55, 70, 20);
-        employeePanel.add(roleLabel);
+        contractLabel = new JLabel("Contract Type:");
+        contractLabel.setBounds(150, 240, 150, 20);
+        employeePanel.add(contractLabel);
 
-        inputName = new JTextField();
-        inputName.setBounds(100, 83, 193, 28);
-        employeePanel.add(inputName);
+        inputContract = new JTextField();
+        inputContract.setBounds(250, 240, 193, 28);
+        employeePanel.add(inputContract);
 
         submitButton = new JButton("Submit");
-        submitButton.setBounds(200, 110, 90, 25);
+        submitButton.setBounds(300, 300, 90, 25);
         btnProperties(submitButton);
         employeePanel.add(submitButton);
-    }
 
-    private static void addForm(){
+        addEmployeeFrame.setVisible(true);
     }
-
 
     private static void btnProperties(JButton button) {
         button.setForeground(Color.WHITE);
@@ -73,10 +70,16 @@ public class addEmployeeUI {
     }
 
     private static void setFrameProperties(JFrame frame){
-        //addEmployeeFrame.setLayout();
         frame.setTitle("Add New Employee!");
         frame.setSize(700, 700);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setVisible(true);
+        //frame.setVisible(true);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == submitButton) {
+            JOptionPane.showMessageDialog(null, "Added successfully");
+        }
     }
 }
