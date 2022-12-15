@@ -1,5 +1,4 @@
 package UI;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -8,8 +7,8 @@ import java.awt.event.ActionListener;
 public class addEmployeeUI implements ActionListener{
     public static int yCoordinate = 60;
     public static JPanel employeePanel;
-    public static JLabel nameLabel, roleLabel, workingHourLabel, contractLabel;
-    public static JTextField inputName, inputRole, inputWorkingHour, inputContract;
+    public static JLabel nameLabel, roleLabel, workingHourLabel, contractLabel, salaryLabel;
+    public static JTextField inputName, inputRole, inputWorkingHour, inputContract, inputSalary;
     public static JButton submitButton;
     public static void generateEmployeeUI() {
         employeePanel = new JPanel();
@@ -19,22 +18,31 @@ public class addEmployeeUI implements ActionListener{
         setFrameProperties(addEmployeeFrame);
         addEmployeeFrame.add(employeePanel);
 
+        String[] role = {"Chef","Waiter"};
+        String[] contact = {"Fixed", "Hourly"};
+
         nameLabel = new JLabel("Employee Name:");
         inputName = new JTextField();
-        roleLabel = new JLabel("Role:");
+        roleLabel = new JLabel(" Employee Role:");
         inputRole = new JTextField();
         workingHourLabel = new JLabel("Working Hours:");
         inputWorkingHour = new JTextField();
         contractLabel = new JLabel("Contract Type:");
         inputContract = new JTextField();
+        salaryLabel = new JLabel("Salary:");
+        inputSalary = new JTextField();
+
+        inputSalary.setText("$100");
 
         addComponentToPanel(nameLabel, inputName);
-        addComponentToPanel(roleLabel, inputRole);
+        addDropDown(roleLabel, role);
         addComponentToPanel(workingHourLabel, inputWorkingHour);
-        addComponentToPanel(contractLabel, inputContract);
+        addDropDown(contractLabel, contact);
+        addComponentToPanel(salaryLabel, inputSalary);
+
 
         submitButton = new JButton("Submit");
-        submitButton.setBounds(300, 300, 90, 25);
+        submitButton.setBounds(300, 350, 90, 25);
         btnProperties(submitButton);
         employeePanel.add(submitButton);
 
@@ -46,6 +54,15 @@ public class addEmployeeUI implements ActionListener{
         employeePanel.add(label);
         textField.setBounds(250, yCoordinate, 193, 28);
         employeePanel.add(textField);
+        yCoordinate+=60;
+    }
+
+    public static void addDropDown(JLabel label, String[] list){
+        label.setBounds(150, yCoordinate, 150, 20);
+        employeePanel.add(label);
+        JComboBox roleList = new JComboBox(list);
+        roleList.setBounds(250, yCoordinate, 193, 28);
+        employeePanel.add(roleList);
         yCoordinate+=60;
     }
 
@@ -62,13 +79,12 @@ public class addEmployeeUI implements ActionListener{
         frame.setTitle("Add New Employee!");
         frame.setSize(700, 700);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        //frame.setVisible(true);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == submitButton) {
-            JOptionPane.showMessageDialog(null, "Added successfully");
+            JOptionPane.showMessageDialog(null, "Employee added successfully!");
         }
     }
 }
