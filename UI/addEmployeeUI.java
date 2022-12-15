@@ -19,7 +19,7 @@ public class addEmployeeUI implements ActionListener{
         addEmployeeFrame.add(employeePanel);
 
         String[] role = {"Chef","Waiter"};
-        String[] contact = {"Fixed", "Hourly"};
+        String[] contact = {"Monthly", "Hourly"};
 
         nameLabel = new JLabel("Employee Name:");
         inputName = new JTextField();
@@ -60,7 +60,7 @@ public class addEmployeeUI implements ActionListener{
     public static void addDropDown(JLabel label, String[] list){
         label.setBounds(150, yCoordinate, 150, 20);
         employeePanel.add(label);
-        JComboBox roleList = new JComboBox(list);
+        JComboBox<String> roleList = new JComboBox<>(list);
         roleList.setBounds(250, yCoordinate, 193, 28);
         employeePanel.add(roleList);
         yCoordinate+=60;
