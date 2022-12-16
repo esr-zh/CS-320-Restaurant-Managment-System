@@ -5,12 +5,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 
-public class OwnerMenu {
+public class OwnerMenu implements ActionListener {
     public static JPanel panel;
     public static JFrame frame;
     public static JLabel typeLabel, nameLabel, priceLabel, lb1;
     public static JTextField nameText, priceText;
-
+    public static JButton button;
 
 
     public static void main(String[] args){
@@ -49,8 +49,22 @@ public class OwnerMenu {
         priceText.setBounds(200,180,140,25);
         panel.add(priceText);
 
+        button = new JButton("Confirm");
+        button.setBounds(180, 250,120,30);
+        button.setForeground(Color.WHITE);
+        button.setBackground(Color.BLACK);
+        button.setAlignmentX(Component.CENTER_ALIGNMENT);
+        button.setOpaque(true);
+        button.addActionListener(new OwnerMenu());
+        panel.add(button);
+
         frame.setVisible(true);
     }
 
-
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == button) {
+            JOptionPane.showMessageDialog(null, "Changes to item have been saved!");
+        }
+    }
 }
