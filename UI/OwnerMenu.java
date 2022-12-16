@@ -1,21 +1,23 @@
 package UI;
+
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 
-class OwnerMenu implements ActionListener {
-    public static JPanel panel, p;
+
+public class OwnerMenu implements ActionListener {
+    public static JPanel panel;
     public static JFrame frame;
     public static JTextArea descText;
-    public static JLabel typeLabel, nameLabel, priceLabel, lb1, quantityLabel, descLabel;
-    public static JTextField nameText, priceText, quantityText;
+    public static JLabel typeLabel, nameLabel, priceLabel, lb1, quantityLabel, descLabel, portionLabel;
+    public static JTextField nameText, priceText, quantityText, portionText;
     public static JButton button;
+    public static String name, price, quantity, portion, description;
 
 
-    public static void main(String[] args){
+    public static void generateUI(){
         panel = new JPanel();
         panel.setLayout(null);
         frame = new JFrame();
@@ -61,17 +63,25 @@ class OwnerMenu implements ActionListener {
         quantityText.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         panel.add(quantityText);
 
-        descLabel = new JLabel("Item Description");
+        portionLabel = new JLabel("Item Portion:");
+        portionText = new JTextField();
+        portionLabel.setBounds(100, 300,140,20);
+        panel.add(portionLabel);
+        portionText.setBounds(200, 300,140,25);
+        portionText.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        panel.add(portionText);
+
+        descLabel = new JLabel("Item Description:");
         descText = new JTextArea();
-        descLabel.setBounds(100, 300,140,25);
+        descLabel.setBounds(100, 360,140,20);
         panel.add(descLabel);
-        descText.setBounds(200, 300,140,100);
+        descText.setBounds(200, 360,140,80);
         descText.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         panel.add(descText);
 
 
         button = new JButton("Confirm");
-        button.setBounds(180, 450,120,30);
+        button.setBounds(180, 480,120,30);
         button.setForeground(Color.WHITE);
         button.setBackground(Color.BLACK);
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -86,6 +96,13 @@ class OwnerMenu implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == button) {
             JOptionPane.showMessageDialog(null, "Changes to item have been saved!");
+            name = nameText.getText();
+            price = priceText.getText();
+            quantity = quantityText.getText();
+            portion = portionText.getText();
+            description = descText.getText();
+            System.out.println(name + "\n" + price + "\n" + quantity +
+                    "\n" + portion + "\n" + description);
         }
     }
 }
