@@ -4,7 +4,7 @@ import java.awt.*;
 import javax.swing.*;
 
 public class CustomerMenu {
-    public static void customerMenu() {
+    public static customerMenu() {
         JFrame frame = new JFrame("Menu");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(500,500);
