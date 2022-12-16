@@ -1,16 +1,15 @@
-
-import java.util.*;
+package UI;
 import java.awt.*;
 import javax.swing.*;
 
 public class CustomerMenu {
 
-    public static JFrame frame;
-    private static  JPanel topPanel;
+    public static JFrame frame = new JFrame("Menu");
+
     public  CustomerMenu() {
-
-
-        topPanel = new JPanel();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(500,500);
+        JPanel topPanel = new JPanel();
         frame.add(topPanel, BorderLayout.NORTH);
         topPanel.setLayout(new GridLayout(1,3));
 
@@ -28,7 +27,6 @@ public class CustomerMenu {
 
          String[] products ={"Salad", "Soup", "Burger","Pizza"};
          JComboBox productsList = new JComboBox(products);
-
          topPanel.add(new MenuButtonPart("Menu"));//those 3 are the buttons that appear on the top
         topPanel.add(new MenuButtonPart("Checkout"));
         topPanel.add(new MenuButtonPart("Transaction History"));
@@ -63,13 +61,12 @@ public class CustomerMenu {
         frame.setVisible(true);
     }
 
-    public JPanel GetUI(){
-        return topPanel;
+    public JFrame getUI(){
+        return frame;
     }
 
     public static void main(String[] args) {
-        JFrame frame = new JFrame("Menu");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(500,500);
+        CustomerMenu customerMenu = new CustomerMenu();
+        customerMenu.getUI();
     }
 }
