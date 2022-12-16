@@ -3,14 +3,14 @@ import java.util.*;
 import java.awt.*;
 import javax.swing.*;
 
-
 public class CustomerMenu {
-    public static customerMenu() {
-        JFrame frame = new JFrame("Menu");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(500,500);
 
-        JPanel topPanel = new JPanel();
+    public static JFrame frame;
+    private static  JPanel topPanel;
+    public  CustomerMenu() {
+
+
+        topPanel = new JPanel();
         frame.add(topPanel, BorderLayout.NORTH);
         topPanel.setLayout(new GridLayout(1,3));
 
@@ -60,10 +60,16 @@ public class CustomerMenu {
         botPanel.add(new MenuButtonPart("Checkout Button"));
 
 
-
-
-
-
         frame.setVisible(true);
+    }
+
+    public JPanel GetUI(){
+        return topPanel;
+    }
+
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("Menu");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(500,500);
     }
 }
