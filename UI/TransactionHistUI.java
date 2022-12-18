@@ -23,6 +23,7 @@ public class TransactionHistUI extends JFrame {
         Connect connect = new Connect();
         connection = connect.connection;
         transactionHistory = new TransactionHistory(connection);
+
         List<List<String>> result;
         try {
             result = transactionHistory.getTransactionHistoryTableByUserId(4);
@@ -31,14 +32,26 @@ public class TransactionHistUI extends JFrame {
         }
         double value = 0;
         System.out.println(result);
+        boolean isFirstRow = true;
+        String currentId = "";
+        double totalGroupPrice = 0;
         for (List<String> row : result) {
             Object[] insertedRow = new Object[row.size() + 1];
             value += Double.parseDouble( row.get(2)) * Double.parseDouble(row.get(3));
             for (int i = 0; i < row.size(); i++) {
                 insertedRow[i] = row.get(i);
             }
+            if(!isFirstRow && !row.get(0).equals(currentId)){
+                model.addRow(new Object[]{null, null, null, "total", totalGroupPrice});
+                totalGroupPrice = 0;
+            }
+            currentId = row.get(0);
+            double totalPrice = Double.parseDouble(row.get(2)) * Double.parseDouble(row.get(3));
+            totalGroupPrice += totalPrice;
             insertedRow[row.size()] = Double.parseDouble( row.get(2)) * Double.parseDouble(row.get(3));
             model.addRow(insertedRow);
+
+            isFirstRow = false;
         }
         model.addRow(new Object[]{null,null,null,"Total",value});
 
