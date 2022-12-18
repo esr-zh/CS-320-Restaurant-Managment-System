@@ -29,6 +29,10 @@ public class TransactionHistUI extends JFrame {
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
+        double value=0;
+        for(int i=0;i<result.size();i++){
+         value +=Double.valueOf( result.get(i).get(2))*Double.valueOf(result.get(i).get(3));}
+        System.out.println(value);
         System.out.println(result);
         for (List<String> row : result) {
             Object[] insertedRow = new Object[row.size()];
@@ -37,7 +41,8 @@ public class TransactionHistUI extends JFrame {
             }
             model.addRow(insertedRow);
         }
-        model.addRow(new Object[]{null,null,null,"Total","$"});
+        model.addRow(new Object[]{null,null,null,"Total",value});
+
 
         model.setColumnIdentifiers(columns);
 
