@@ -10,6 +10,7 @@ public class addEmployeeUI implements ActionListener{
     public static JLabel nameLabel, roleLabel, workingHourLabel, contractLabel, salaryLabel;
     public static JTextField inputName, inputRole, inputWorkingHour, inputContract, inputSalary;
     public static JButton submitButton;
+    public static JComboBox contractList;
     public static void generateEmployeeUI() {
         employeePanel = new JPanel();
         employeePanel.setLayout(null);
@@ -35,9 +36,9 @@ public class addEmployeeUI implements ActionListener{
         inputSalary.setText("$100");
 
         addComponentToPanel(nameLabel, inputName);
-        addDropDown(roleLabel, role);
+        addRoleDropDown(roleLabel, role);
         addComponentToPanel(workingHourLabel, inputWorkingHour);
-        addDropDown(contractLabel, contact);
+        addContractDropDown(contractLabel, contact);
         addComponentToPanel(salaryLabel, inputSalary);
 
 
@@ -57,12 +58,30 @@ public class addEmployeeUI implements ActionListener{
         yCoordinate+=60;
     }
 
-    public static void addDropDown(JLabel label, String[] list){
+    public static void addRoleDropDown(JLabel label, String[] list){
         label.setBounds(150, yCoordinate, 150, 20);
         employeePanel.add(label);
         JComboBox<String> roleList = new JComboBox<>(list);
+        roleList.addActionListener(e -> {
+            String selectedItem = (String) roleList.getSelectedItem();
+            if(selectedItem.equals("Waiter"))
+            {
+                contractList.setSelectedItem("Hourly");
+                contractList.setEnabled(false);
+            }else{
+                contractList.setEnabled(true);
+            }
+        });
         roleList.setBounds(250, yCoordinate, 193, 28);
         employeePanel.add(roleList);
+        yCoordinate+=60;
+    }
+    public static void addContractDropDown(JLabel label, String[] list){
+        label.setBounds(150, yCoordinate, 150, 20);
+        employeePanel.add(label);
+        contractList = new JComboBox<>(list);
+        contractList.setBounds(250, yCoordinate, 193, 28);
+        employeePanel.add(contractList);
         yCoordinate+=60;
     }
 
