@@ -9,9 +9,10 @@ public class CustomerMenu {
     public  CustomerMenu() {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(500,500);
+
         JPanel topPanel = new JPanel();
         frame.add(topPanel, BorderLayout.NORTH);
-        topPanel.setLayout(new GridLayout(1,3));
+
 
         JPanel midPanel = new JPanel();
         frame.add(midPanel, BorderLayout.CENTER);
@@ -27,16 +28,27 @@ public class CustomerMenu {
 
          String[] products ={"Salad", "Soup", "Burger","Pizza"};
          JComboBox productsList = new JComboBox(products);
-         topPanel.add(new MenuButtonPart("Menu"));//those 3 are the buttons that appear on the top
-        topPanel.add(new MenuButtonPart("Checkout"));
-        topPanel.add(new MenuButtonPart("Transaction History"));
 
-        midPanel.add(new MenuLabelPart("Select Menu Type:"));//first column first row
+         String[] quantities = new String[11];
+         for(int i = 0; i<11;i++){
+             quantities[i]= ""+i;
+         }
+         JComboBox quantityBar = new JComboBox(quantities);
+
+        String[][] data = {
+                {"Drink", "Water", "$0.5"},
+                {"Dessert", "Cheesecake", "$5"},
+                {"Main", "Cheeseburger", "4.99"},
+        };
+        String[] columnNames = {"Type", "Name", "Price"};
+        JTable itemTable = new JTable(data,columnNames);
+
+         midPanel.add(new MenuLabelPart("Select Menu Type:"));//first column first row
         midPanel.add(menuTypeBar);//second column first row
         midPanel.add(new MenuLabelPart("Select product:"));//first column second row
         midPanel.add(productsList);//second column second row
         midPanel.add(new MenuLabelPart("Quantity:"));
-        midPanel.add(new MenuLabelPart("quantity of the product will be shown here"));
+        midPanel.add(quantityBar);
         midPanel.add(new MenuLabelPart("Price of product"));
         midPanel.add(new MenuLabelPart("$price of the product will be shown here"));
 
@@ -44,14 +56,14 @@ public class CustomerMenu {
         botPanel.add(new MenuLabelPart(""));//those are empty spaces after currently in cart
         botPanel.add(new MenuLabelPart(""));
         botPanel.add(new MenuLabelPart(""));
-        botPanel.add(new MenuLabelPart("__________"));
-        botPanel.add(new MenuLabelPart("__________"));
-        botPanel.add(new MenuLabelPart("__________"));
-        botPanel.add(new MenuButtonPart("Del Button"));
-        botPanel.add(new MenuLabelPart("__________"));
-        botPanel.add(new MenuLabelPart("__________"));
-        botPanel.add(new MenuLabelPart("__________"));
-        botPanel.add(new MenuButtonPart("Del Button"));
+        botPanel.add(new MenuLabelPart(""));//--- starts from here
+        botPanel.add(itemTable);
+        botPanel.add(new MenuLabelPart(""));//---
+        botPanel.add(new MenuButtonPart("Add to cart"));
+        botPanel.add(new MenuLabelPart(""));//--
+        botPanel.add(new MenuLabelPart(""));//--
+        botPanel.add(new MenuLabelPart(""));//--
+        botPanel.add(new MenuButtonPart("Delete from cart"));
         botPanel.add(new MenuLabelPart(""));
         botPanel.add(new MenuLabelPart(""));
         botPanel.add(new MenuLabelPart(""));

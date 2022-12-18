@@ -8,5 +8,36 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$USER_HOME$/OneDrive/Masaüstü/cs320javafileswa/dbunit-2.7.3.jar!/" />
+          <root url="jar://$USER_HOME$/OneDrive/Masaüstü/cs320javafileswa/mysql-connector-java-8.0.30.jar!/" />
+          <root url="file://$USER_HOME$/OneDrive/Masaüstü" />
+          <root url="file://$USER_HOME$/OneDrive/Masaüstü" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="file://$USER_HOME$/OneDrive/Masaüstü" />
+          <root url="file://$USER_HOME$/OneDrive/Masaüstü" />
+          <root url="file://$USER_HOME$/OneDrive/Masaüstü" />
+          <root url="file://$USER_HOME$/OneDrive/Masaüstü/KotlinProject01/app/build/generated/ap_generated_sources/debug/out" />
+          <root url="file://$USER_HOME$/OneDrive/Masaüstü/KotlinProject01/app/build/generated/data_binding_base_class_source_out/debug/out" />
+          <root url="file://$USER_HOME$/OneDrive/Masaüstü/KotlinProject01/app/build/generated/data_binding_trigger/debug" />
+          <root url="file://$USER_HOME$/OneDrive/Masaüstü/KotlinProject01/app/build/generated/source/buildConfig/debug" />
+          <root url="file://$USER_HOME$/OneDrive/Masaüstü/cs33Hw02/kotlinproject01/app/build/generated/ap_generated_sources/debug/out" />
+          <root url="file://$USER_HOME$/OneDrive/Masaüstü/cs33Hw02/kotlinproject01/app/build/generated/data_binding_base_class_source_out/debug/out" />
+          <root url="file://$USER_HOME$/OneDrive/Masaüstü/cs33Hw02/kotlinproject01/app/build/generated/data_binding_trigger/debug" />
+          <root url="file://$USER_HOME$/OneDrive/Masaüstü/cs33Hw02/kotlinproject01/app/build/generated/source/buildConfig/debug" />
+          <root url="file://$USER_HOME$/OneDrive/Masaüstü/springHomework1/src/main/java" />
+          <root url="file://$USER_HOME$/OneDrive/Masaüstü/springHomework1/src/test/java" />
+          <root url="file://$USER_HOME$/OneDrive/Masaüstü/spring/cs333Homework02/src" />
+          <root url="file://$USER_HOME$/OneDrive/Masaüstü/spring/springHomework1/src/main/java" />
+          <root url="file://$USER_HOME$/OneDrive/Masaüstü/spring/springHomework1/src/test/java" />
+        </SOURCES>
+        <jarDirectory url="file://$USER_HOME$/OneDrive/Masaüstü" recursive="false" />
+        <jarDirectory url="file://$USER_HOME$/OneDrive/Masaüstü" recursive="false" type="SOURCES" />
+      </library>
+    </orderEntry>
   </component>
 </module>
