@@ -42,7 +42,7 @@ public class TransactionHistUI extends JFrame {
                 insertedRow[i] = row.get(i);
             }
             if(!isFirstRow && !row.get(0).equals(currentId)){
-                model.addRow(new Object[]{null, null, null, "total", totalGroupPrice});
+                model.addRow(new Object[]{null, null, null, "Total", totalGroupPrice});
                 totalGroupPrice = 0;
             }
             currentId = row.get(0);
@@ -53,7 +53,8 @@ public class TransactionHistUI extends JFrame {
 
             isFirstRow = false;
         }
-        model.addRow(new Object[]{null,null,null,"Total",value});
+        model.addRow(new Object[]{null,null,null,"Total",totalGroupPrice});
+        model.addRow(new Object[]{null,null,null,"Total of all transactions",value});
 
         model.setColumnIdentifiers(columns);
 
