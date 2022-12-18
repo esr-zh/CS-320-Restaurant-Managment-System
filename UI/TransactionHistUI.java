@@ -14,7 +14,7 @@ public class TransactionHistUI extends JFrame {
     Connection connection;
     TransactionHistory transactionHistory;
     JTable table;
-    String[] columns = {"Transaction ID","Name","Price","Quantity"};
+    String[] columns = {"Transaction ID","Name","Price","Quantity","Total Price"};
     DefaultTableModel model = new DefaultTableModel(null,columns);
 
 
@@ -37,6 +37,7 @@ public class TransactionHistUI extends JFrame {
             }
             model.addRow(insertedRow);
         }
+
 
         model.setColumnIdentifiers(columns);
 
