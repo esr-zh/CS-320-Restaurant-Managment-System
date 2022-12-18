@@ -37,7 +37,7 @@ public class TransactionHistUI extends JFrame {
             }
             model.addRow(insertedRow);
         }
-
+        model.addRow(new Object[]{null,null,null,"Total","$"});
 
         model.setColumnIdentifiers(columns);
 
