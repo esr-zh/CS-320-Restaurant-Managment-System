@@ -4,6 +4,7 @@ import javax.swing.plaf.basic.BasicComboBoxRenderer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Objects;
 
 public class addEmployeeUI extends BasicComboBoxRenderer implements ActionListener{
     public static int yCoordinate = 60;
@@ -61,6 +62,14 @@ public class addEmployeeUI extends BasicComboBoxRenderer implements ActionListen
         toList = new JComboBox<>(toTime);
         fromList.setBounds(250, yCoordinate, 80, 28);
         toList.setBounds(350, yCoordinate, 90, 28);
+        fromList.addActionListener(e -> {
+            if(Objects.equals(contractList.getSelectedItem(), "Monthly")){
+                int colonIndex = Objects.requireNonNull(fromList.getSelectedItem()).toString().indexOf(":");
+                int eightHour=Integer.parseInt(fromList.getSelectedItem().toString().substring(0,colonIndex))+8;
+                toList.setSelectedItem((eightHour)+":00");
+                toList.setEnabled(false);
+            }
+        });
         employeePanel.add(to);
         employeePanel.add(fromList);
         employeePanel.add(toList);
@@ -99,14 +108,13 @@ public class addEmployeeUI extends BasicComboBoxRenderer implements ActionListen
         contractList = new JComboBox<>(list);
         contractList.setBounds(250, yCoordinate, 193, 28);
         contractList.addActionListener(e -> {
-            if (contractList.getSelectedItem().equals("Hourly")){
+            if (Objects.equals(contractList.getSelectedItem(), "Hourly")){
                 toList.setEnabled(true);
             }
             if(contractList.getSelectedItem().equals("Monthly")){
-                int colonIndex = fromList.getSelectedItem().toString().indexOf(":");
+                int colonIndex = Objects.requireNonNull(fromList.getSelectedItem()).toString().indexOf(":");
                 int eightHour=Integer.parseInt(fromList.getSelectedItem().toString().substring(0,colonIndex))+8;
                 toList.setSelectedItem((eightHour)+":00");
-                System.out.println(eightHour);
                 toList.setEnabled(false);
             }
         });

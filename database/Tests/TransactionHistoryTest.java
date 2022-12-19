@@ -2,7 +2,7 @@ package database.Tests;
 
 import database.TransactionHistory;
 import database.utils.Connect;
-import org.junit.Assert;
+//import org.junit.Assert;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
