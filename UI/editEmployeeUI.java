@@ -1,4 +1,4 @@
-import UI.TableUI;
+package UI;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,7 +9,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-public class Edit_Menu_UI implements ActionListener{
+public class editEmployeeUI implements ActionListener{
     // frame
     public static JFrame employeeFrame;
     // Table
@@ -123,7 +123,7 @@ public class Edit_Menu_UI implements ActionListener{
         button.setOpaque(true);
         button.setBorderPainted(false);
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
-        button.addActionListener((ActionListener) new Edit_Menu_UI());
+        button.addActionListener((ActionListener) new editEmployeeUI());
     }
 
     private static void setFrameProperties(){
