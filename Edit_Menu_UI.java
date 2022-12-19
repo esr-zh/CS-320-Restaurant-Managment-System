@@ -1,3 +1,5 @@
+import UI.TableUI;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -17,28 +19,77 @@ public class Edit_Menu_UI implements ActionListener{
 
     public static DefaultTableModel tableModel;
 
-    public static void generate_table_ui() {
-        {
-            //used box layout, available at: https://docs.oracle.com/javase/tutorial/uiswing/layout/box.html
-            //all layouts available at: https://docs.oracle.com/javase/tutorial/uiswing/layout/using.html
-            JPanel tablePanel = new JPanel();
-            JPanel buttonPanel = new JPanel();
+//    public static void generate_table_ui() {
+//        {
+//            //used box layout, available at: https://docs.oracle.com/javase/tutorial/uiswing/layout/box.html
+//            //all layouts available at: https://docs.oracle.com/javase/tutorial/uiswing/layout/using.html
+//            JPanel tablePanel = new JPanel();
+//            JPanel buttonPanel = new JPanel();
+//
+//            BoxLayout layout1 = new BoxLayout(tablePanel, BoxLayout.PAGE_AXIS);
+//            BoxLayout layout2 = new BoxLayout(buttonPanel, BoxLayout.LINE_AXIS);
+//
+//            tablePanel.setLayout(layout1);
+//            buttonPanel.setLayout(layout2);
+//
+//            tablePanel.setBorder(BorderFactory.createTitledBorder("Employee Table"));
+//            buttonPanel.setBorder(BorderFactory.createTitledBorder("Select and Manage Employees"));
+//
+//            // Frame initialization
+//            employeeFrame = new JFrame();
+//            setFrameProperties();
+//
+//            // Data to be displayed in the JTable
+//            String[][] data = {
+//                    {"Drink", "Water", "$0.5"},
+//                    {"Dessert", "Cheesecake", "$5"},
+//                    {"Main", "Cheeseburger", "4.99"},
+//                    {"Drink", "Water", "$0.5"},
+//                    {"Dessert", "Cheesecake", "$5"},
+//                    {"Main", "Cheeseburger", "4.99"},
+//                    {"Drink", "Water", "$0.5"},
+//                    {"Dessert", "Cheesecake", "$5"},
+//                    {"Main", "Cheeseburger", "4.99"},
+//                    {"Drink", "Water", "$0.5"},
+//                    {"Dessert", "Cheesecake", "$5"},
+//                    {"Main", "Cheeseburger", "4.99"},
+//                    {"Drink", "Water", "$0.5"},
+//                    {"Dessert", "Cheesecake", "$5"},
+//                    {"Main", "Cheeseburger", "4.99"},
+//                    {"Dessert", "Cheesecake", "$5"},
+//                    {"Dessert", "Cheesecake", "$5"},
+//                    {"Dessert", "Cheesecake", "$5"}
+//            };
+//            // Column Names
+//            String[] columnNames = {"Type", "Name", "Price"};
+//            tableModel = new DefaultTableModel(data, columnNames);
+//            data_table = new JTable(tableModel);
+//            data_table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); //prevent a user from selecting multiple rows
+//            JScrollPane sp = new JScrollPane(data_table);
+//            tablePanel.add(sp);
+//
+//            buttonPanel.add(Box.createHorizontalGlue());
+//            editButton = new JButton("Edit");
+//            btnProperties(editButton);
+//            buttonPanel.add(editButton);
+//
+//            buttonPanel.add(Box.createRigidArea(new Dimension(20, 0))); //space between the two buttons of 20 pixels.
+//
+//            deleteButton = new JButton("Delete");
+//            btnProperties(deleteButton);
+//            buttonPanel.add(deleteButton);
+//            buttonPanel.add(Box.createHorizontalGlue());
+//
+//            employeeFrame.add(tablePanel, BorderLayout.CENTER);
+//            employeeFrame.add(buttonPanel, BorderLayout.PAGE_END);
+//            employeeFrame.pack();
+//        }
+//    }
 
-            BoxLayout layout1 = new BoxLayout(tablePanel, BoxLayout.PAGE_AXIS);
-            BoxLayout layout2 = new BoxLayout(buttonPanel, BoxLayout.LINE_AXIS);
-
-            tablePanel.setLayout(layout1);
-            buttonPanel.setLayout(layout2);
-
-            tablePanel.setBorder(BorderFactory.createTitledBorder("Employee Table"));
-            buttonPanel.setBorder(BorderFactory.createTitledBorder("Select and Manage Employees"));
-
-            // Frame initialization
-            employeeFrame = new JFrame();
-            setFrameProperties();
-
-            // Data to be displayed in the JTable
-            String[][] data = {
+    public static void generate_table_ui(){
+        employeeFrame = new JFrame();
+        setFrameProperties();
+        String[][] data = {
                     {"Drink", "Water", "$0.5"},
                     {"Dessert", "Cheesecake", "$5"},
                     {"Main", "Cheeseburger", "4.99"},
@@ -58,30 +109,13 @@ public class Edit_Menu_UI implements ActionListener{
                     {"Dessert", "Cheesecake", "$5"},
                     {"Dessert", "Cheesecake", "$5"}
             };
-            // Column Names
-            String[] columnNames = {"Type", "Name", "Price"};
-            tableModel = new DefaultTableModel(data, columnNames);
-            data_table = new JTable(tableModel);
-            data_table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); //prevent a user from selecting multiple rows
-            JScrollPane sp = new JScrollPane(data_table);
-            tablePanel.add(sp);
-
-            buttonPanel.add(Box.createHorizontalGlue());
-            editButton = new JButton("Edit");
-            btnProperties(editButton);
-            buttonPanel.add(editButton);
-
-            buttonPanel.add(Box.createRigidArea(new Dimension(20, 0))); //space between the two buttons of 20 pixels.
-
-            deleteButton = new JButton("Delete");
-            btnProperties(deleteButton);
-            buttonPanel.add(deleteButton);
-            buttonPanel.add(Box.createHorizontalGlue());
-
-            employeeFrame.add(tablePanel, BorderLayout.CENTER);
-            employeeFrame.add(buttonPanel, BorderLayout.PAGE_END);
-            employeeFrame.pack();
-        }
+    String[] columnNames = {"Type", "Name", "Price"};
+    TableUI tableUI = new TableUI(data,columnNames);
+    JTable table = tableUI.getTable();
+    employeeFrame.add(table);
+    employeeFrame.add(table, BorderLayout.CENTER);
+    employeeFrame.add(table, BorderLayout.PAGE_END);
+    employeeFrame.pack();
     }
     private static void btnProperties(JButton button) {
         button.setForeground(Color.WHITE);
