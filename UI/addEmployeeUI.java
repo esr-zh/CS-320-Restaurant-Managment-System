@@ -4,10 +4,8 @@ import javax.swing.plaf.basic.BasicComboBoxRenderer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
-public class addEmployeeUI extends BasicComboBoxRenderer implements ActionListener, MouseListener {
+public class addEmployeeUI extends BasicComboBoxRenderer implements ActionListener{
     public static int yCoordinate = 60;
     public static JPanel employeePanel;
     public static JLabel nameLabel, roleLabel, workingHourLabel, contractLabel, salaryLabel;
@@ -43,10 +41,8 @@ public class addEmployeeUI extends BasicComboBoxRenderer implements ActionListen
         addComponentToPanel(nameLabel, inputName);
         addRoleDropDown(roleLabel, role);
         addTimeDropDown(workingHourLabel, fromTime, toTime);
-        //addWHComponentToPanel(workingHourLabel, inputWorkingHourFrom, inputWorkingHourTo);
         addContractDropDown(contractLabel, contact);
         addComponentToPanel(salaryLabel, inputSalary);
-
 
         submitButton = new JButton("Submit");
         submitButton.setBounds(300, 350, 90, 25);
@@ -65,33 +61,9 @@ public class addEmployeeUI extends BasicComboBoxRenderer implements ActionListen
         toList = new JComboBox<>(toTime);
         fromList.setBounds(250, yCoordinate, 80, 28);
         toList.setBounds(350, yCoordinate, 90, 28);
-//        fromList.addActionListener(e -> {
-//            int colonIndex = fromList.getSelectedItem().toString().indexOf(":");
-//            int eightHour=Integer.parseInt(fromList.getSelectedItem().toString().substring(0,colonIndex))+8;
-//            toList.setSelectedItem((eightHour)+":00");
-//            toList.setEnabled(false);
-//        });
         employeePanel.add(to);
         employeePanel.add(fromList);
         employeePanel.add(toList);
-        yCoordinate+=60;
-    }
-
-    private static void addWHComponentToPanel(JLabel label, JTextField textField1, JTextField textField2) {
-        label.setBounds(150, yCoordinate, 150, 20);
-        employeePanel.add(label);
-        textField1.setBounds(250, yCoordinate, 95, 28);
-        textField1.setText("From");
-        textField1.setFont(new Font("From", Font.ITALIC, 12));
-        textField1.setForeground(Color.GRAY);
-        textField1.addMouseListener(new addEmployeeUI());
-        employeePanel.add(textField1);
-        textField2.setBounds(350, yCoordinate, 95, 28);
-        textField2.setText("To");
-        textField2.setFont(new Font("To", Font.ITALIC, 12));
-        textField2.setForeground(Color.GRAY);
-        textField2.addMouseListener(new addEmployeeUI());
-        employeePanel.add(textField2);
         yCoordinate+=60;
     }
 
@@ -163,26 +135,4 @@ public class addEmployeeUI extends BasicComboBoxRenderer implements ActionListen
             JOptionPane.showMessageDialog(null, "Employee added successfully!");
         }
     }
-
-    @Override
-    public void mouseClicked(MouseEvent e) {
-        if (e.getSource()==inputWorkingHourFrom){
-            inputWorkingHourFrom.setForeground(Color.BLACK);
-            inputWorkingHourFrom.setText("");}
-        if (e.getSource()==inputWorkingHourTo){
-            inputWorkingHourTo.setForeground(Color.BLACK);
-            inputWorkingHourTo.setText("");}
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e) {}
-
-    @Override
-    public void mouseReleased(MouseEvent e) {}
-
-    @Override
-    public void mouseEntered(MouseEvent e) {}
-
-    @Override
-    public void mouseExited(MouseEvent e) {}
 }
