@@ -13,7 +13,7 @@ public class addEmployeeUI extends BasicComboBoxRenderer implements ActionListen
     public static JLabel nameLabel, roleLabel, workingHourLabel, contractLabel, salaryLabel;
     public static JTextField inputName, inputRole, inputWorkingHourFrom, inputWorkingHourTo, inputContract, inputSalary;
     public static JButton submitButton;
-    public static JComboBox contractList;
+    public static JComboBox contractList, toList, fromList;
     public static void generateEmployeeUI() {
         employeePanel = new JPanel();
         employeePanel.setLayout(null);
@@ -23,9 +23,9 @@ public class addEmployeeUI extends BasicComboBoxRenderer implements ActionListen
         addEmployeeFrame.add(employeePanel);
 
         String[] role = {"Chef","Waiter"};
-        String[] contact = {"Monthly", "Hourly"};
-        String[] time = {"1:00", "2:00", "3:00", "4:00", "5:00", "6:00", "7:00", "8:00", "9:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00", "24:00"};
-
+        String[] contact = {"Hourly", "Monthly"};
+        String[] fromTime = {"1:00", "2:00", "3:00", "4:00", "5:00", "6:00", "7:00", "8:00", "9:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00"};
+        String[] toTime = {"1:00", "2:00", "3:00", "4:00", "5:00", "6:00", "7:00", "8:00", "9:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00", "24:00"};
         nameLabel = new JLabel("Employee Name:");
         inputName = new JTextField();
         roleLabel = new JLabel(" Employee Role:");
@@ -42,7 +42,7 @@ public class addEmployeeUI extends BasicComboBoxRenderer implements ActionListen
 
         addComponentToPanel(nameLabel, inputName);
         addRoleDropDown(roleLabel, role);
-        addTimeDropDown(workingHourLabel, time);
+        addTimeDropDown(workingHourLabel, fromTime, toTime);
         //addWHComponentToPanel(workingHourLabel, inputWorkingHourFrom, inputWorkingHourTo);
         addContractDropDown(contractLabel, contact);
         addComponentToPanel(salaryLabel, inputSalary);
@@ -56,15 +56,21 @@ public class addEmployeeUI extends BasicComboBoxRenderer implements ActionListen
         addEmployeeFrame.setVisible(true);
     }
 
-    public static void addTimeDropDown(JLabel label,  String[] list){
+    public static void addTimeDropDown(JLabel label, String[] fromTime, String[] toTime){
         label.setBounds(150, yCoordinate, 150, 20);
         employeePanel.add(label);
         JLabel to = new JLabel(" to ");
-        to.setBounds(330, yCoordinate, 75, 28);
-        JComboBox<String> fromList = new JComboBox<>(list);
-        JComboBox<String> toList = new JComboBox<>(list);
-        fromList.setBounds(250, yCoordinate, 75, 28);
-        toList.setBounds(350, yCoordinate, 75, 28);
+        to.setBounds(330, yCoordinate, 90, 28);
+        fromList = new JComboBox<>(fromTime);
+        toList = new JComboBox<>(toTime);
+        fromList.setBounds(250, yCoordinate, 80, 28);
+        toList.setBounds(350, yCoordinate, 90, 28);
+//        fromList.addActionListener(e -> {
+//            int colonIndex = fromList.getSelectedItem().toString().indexOf(":");
+//            int eightHour=Integer.parseInt(fromList.getSelectedItem().toString().substring(0,colonIndex))+8;
+//            toList.setSelectedItem((eightHour)+":00");
+//            toList.setEnabled(false);
+//        });
         employeePanel.add(to);
         employeePanel.add(fromList);
         employeePanel.add(toList);
@@ -120,6 +126,18 @@ public class addEmployeeUI extends BasicComboBoxRenderer implements ActionListen
         employeePanel.add(label);
         contractList = new JComboBox<>(list);
         contractList.setBounds(250, yCoordinate, 193, 28);
+        contractList.addActionListener(e -> {
+            if (contractList.getSelectedItem().equals("Hourly")){
+                toList.setEnabled(true);
+            }
+            if(contractList.getSelectedItem().equals("Monthly")){
+                int colonIndex = fromList.getSelectedItem().toString().indexOf(":");
+                int eightHour=Integer.parseInt(fromList.getSelectedItem().toString().substring(0,colonIndex))+8;
+                toList.setSelectedItem((eightHour)+":00");
+                System.out.println(eightHour);
+                toList.setEnabled(false);
+            }
+        });
         employeePanel.add(contractList);
         yCoordinate+=60;
     }
