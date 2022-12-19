@@ -1,12 +1,13 @@
 package UI;
 import javax.swing.*;
+import javax.swing.plaf.basic.BasicComboBoxRenderer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-public class addEmployeeUI implements ActionListener, MouseListener {
+public class addEmployeeUI extends BasicComboBoxRenderer implements ActionListener, MouseListener {
     public static int yCoordinate = 60;
     public static JPanel employeePanel;
     public static JLabel nameLabel, roleLabel, workingHourLabel, contractLabel, salaryLabel;
@@ -23,6 +24,7 @@ public class addEmployeeUI implements ActionListener, MouseListener {
 
         String[] role = {"Chef","Waiter"};
         String[] contact = {"Monthly", "Hourly"};
+        String[] time = {"1:00", "2:00", "3:00", "4:00", "5:00", "6:00", "7:00", "8:00", "9:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00", "24:00"};
 
         nameLabel = new JLabel("Employee Name:");
         inputName = new JTextField();
@@ -40,7 +42,8 @@ public class addEmployeeUI implements ActionListener, MouseListener {
 
         addComponentToPanel(nameLabel, inputName);
         addRoleDropDown(roleLabel, role);
-        addWHComponentToPanel(workingHourLabel, inputWorkingHourFrom, inputWorkingHourTo);
+        addTimeDropDown(workingHourLabel, time);
+        //addWHComponentToPanel(workingHourLabel, inputWorkingHourFrom, inputWorkingHourTo);
         addContractDropDown(contractLabel, contact);
         addComponentToPanel(salaryLabel, inputSalary);
 
@@ -51,6 +54,21 @@ public class addEmployeeUI implements ActionListener, MouseListener {
         employeePanel.add(submitButton);
 
         addEmployeeFrame.setVisible(true);
+    }
+
+    public static void addTimeDropDown(JLabel label,  String[] list){
+        label.setBounds(150, yCoordinate, 150, 20);
+        employeePanel.add(label);
+        JLabel to = new JLabel(" to ");
+        to.setBounds(330, yCoordinate, 75, 28);
+        JComboBox<String> fromList = new JComboBox<>(list);
+        JComboBox<String> toList = new JComboBox<>(list);
+        fromList.setBounds(250, yCoordinate, 75, 28);
+        toList.setBounds(350, yCoordinate, 75, 28);
+        employeePanel.add(to);
+        employeePanel.add(fromList);
+        employeePanel.add(toList);
+        yCoordinate+=60;
     }
 
     private static void addWHComponentToPanel(JLabel label, JTextField textField1, JTextField textField2) {
