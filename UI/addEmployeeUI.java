@@ -1,8 +1,13 @@
 package UI;
+import database.Employee;
+import database.utils.Connect;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.SQLException;
 
 public class addEmployeeUI implements ActionListener{
     public static int yCoordinate = 60;
@@ -83,8 +88,26 @@ public class addEmployeeUI implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        Connect connect = new Connect();
+        Employee employee = new Employee(connect.connection);
+        int id=0;
         if (e.getSource() == submitButton) {
-            JOptionPane.showMessageDialog(null, "Employee added successfully!");
+            try {
+                String salary = inputSalary.getText().substring(1);
+                employee.setSalary(Long.parseLong(salary));
+                employee.setUserId(id);
+                //employee.setSalaryType(Long.parseLong(inputContract.getText()));
+            }catch(NumberFormatException nfe){
+                JOptionPane.showMessageDialog(null,nfe.getMessage());
+            }
+            try {
+                employee.createEmployee();
+                id++;
+                //long employeeId = employee.getId();
+                JOptionPane.showMessageDialog(null, "Employee added successfully!");
+            }catch(SQLException ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage());
+            }
         }
     }
 }
