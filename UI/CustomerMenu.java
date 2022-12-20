@@ -1,5 +1,7 @@
 package UI;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.*;
 
 public class CustomerMenu {
@@ -20,14 +22,60 @@ public class CustomerMenu {
 
         JPanel botPanel = new JPanel();
         frame.add(botPanel, BorderLayout.SOUTH);
-        botPanel.setLayout(new GridLayout(4,4));
+        botPanel.setLayout(new BorderLayout());
+
+        JPanel subBotPanelW = new JPanel();
+        botPanel.add(subBotPanelW, BorderLayout.WEST);
+        subBotPanelW.setLayout(new BorderLayout());
+
+        JLabel cart = new JLabel("Currently in cart");
+        subBotPanelW.add(cart, BorderLayout.PAGE_START);
+
+        String[][] data = {};
+        String[] columnNames = {"Type", "Name", "Price"};
+        JTable itemTable = new JTable(data,columnNames);
+        subBotPanelW.add(itemTable, BorderLayout.CENTER);
+
+        JPanel subBotPanelE = new JPanel();
+        botPanel.add(subBotPanelE, BorderLayout.EAST);
+        subBotPanelE.setLayout(new BorderLayout());
+
+        JButton addButton = new JButton("Add to cart");
+        addButton.addActionListener(new Add());
+        subBotPanelE.add(addButton, BorderLayout.NORTH);
+
+        JButton delButton = new JButton("Delete from cart");
+        delButton.addActionListener(new Delete());
+        subBotPanelE.add(delButton, BorderLayout.CENTER);
+
+        JButton checkoutButton = new JButton("Checkout Button");
+        checkoutButton.addActionListener(new Checkout());
+        subBotPanelE.add(checkoutButton, BorderLayout.SOUTH);
 
 
         String[] menuTypes ={"Appetizer","Main Dish","Dessert","Drink"};
         JComboBox menuTypeBar = new JComboBox(menuTypes);
 
-         String[] products ={"Salad", "Soup", "Burger","Pizza"};
-         JComboBox productsList = new JComboBox(products);
+
+        String getMenuType = menuTypeBar.getSelectedItem().toString();
+
+
+        String[] products = new String[10];
+        JComboBox productsList = new JComboBox(products);
+        if(getMenuType.equals("Appetizer")){
+            productsList.removeAllItems();
+            productsList.addItem("Soup");
+        } else if (getMenuType.equals("Main Dish")) {
+            productsList.removeAllItems();
+            productsList.addItem("Cheeseburger");
+        } else if (getMenuType.equals("Dessert")) {
+            productsList.removeAllItems();
+            productsList.addItem("Cheesecake");
+        } else if (getMenuType.equals("Drink")) {
+            productsList.removeAllItems();
+            productsList.addItem("Water");
+        }
+
 
          String[] quantities = new String[11];
          for(int i = 0; i<11;i++){
@@ -35,14 +83,23 @@ public class CustomerMenu {
          }
          JComboBox quantityBar = new JComboBox(quantities);
 
-        String[][] data = {
-                {"Drink", "Water", "$0.5"},
-                {"Dessert", "Cheesecake", "$5"},
-                {"Main", "Cheeseburger", "4.99"},
-        };
-        String[] columnNames = {"Type", "Name", "Price"};
-        JTable itemTable = new JTable(data,columnNames);
 
+        String getFoodPrice = menuTypeBar.getSelectedItem().toString();
+         
+         
+        String price = "$3";
+         if(getFoodPrice.equals("Soup")){
+            price= "$3";
+        } else if (getFoodPrice.equals("Cheeseburger")) {
+            price="$4.99";
+        } else if (getFoodPrice.equals("Cheesecake")) {
+            price="$5";
+        } else if (getFoodPrice.equals("Water")) {
+            price="$0.5";
+        }
+         
+
+         
          midPanel.add(new MenuLabelPart("Select Menu Type:"));//first column first row
         midPanel.add(menuTypeBar);//second column first row
         midPanel.add(new MenuLabelPart("Select product:"));//first column second row
@@ -50,24 +107,9 @@ public class CustomerMenu {
         midPanel.add(new MenuLabelPart("Quantity:"));
         midPanel.add(quantityBar);
         midPanel.add(new MenuLabelPart("Price of product"));
-        midPanel.add(new MenuLabelPart("$price of the product will be shown here"));
+        midPanel.add(new MenuLabelPart(price));
 
-        botPanel.add(new MenuLabelPart("Currently in cart"));
-        botPanel.add(new MenuLabelPart(""));//those are empty spaces after currently in cart
-        botPanel.add(new MenuLabelPart(""));
-        botPanel.add(new MenuLabelPart(""));
-        botPanel.add(new MenuLabelPart(""));//--- starts from here
-        botPanel.add(itemTable);
-        botPanel.add(new MenuLabelPart(""));//---
-        botPanel.add(new MenuButtonPart("Add to cart"));
-        botPanel.add(new MenuLabelPart(""));//--
-        botPanel.add(new MenuLabelPart(""));//--
-        botPanel.add(new MenuLabelPart(""));//--
-        botPanel.add(new MenuButtonPart("Delete from cart"));
-        botPanel.add(new MenuLabelPart(""));
-        botPanel.add(new MenuLabelPart(""));
-        botPanel.add(new MenuLabelPart(""));
-        botPanel.add(new MenuButtonPart("Checkout Button"));
+
 
 
         frame.setVisible(true);
@@ -81,4 +123,29 @@ public class CustomerMenu {
         CustomerMenu customerMenu = new CustomerMenu();
         customerMenu.getUI();
     }
+public class Delete implements ActionListener{
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
+    }
+}
+public class Add implements ActionListener{
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
+    }
+}
+public class Checkout implements ActionListener{
+    @Override
+    public void actionPerformed(ActionEvent e) {
+JFrame frame2 = new JFrame("Checkout Page");
+frame2.setVisible(true);
+frame2.setSize(200,200);
+JLabel checkoutLabel = new JLabel("You successfully checked-out");
+JPanel checkoutPanel = new JPanel();
+checkoutPanel.add(checkoutLabel);
+frame2.add(checkoutPanel);
+    }
+}
+
 }

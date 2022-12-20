@@ -1,7 +1,8 @@
 <component name="libraryTable">
   <library name="mysql-connector-java-8.0.30">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../mysql-connector-java-8.0.30.jar!/" />
+      <root url="jar://$USER_HOME$/OneDrive/Masaüstü/cs320javafileswa/dbunit-2.7.3.jar!/" />
+      <root url="jar://$USER_HOME$/OneDrive/Masaüstü/cs320javafileswa/mysql-connector-java-8.0.30.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
