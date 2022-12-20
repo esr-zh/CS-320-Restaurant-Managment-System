@@ -1,3 +1,5 @@
+package UI;
+
 import java.awt.*;
 import javax.swing.*;
 public class MenuButtonPart extends JButton {
