@@ -1,5 +1,7 @@
+import UI.*;
+
 public class main {
-    public main() {
-        System.out.println("hello");
+    public static void main(String args[]) {
+        loginUI.generate_login_ui();
     }
 }
