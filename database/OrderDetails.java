@@ -1,11 +1,7 @@
 package database;
 
-import database.utils.Connect;
-import database.utils.Helper;
-import database.utils.Template;
-
+import database.utils.*;
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class OrderDetails implements Template,Cloneable {

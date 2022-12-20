@@ -1,13 +1,13 @@
 package database;
 
-import database.utils.Connect;
-import database.utils.Helper;
-import database.utils.Template;
+
+
+import database.utils.*;
 
 import java.sql.*;
 import java.util.List;
 
-public class TransactionHistory implements Template,Cloneable{
+public class TransactionHistory implements Cloneable{
     Connection conn;
     private long id;
     private long userId;

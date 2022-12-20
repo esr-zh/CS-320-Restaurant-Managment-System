@@ -1,5 +1,6 @@
 package UI;
 import database.Employee;
+import database.User;
 import database.utils.Connect;
 
 import javax.swing.*;
@@ -89,21 +90,29 @@ public class addEmployeeUI implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) {
         Connect connect = new Connect();
+        User user = new User(connect.connection);
         Employee employee = new Employee(connect.connection);
-        int id=0;
         if (e.getSource() == submitButton) {
+            user.setUsername(inputName.getText());
+            user.setPassword(inputName.getText());
             try {
                 String salary = inputSalary.getText().substring(1);
                 employee.setSalary(Long.parseLong(salary));
-                employee.setUserId(id);
+
                 //employee.setSalaryType(Long.parseLong(inputContract.getText()));
             }catch(NumberFormatException nfe){
                 JOptionPane.showMessageDialog(null,nfe.getMessage());
             }
             try {
+                User newUser = user.createUser();
+                employee.setUserId(newUser.getId());
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            } catch (ClassNotFoundException ex) {
+                throw new RuntimeException(ex);
+            }
+            try {
                 employee.createEmployee();
-                id++;
-                //long employeeId = employee.getId();
                 JOptionPane.showMessageDialog(null, "Employee added successfully!");
             }catch(SQLException ex) {
                 JOptionPane.showMessageDialog(null, ex.getMessage());

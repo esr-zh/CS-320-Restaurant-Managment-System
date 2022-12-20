@@ -74,7 +74,7 @@ public class Employee {
             ) {
                 statement.setLong(1, salary);
                 statement.setLong(2, userId);
-                statement.setLong(3, salary);
+                statement.setLong(3, salaryType);
 
                 int affectedRows = statement.executeUpdate();
 

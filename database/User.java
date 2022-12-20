@@ -1,6 +1,6 @@
 package database;
 
-import database.utils.Connect;
+import database.utils.*;
 
 import java.sql.*;
 
