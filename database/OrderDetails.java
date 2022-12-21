@@ -5,6 +5,7 @@ import database.utils.Helper;
 import database.utils.Template;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class OrderDetails implements Template,Cloneable {
@@ -54,13 +55,6 @@ public class OrderDetails implements Template,Cloneable {
         this.conn = conn;
     }
 
-//    public OrderDetails(Builder builder){
-//        this.id = builder.id;
-//        this.transactionId = builder.transactionId;
-//        this.quantity = builder.quantity;
-//        this.menuId = builder.menuId;
-//    }
-
     public OrderDetails(long transactionId, long quantity, long menuId) {
         this.transactionId = transactionId;
         this.quantity = quantity;
@@ -79,15 +73,13 @@ public class OrderDetails implements Template,Cloneable {
                 statement.setLong(1, transactionId);
                 statement.setLong(2, quantity);
                 statement.setLong(3, menuId);
-
-//                return Helper.executeAndGetId(this,statement);
                 return true;
             }
 
     }
 
     public List<List<String>> getOrderDetailsByTransactionId(int id) throws SQLException, ClassNotFoundException {
-        String SQL_QUERY = "select transaction_id,name,quantity,price from order_details join menu m on m.id = order_details.menu_id WHERE transaction_id = ?";
+        String SQL_QUERY = "select transaction_id,name,order_details.quantity,price from order_details join menu m on m.id = order_details.menu_id WHERE transaction_id = ?";
         PreparedStatement statement = conn.prepareStatement(SQL_QUERY);
         statement.setInt(1, id);
         ResultSet rs = statement.executeQuery();
@@ -116,14 +108,25 @@ public class OrderDetails implements Template,Cloneable {
     public Boolean findOrderDetailsById(long id) throws SQLException {
         String SQL_QUERY = "SELECT * FROM order_details WHERE order_details.id = ?;";
         PreparedStatement statement = conn.prepareStatement(SQL_QUERY);
-        statement.setString(1, String.valueOf(id));
+        statement.setLong(1, id);
         ResultSet rs = statement.executeQuery();
         if (!rs.next())
             throw new SQLException("order details id not found");
         return true;
     }
 
-
+    public int getTotalPriceByTransactionId() throws SQLException {
+        String SQL_QUERY = "select sum(order_details.quantity * price) as total from order_details join menu m on m.id = order_details.menu_id where transaction_id = ? group by price, name, order_details.quantity, menu_id";
+        PreparedStatement statement = conn.prepareStatement(SQL_QUERY);
+        statement.setLong(1, transactionId);
+        ResultSet rs = statement.executeQuery();
+        int res = 0;
+        int i = 1;
+        while (rs.next()) {
+            res += rs.getInt(i++);
+        }
+        return res;
+    }
 
     public Object clone() {
         try {
@@ -132,40 +135,5 @@ public class OrderDetails implements Template,Cloneable {
             throw new RuntimeException(e);
         }
     }
-
-//    public static class Builder {
-//        private long id;
-//        private long transactionId;
-//        private long quantity;
-//        private long menuId;
-//
-//        public Builder() {
-//        }
-//
-//        public Builder setId(long id){
-//            this.id = id;
-//            return this;
-//        }
-//
-//
-//        public Builder setTransactionId(long id){
-//            this.transactionId = id;
-//            return this;
-//        }
-//
-//        public Builder setQuantity(long quantity){
-//            this.quantity = quantity;
-//            return this;
-//        }
-//
-//        public Builder setMenuId(long menuId){
-//            this.menuId = menuId;
-//            return this;
-//        }
-//
-//        public OrderDetails build() {
-//            return new OrderDetails(this);
-//        }
-//    }
 
 }
