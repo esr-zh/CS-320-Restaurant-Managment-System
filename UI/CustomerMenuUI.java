@@ -4,14 +4,15 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-public class CustomerMenuUI implements ActionListener{
-    public static int yCoordinate=50;
+public class CustomerMenuUI implements ActionListener {
+    public static int yCoordinate = 50;
     public static JFrame customerFrame;
     public static JPanel menuPanel, cartPanel;
     public static JLabel menuLabel, productLabel, quantityLabel, priceLabel, priceCalculatedLabel;
     public static JComboBox menuDropdown, productDropdown, quantityDropdown;
     public static JTable table;
     public static JButton addButton, deleteButton, checkoutButton;
+    public static String[] options = {"Yes", "No"};
 
     public static DefaultTableModel tableModel;
 
@@ -31,40 +32,48 @@ public class CustomerMenuUI implements ActionListener{
         menuPanel.setBorder(BorderFactory.createTitledBorder("Menu"));
         cartPanel.setBorder(BorderFactory.createTitledBorder("Cart"));
 
-        cartPanel.setBounds(0,350,700,500);
-        menuPanel.setBounds(0,0,700,350);
+        cartPanel.setBounds(0, 350, 700, 500);
+        menuPanel.setBounds(0, 0, 700, 350);
 
         menuLabel = new JLabel("Select Menu Type:");
-        String[] menuTypes ={"Appetizer", "Main Dish", "Dessert", "Drink"};
-        String[] productTypes= {"Cake"};
+        String[] menuTypes = {"Appetizer", "Main Dish", "Dessert", "Drink"};
+        String[] productTypes = {"Cake"};
         String[] quantity = {"1", "2", "3", "4", "5", "6", "7"};
         productLabel = new JLabel("Select Product:");
         quantityLabel = new JLabel("Select Quantity:");
         priceLabel = new JLabel("Calculated Price:");
         priceCalculatedLabel = new JLabel("$100");
 
-        addComponent(menuLabel, menuDropdown, menuTypes);
-        addComponent(productLabel, productDropdown, productTypes);
-        addComponent(quantityLabel, quantityDropdown, quantity);
+        addComponent(menuLabel, menuTypes);
+        addComponent(productLabel, productTypes);
+        addComponent(quantityLabel, quantity);
         addLabelToPanel(priceLabel, priceCalculatedLabel);
         addTable();
 
         checkoutButton = new JButton("Checkout");
         btnProperties(checkoutButton);
-        checkoutButton.setBounds(300, 250, 90, 25);
+        checkoutButton.setBounds(260, 280, 150, 25);
+        checkoutButton.setForeground(Color.WHITE);
+        checkoutButton.setBackground(Color.BLACK);
         cartPanel.add(checkoutButton);
+
         addButton = new JButton("Add to Cart");
         btnProperties(addButton);
-        deleteButton = new JButton("Delete");
-        btnProperties(addButton);
+        addButton.setBounds(410, 300, 120, 25);
+        menuPanel.add(addButton);
 
+        deleteButton = new JButton("Delete");
+        btnProperties(deleteButton);
+        deleteButton.setBounds(550, 240, 100, 25);
+        btnProperties(deleteButton);
+        cartPanel.add(deleteButton);
 
         customerFrame.add(menuPanel);
         customerFrame.add(cartPanel);
         customerFrame.setVisible(true);
     }
 
-    private static void addTable(){
+    private static void addTable() {
         String[][] data = {
                 {"", "", "", ""},
                 {"", "", "", ""},
@@ -89,24 +98,24 @@ public class CustomerMenuUI implements ActionListener{
         cartPanel.add(sp);
     }
 
-    private static void addComponent(JLabel label, JComboBox dropdown, String[] list){
+    private static void addComponent(JLabel label, String[] list) {
         label.setBounds(50, yCoordinate, 150, 20);
-        dropdown = new JComboBox<>(list);
+        JComboBox dropdown = new JComboBox<>(list);
         dropdown.setBounds(400, yCoordinate, 150, 20);
         menuPanel.add(label);
         menuPanel.add(dropdown);
-        yCoordinate+=60;
+        yCoordinate += 60;
     }
 
-    private static void addLabelToPanel(JLabel label, JLabel priceCalculatedLabel){
+    private static void addLabelToPanel(JLabel label, JLabel priceCalculatedLabel) {
         label.setBounds(50, yCoordinate, 150, 20);
         priceCalculatedLabel.setBounds(400, yCoordinate, 150, 20);
         menuPanel.add(label);
         menuPanel.add(priceCalculatedLabel);
-        yCoordinate+=60;
+        yCoordinate += 60;
     }
 
-    private static void setFrameProperties(){
+    private static void setFrameProperties() {
         customerFrame.setLayout(null);
         customerFrame.setTitle("Welcome");
         customerFrame.setResizable(false);
@@ -115,16 +124,29 @@ public class CustomerMenuUI implements ActionListener{
     }
 
     private static void btnProperties(JButton button) {
-        button.setForeground(Color.WHITE);
-        button.setBackground(Color.BLACK);
-        button.setOpaque(true);
-        button.setBorderPainted(false);
+        button.setBorderPainted(true);
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
         button.addActionListener((ActionListener) new CustomerMenuUI());
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
+        if (e.getSource() == deleteButton && table.getSelectedRow() != -1) {
+            tableModel.removeRow(table.getSelectedRow());
+            JOptionPane.showMessageDialog(null, "Selected product removed from cart");
+        }
+        if (e.getSource() == addButton){
+            JOptionPane.showMessageDialog(null, "Product added to cart!");
+        }
+        if (e.getSource() == checkoutButton){
+            JOptionPane.showOptionDialog(null,
+                    "Do you want a receipt?",
+                    "Checkout Success",
+                    JOptionPane.DEFAULT_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    options,
+                    options[0]);
+        }
     }
 }
