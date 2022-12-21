@@ -49,8 +49,14 @@ public class addEmployeeUI extends BasicComboBoxRenderer implements ActionListen
         submitButton.setBounds(300, 350, 90, 25);
         btnProperties(submitButton);
         employeePanel.add(submitButton);
-
         addEmployeeFrame.setVisible(true);
+    }
+    public static void centerWindow(Window frame) {
+        Rectangle bounds = frame.getGraphicsConfiguration().getBounds();
+        Dimension dimension = bounds.getSize();
+        int x = (int) (((dimension.getWidth() - frame.getWidth()) / 2) + bounds.getMinX());
+        int y = (int) (((dimension.getHeight() - frame.getHeight()) / 2) + bounds.getMinY());
+        frame.setLocation(x, y);
     }
 
     public static void addTimeDropDown(JLabel label, String[] fromTime, String[] toTime){
@@ -135,6 +141,10 @@ public class addEmployeeUI extends BasicComboBoxRenderer implements ActionListen
         frame.setTitle("Add New Employee!");
         frame.setSize(700, 700);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setBounds(10,10,625,500);
+        centerWindow(frame);
+        frame.setResizable(false);
+
     }
 
     @Override
