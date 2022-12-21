@@ -93,16 +93,21 @@ public class TransactionHistory implements Template,Cloneable{
     // get add to card table
     public List<List<String>> getAddToCartTableByUserId(int userId) throws SQLException, ClassNotFoundException {
 
-        String SQL_QUERY = "SELECT transaction_history.id, name,price,quantity from transaction_history JOIN order_details od ON od.transaction_id = transaction_history.id\n" +
-                "JOIN menu m ON m.id = od.menu_id where transaction_history.user_id = ? \n" +
-                "AND transaction_history.has_paid = false;";
+        String SQL_QUERY = "SELECT TH.id, name,price,od.quantity from transaction_history as TH JOIN order_details od ON od.transaction_id = TH.id\n" +
+                "JOIN menu m ON m.id = od.menu_id where TH.user_id = ? AND has_paid = false;";
+        return getLists(userId, SQL_QUERY);
+    }
+
+    public List<List<String>> getTransactionHistoryTableByUserId(int userId) throws SQLException, ClassNotFoundException {
+
+        String SQL_QUERY = "SELECT TH.id, name,price,od.quantity from transaction_history as TH JOIN order_details od ON od.transaction_id = TH.id\n" +
+                "                JOIN menu m ON m.id = od.menu_id where TH.user_id = ? AND has_paid = true;";
         return getLists(userId, SQL_QUERY);
     }
 
     // list transaction history by user id
-    public boolean updatePaidStatus() throws SQLException, ClassNotFoundException {
-        String SQL_QUERY = "UPDATE transaction_history SET has_paid = ?,paid_at = ?  OR transaction_history.id = ? AND transaction_history.user_id = ?";
-        System.out.println(doesTransactionHistoryExists(id));
+    public boolean updatePaidStatus() throws SQLException {
+        String SQL_QUERY = "UPDATE transaction_history SET has_paid = ?,paid_at = ?  WHERE transaction_history.id = ? AND transaction_history.user_id = ?";
         if (doesTransactionHistoryExists(id)){
             try (
                     PreparedStatement statement = conn.prepareStatement(SQL_QUERY,
@@ -149,9 +154,6 @@ public class TransactionHistory implements Template,Cloneable{
                 statement.setLong(2, currentDate);
                 statement.setLong(3, hasPaid ? 1 : 0);
                 statement.setLong(4, paidAt);
-
-
-//                return Helper.executeAndGetId(this,statement);
                 return true;
             }
         }
@@ -166,7 +168,6 @@ public class TransactionHistory implements Template,Cloneable{
 
         String SQL_QUERY = "SELECT * FROM transaction_history WHERE " +
                     "transaction_history.user_id = ? AND transaction_history.has_paid = false;";
-        Connect connect = Connect.getInstance();
         PreparedStatement statement = conn.prepareStatement(SQL_QUERY);
         statement.setLong(1, userId);
         ResultSet rs = statement.executeQuery();
@@ -189,7 +190,6 @@ public class TransactionHistory implements Template,Cloneable{
         PreparedStatement statement = conn.prepareStatement(SQL_QUERY);
         statement.setLong(1, id);
         ResultSet rs = statement.executeQuery();
-//        System.out.println(Connect.returnArraylist(rs));
         if (!rs.next()){
             throw new SQLException("transaction id does not exist");
         }

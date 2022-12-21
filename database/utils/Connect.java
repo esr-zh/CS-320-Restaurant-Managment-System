@@ -12,10 +12,22 @@ public class Connect {
     public Connection connection;
     private static Connect instance;
 
-    public Connect() throws ClassNotFoundException, SQLException {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        connection = DriverManager.getConnection(url,username,password);
-        statement = connection.createStatement();
+    public Connect() {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            connection = DriverManager.getConnection(url,username,password);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            statement = connection.createStatement();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static Connect getInstance() throws SQLException, ClassNotFoundException {
