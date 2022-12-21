@@ -9,13 +9,13 @@ import java.util.Objects;
 public class CustomerMenuUI implements ActionListener {
     public static int yCoordinate = 50;
     public static JFrame customerFrame;
-    public static JPanel menuPanel, cartPanel;
-    public static JLabel menuLabel, productLabel, quantityLabel, priceLabel, priceCalculatedLabel;
+    public static JPanel menuPanel, cartPanel, navBar;
+    public static JLabel menuLabel, productLabel, quantityLabel, priceLabel, priceCalculatedLabel, cart;
     public static JComboBox<String> menuDropdown;
     public static JComboBox<String> productDropdown;
     public static JComboBox<String> quantityDropdown;
     public static JTable table;
-    public static JButton addButton, deleteButton, checkoutButton;
+    public static JButton addButton, deleteButton, checkoutButton, menuButton, transactionButton, navCheckoutButton;
     public static String[] options = {"Yes", "No"}, productTypes;
 
     public static DefaultTableModel tableModel;
@@ -26,15 +26,63 @@ public class CustomerMenuUI implements ActionListener {
 
         menuPanel = new JPanel();
         cartPanel = new JPanel();
+        navBar = new JPanel();
 
         menuPanel.setLayout(null);
         cartPanel.setLayout(null);
+        navBar.setLayout(new GridLayout(1,3));
+
+        menuButton = new JButton("Menu");
+        menuButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+        transactionButton=new JButton("Transaction History");
+        transactionButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                JMenu menu, TH;
+                JFrame frame = new JFrame("Menu and MenuItem Example");
+
+                TransactionHistUI transactionHistUI = new TransactionHistUI();;
+                frame.add(transactionHistUI.getUIComponent());
+
+                JMenuBar mb = new JMenuBar();
+                menu = new JMenu("Menu");
+                TH = new JMenu("Transaction History");
+
+                mb.add(menu);
+                mb.add(TH);
+                frame.setJMenuBar(mb);
+
+                frame.setSize(800,800);
+                frame.setVisible(true);
+            }
+        });
+        navCheckoutButton=new JButton("Checkout");
+        navCheckoutButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+
+
+        navBar.add(menuButton);
+        navBar.add(transactionButton );
+        navBar.add(navCheckoutButton);
+
 
         menuPanel.setBorder(BorderFactory.createTitledBorder("Menu"));
         cartPanel.setBorder(BorderFactory.createTitledBorder("Cart"));
 
-        cartPanel.setBounds(0, 350, 700, 500);
-        menuPanel.setBounds(0, 0, 700, 350);
+
+        cartPanel.setBounds(0, 370, 700, 500);
+        menuPanel.setBounds(0, 20, 700, 350);
+        navBar.setBounds(0,0,700,20);
 
 
         String[] menuTypes = {"Appetizer", "Main Dish", "Dessert", "Drink"};
@@ -75,6 +123,7 @@ public class CustomerMenuUI implements ActionListener {
         btnProperties(deleteButton);
         cartPanel.add(deleteButton);
 
+        customerFrame.add(navBar);
         customerFrame.add(menuPanel);
         customerFrame.add(cartPanel);
         customerFrame.setVisible(true);
@@ -144,7 +193,7 @@ public class CustomerMenuUI implements ActionListener {
         customerFrame.setLayout(null);
         customerFrame.setTitle("Welcome");
         customerFrame.setResizable(false);
-        customerFrame.setSize(700, 700);
+        customerFrame.setSize(700, 750);
         customerFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
