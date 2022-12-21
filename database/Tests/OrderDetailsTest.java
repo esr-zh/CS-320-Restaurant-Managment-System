@@ -2,18 +2,21 @@ package database.Tests;
 
 import database.OrderDetails;
 import database.utils.Connect;
-
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+//
+//import org.junit.After;
+//import org.junit.Before;
+//import org.junit.Test;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-//import static org.testng.AssertJUnit.assertEquals;
+//import static org.hamcrest.MatcherAssert.assertThat;
+////import static org.testng.AssertJUnit.assertEquals;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class OrderDetailsTest extends DBTestable{

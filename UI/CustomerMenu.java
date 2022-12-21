@@ -5,12 +5,11 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 
 public class CustomerMenu {
-
     public static JFrame frame = new JFrame("Menu");
 
-    public  CustomerMenu() {
+    public CustomerMenu() {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(500,500);
+        frame.setSize(700,700);
 
         JPanel topPanel = new JPanel();
         frame.add(topPanel, BorderLayout.NORTH);
@@ -148,9 +147,9 @@ public class CustomerMenu {
                 }
             }
         });
-         
 
-         
+
+
          midPanel.add(new MenuLabelPart("Select Menu Type:"));//first column first row
         midPanel.add(menuTypeBar);//second column first row
         midPanel.add(new MenuLabelPart("Select product:"));//first column second row
@@ -166,7 +165,7 @@ public class CustomerMenu {
         frame.setVisible(true);
     }
 
-    public JFrame getUI(){
+    public static JFrame getUI(){
         return frame;
     }
 
@@ -180,22 +179,16 @@ public class Delete implements ActionListener{
 
     }
 }
-public class Add implements ActionListener{
-    @Override
-    public void actionPerformed(ActionEvent e) {
-
-    }
-}
 public class Checkout implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) {
-JFrame frame2 = new JFrame("Checkout Page");
-frame2.setVisible(true);
-frame2.setSize(200,200);
-JLabel checkoutLabel = new JLabel("You successfully checked-out");
-JPanel checkoutPanel = new JPanel();
-checkoutPanel.add(checkoutLabel);
-frame2.add(checkoutPanel);
+        JFrame frame2 = new JFrame("Checkout Page");
+        frame2.setVisible(true);
+        frame2.setSize(200,200);
+        JLabel checkoutLabel = new JLabel("You successfully checked-out");
+        JPanel checkoutPanel = new JPanel();
+        checkoutPanel.add(checkoutLabel);
+        frame2.add(checkoutPanel);
     }
 }
 
