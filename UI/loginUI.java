@@ -61,7 +61,7 @@ public class loginUI implements ActionListener {
             String current_password = String.valueOf(password_input.getPassword());
             if (current_username.equals("admin") && current_password.equals("password")) {
                 JOptionPane.showMessageDialog(null, "Login Successful");
-                editEmployeeUI.generate_table_ui();
+                EditEmployeeUI.generate_table_ui();
 
             }else
                 JOptionPane.showMessageDialog(null, "Username or Password is incorrect");

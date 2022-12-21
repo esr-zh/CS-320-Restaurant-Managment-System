@@ -7,10 +7,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
 import java.sql.SQLException;
 
-public class addEmployeeUI implements ActionListener{
+public class AddEmployeeUI implements ActionListener{
     public static int yCoordinate = 60;
     public static JPanel employeePanel;
     public static JLabel nameLabel, roleLabel, workingHourLabel, contractLabel, salaryLabel;
@@ -78,7 +77,7 @@ public class addEmployeeUI implements ActionListener{
         button.setOpaque(true);
         button.setBorderPainted(false);
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
-        button.addActionListener((ActionListener) new addEmployeeUI());
+        button.addActionListener((ActionListener) new AddEmployeeUI());
     }
 
     private static void setFrameProperties(JFrame frame){

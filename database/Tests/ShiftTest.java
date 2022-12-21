@@ -46,7 +46,7 @@ public class ShiftTest extends DBTestable{
     public void createShiftTimeTest2() throws SQLException {
         shift.setUserId(16);
         shift.setWorkingFrom(6);
-        shift.setWorkingFrom(11);
+        shift.setWorkingTo(11);
         assertTrue(shift.createShiftTime());
     }
 

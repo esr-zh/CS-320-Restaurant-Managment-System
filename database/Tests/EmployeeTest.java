@@ -1,7 +1,6 @@
 package database.Tests;
 
-import database.Employee;
-import database.SalaryType;
+import database.*;
 import database.Shift;
 import org.junit.After;
 import org.junit.Before;

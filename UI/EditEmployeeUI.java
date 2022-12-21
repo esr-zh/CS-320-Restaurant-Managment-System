@@ -9,7 +9,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-public class editEmployeeUI implements ActionListener{
+public class EditEmployeeUI implements ActionListener{
     // frame
     public static JFrame employeeFrame;
     // Table
@@ -91,7 +91,7 @@ public class editEmployeeUI implements ActionListener{
         button.setOpaque(true);
         button.setBorderPainted(false);
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
-        button.addActionListener((ActionListener) new editEmployeeUI());
+        button.addActionListener((ActionListener) new EditEmployeeUI());
     }
 
     private static void setFrameProperties(){
