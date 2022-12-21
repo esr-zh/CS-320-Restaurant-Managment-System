@@ -70,11 +70,11 @@ public class Employee {
         if (!doesEmployeeExists(userId)) {
             try (
                     PreparedStatement statement = conn.prepareStatement(SQL_INSERT,
-                            Statement.RETURN_GENERATED_KEYS);
+                            Statement.RETURN_GENERATED_KEYS)
             ) {
                 statement.setLong(1, salary);
                 statement.setLong(2, userId);
-                statement.setLong(3, salary);
+                statement.setLong(3, salaryType);
 
                 int affectedRows = statement.executeUpdate();
 
@@ -111,7 +111,7 @@ public class Employee {
     public boolean updateSalaryByUserId() throws SQLException {
         String SQL_QUERY = "UPDATE employee SET salary = ? WHERE employee.user_id = ?";
         try (
-                PreparedStatement statement = conn.prepareStatement(SQL_QUERY, Statement.RETURN_GENERATED_KEYS);
+                PreparedStatement statement = conn.prepareStatement(SQL_QUERY, Statement.RETURN_GENERATED_KEYS)
         ) {
             statement.setLong(1, salary);
             statement.setLong(2, userId);
