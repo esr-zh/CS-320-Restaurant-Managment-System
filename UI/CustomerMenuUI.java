@@ -8,10 +8,13 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
 
 public class CustomerMenuUI implements ActionListener {
+    public static Connect connect = new Connect();
+    public static Menu menu = new Menu(connect.connection);
     public static int yCoordinate = 50;
     public static JFrame customerFrame;
     public static JPanel menuPanel, cartPanel, navBar;
@@ -80,25 +83,28 @@ public class CustomerMenuUI implements ActionListener {
         menuPanel.setBounds(0, 20, 700, 350);
         navBar.setBounds(0,0,700,20);
 
-
-        String[] menuTypes = {"Appetizer", "Main Dish", "Dessert", "Drink"};
+        String[] menuTypes = {"Appetizer", "Main Dish", "Dessert", "Drinks"};
         String[] quantity = {"1", "2", "3", "4", "5", "6", "7"};
-        productTypes = new String[]{"Salad"};
+        productTypes = new String[]{""};
 
         menuLabel = new JLabel("Select Menu Type:");
+        menuProperties(menuLabel);
         productLabel = new JLabel("Select Product:");
+        menuProperties(productLabel);
         quantityLabel = new JLabel("Select Quantity:");
+        menuProperties(quantityLabel);
         priceLabel = new JLabel("Calculated Price:");
         priceCalculatedLabel = new JLabel("$100");
 
         menuDropdown = new JComboBox<>(menuTypes);
-        productDropdown = new JComboBox<>(productTypes);
+        menuPanel.add(menuDropdown);
+        productDropdown = new JComboBox<>();
+        menuPanel.add(productDropdown);
         quantityDropdown = new JComboBox<>(quantity);
-
-        addComponent(menuLabel, menuDropdown);
-        addComponent(productLabel, productDropdown);
-        addComponent(quantityLabel, quantityDropdown);
-        addLabelToPanel(priceLabel, priceCalculatedLabel);
+        menuPanel.add(quantityDropdown);
+        addComponent(menuDropdown, productDropdown);
+        addComponent2(productDropdown, quantityDropdown);
+        quantityDropdown.setBounds(400, yCoordinate, 150, 20);
         addTable();
 
         checkoutButton = new JButton("Checkout");
@@ -125,6 +131,14 @@ public class CustomerMenuUI implements ActionListener {
         customerFrame.setVisible(true);
     }
 
+
+
+    private static void menuProperties(JLabel label) {
+        menuPanel.add(label);
+        label.setBounds(50, yCoordinate, 150, 20);
+    }
+
+
     private static void addTable() {
         String[][] data = {
                 {"", "", "", ""},
@@ -150,37 +164,54 @@ public class CustomerMenuUI implements ActionListener {
         cartPanel.add(sp);
     }
 
-    private static void addComponent(JLabel label, JComboBox<String> dropdown) {
-        Connect connect = new Connect();
-        Menu menu = new Menu(connect.connection);
+    private static void addComponent(JComboBox<String> watchingDropdown,JComboBox<String> changeDropdown) {
         DishType dishType = new DishType();
-        label.setBounds(50, yCoordinate, 150, 20);
-        //dropdown = new JComboBox<>(list);
-        dropdown.setBounds(400, yCoordinate, 150, 20);
-        dropdown.addActionListener(e -> {
+        watchingDropdown.setBounds(400, yCoordinate, 150, 20);
+        watchingDropdown.addActionListener(e -> {
+            changeDropdown.removeAllItems();
             if (Objects.equals(menuDropdown.getSelectedItem(), "Appetizer")){
-                productDropdown.removeAllItems();
                 int dishTypeNum = dishType.getDishType("appetizer");
-                List<List<String>> res = menu.getMenuItemsByDishType(dishTypeNum);
-                System.out.println(res);
-                productDropdown.addItem("Salad");
+                addItemsList(changeDropdown, dishTypeNum);
             }
-            if(Objects.equals(menuDropdown.getSelectedItem(), "Main Dish")){
-                productDropdown.removeAllItems();
-                productDropdown.addItem("Cheeseburger");
+            if(Objects.equals(watchingDropdown.getSelectedItem(), "Main Dish")){
+                int dishTypeNum = dishType.getDishType("main dish");
+                addItemsList(changeDropdown, dishTypeNum);
             }
             if(Objects.equals(menuDropdown.getSelectedItem(), "Dessert")){
-                productDropdown.removeAllItems();
-                productDropdown.addItem("Cake");
+                int dishTypeNum = dishType.getDishType("dessert");
+                addItemsList(changeDropdown, dishTypeNum);
             }
-            if(Objects.equals(menuDropdown.getSelectedItem(), "Drink")){
-                productDropdown.removeAllItems();
-                productDropdown.addItem("Water");
+            if(Objects.equals(watchingDropdown.getSelectedItem(), "Drinks")){
+                int dishTypeNum = dishType.getDishType("drinks");
+                addItemsList(changeDropdown, dishTypeNum);
             }
         });
-        menuPanel.add(label);
-        menuPanel.add(dropdown);
         yCoordinate += 60;
+    }
+
+    private static void addComponent2(JComboBox<String> watchingDropdown,JComboBox<String> changeDropdown) {
+        watchingDropdown.setBounds(400, yCoordinate, 150, 20);
+        yCoordinate += 60;
+        watchingDropdown.addActionListener(e -> {
+            changeDropdown.removeAllItems();
+            System.out.println(productDropdown.getSelectedItem());
+            try {
+                Menu selectedMenu = menu.getMenuByName((String) productDropdown.getSelectedItem());
+                for (int i = 0; i < selectedMenu.getQuantity(); i++) {
+                    changeDropdown.addItem(String.valueOf(i+1));
+                }
+            } catch (SQLException | ClassNotFoundException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+    }
+
+    private static void addItemsList(JComboBox<String> menuDropdown, int dishTypeNum) {
+        List<List<String>> res = menu.getMenuItemsByDishType(dishTypeNum);
+        for(List<String> row : res){
+            menuDropdown.addItem(row.get(1));
+        }
+        System.out.println(res);
     }
 
     private static void addLabelToPanel(JLabel label, JLabel priceCalculatedLabel) {
