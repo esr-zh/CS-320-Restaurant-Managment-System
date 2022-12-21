@@ -1,3 +1,5 @@
+package UI;
+
 import database.User;
 import database.UserRole;
 import database.utils.Connect;
@@ -8,7 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
-public class Login_UI extends main implements ActionListener {
+public class loginUI implements ActionListener {
     public static JLabel password_label, username_label;
     public static JTextField username_input;
     public static JButton login_button, register_button;
@@ -46,14 +48,14 @@ public class Login_UI extends main implements ActionListener {
         login_button.setBounds(200, 110, 90, 25);
         login_button.setForeground(Color.WHITE);
         login_button.setBackground(Color.BLACK);
-        login_button.addActionListener((ActionListener) new Login_UI());
+        login_button.addActionListener((ActionListener) new loginUI());
         panel.add(login_button);
 
         register_button = new JButton("Register");
         register_button.setBounds(100, 110, 90, 25);
         register_button.setForeground(Color.WHITE);
         register_button.setBackground(Color.BLACK);
-        register_button.addActionListener((ActionListener) new Login_UI());
+        register_button.addActionListener((ActionListener) new loginUI());
         panel.add(register_button);
         frame.setVisible(true);
     }
