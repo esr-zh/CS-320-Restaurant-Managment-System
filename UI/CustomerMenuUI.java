@@ -1,9 +1,14 @@
 package UI;
+import database.DishType;
+import database.Menu;
+import database.utils.Connect;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 import java.util.Objects;
 
 public class CustomerMenuUI implements ActionListener {
@@ -146,12 +151,18 @@ public class CustomerMenuUI implements ActionListener {
     }
 
     private static void addComponent(JLabel label, JComboBox<String> dropdown) {
+        Connect connect = new Connect();
+        Menu menu = new Menu(connect.connection);
+        DishType dishType = new DishType();
         label.setBounds(50, yCoordinate, 150, 20);
         //dropdown = new JComboBox<>(list);
         dropdown.setBounds(400, yCoordinate, 150, 20);
         dropdown.addActionListener(e -> {
             if (Objects.equals(menuDropdown.getSelectedItem(), "Appetizer")){
                 productDropdown.removeAllItems();
+                int dishTypeNum = dishType.getDishType("appetizer");
+                List<List<String>> res = menu.getMenuItemsByDishType(dishTypeNum);
+                System.out.println(res);
                 productDropdown.addItem("Salad");
             }
             if(Objects.equals(menuDropdown.getSelectedItem(), "Main Dish")){

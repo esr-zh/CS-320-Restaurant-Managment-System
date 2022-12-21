@@ -18,7 +18,7 @@ public class DishType {
         return userRoleTable.get(key);
     }
 
-    public int getSalaryType(String value){
+    public int getDishType(String value){
         for (Integer item: userRoleTable.keySet()) {
             if (Objects.equals(userRoleTable.get(item), value)) return item;
         }
