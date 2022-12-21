@@ -233,6 +233,16 @@ public class Menu {
                 return true;
             }
     }
+    public List<List<String>> getMenuItemsByDishType(int dishTypeId) {
+        String SQL_QUERY = "SELECT * FROM menu WHERE menu.dish_type_id = ?";
+        try (PreparedStatement statement = conn.prepareStatement(SQL_QUERY, Statement.RETURN_GENERATED_KEYS);) {
+            statement.setInt(1, dishTypeId);
+            ResultSet rs = statement.executeQuery();
+            return Connect.returnArraylist(rs);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
     public long getQuantity() {
         return quantity;
     }

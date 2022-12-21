@@ -8,8 +8,8 @@ import java.util.List;
 public class Test {
     public static void main(String[] args) throws ClassNotFoundException, SQLException {
         Connect connect = new Connect();
-        TransactionHistory TH = new TransactionHistory(connect.connection);
-        List<List<String>> result = TH.getAddToCartTableByUserId(4);
+        Menu menu = new Menu(connect.connection);
+        List<List<String>> result = menu.getMenuItemsByDishType(new DishType().getSalaryType("appetizer"));
         System.out.println(result);
     }
 }
