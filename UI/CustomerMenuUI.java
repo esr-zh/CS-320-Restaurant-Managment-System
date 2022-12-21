@@ -4,22 +4,23 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Objects;
+
 public class CustomerMenuUI implements ActionListener {
     public static int yCoordinate = 50;
     public static JFrame customerFrame;
     public static JPanel menuPanel, cartPanel;
     public static JLabel menuLabel, productLabel, quantityLabel, priceLabel, priceCalculatedLabel;
-    public static JComboBox menuDropdown, productDropdown, quantityDropdown;
+    public static JComboBox<String> menuDropdown;
+    public static JComboBox<String> productDropdown;
+    public static JComboBox<String> quantityDropdown;
     public static JTable table;
     public static JButton addButton, deleteButton, checkoutButton;
-    public static String[] options = {"Yes", "No"};
+    public static String[] options = {"Yes", "No"}, productTypes;
 
     public static DefaultTableModel tableModel;
 
     public static void generateCustomerUI() {
-//        JPanel panel = new JPanel();
-//        panel.setLayout(null);
-
         customerFrame = new JFrame();
         setFrameProperties();
 
@@ -35,18 +36,24 @@ public class CustomerMenuUI implements ActionListener {
         cartPanel.setBounds(0, 350, 700, 500);
         menuPanel.setBounds(0, 0, 700, 350);
 
-        menuLabel = new JLabel("Select Menu Type:");
+
         String[] menuTypes = {"Appetizer", "Main Dish", "Dessert", "Drink"};
-        String[] productTypes = {"Cake"};
         String[] quantity = {"1", "2", "3", "4", "5", "6", "7"};
+        productTypes = new String[]{"Salad"};
+
+        menuLabel = new JLabel("Select Menu Type:");
         productLabel = new JLabel("Select Product:");
         quantityLabel = new JLabel("Select Quantity:");
         priceLabel = new JLabel("Calculated Price:");
         priceCalculatedLabel = new JLabel("$100");
 
-        addComponent(menuLabel, menuTypes);
-        addComponent(productLabel, productTypes);
-        addComponent(quantityLabel, quantity);
+        menuDropdown = new JComboBox<>(menuTypes);
+        productDropdown = new JComboBox<>(productTypes);
+        quantityDropdown = new JComboBox<>(quantity);
+
+        addComponent(menuLabel, menuDropdown);
+        addComponent(productLabel, productDropdown);
+        addComponent(quantityLabel, quantityDropdown);
         addLabelToPanel(priceLabel, priceCalculatedLabel);
         addTable();
 
@@ -98,10 +105,28 @@ public class CustomerMenuUI implements ActionListener {
         cartPanel.add(sp);
     }
 
-    private static void addComponent(JLabel label, String[] list) {
+    private static void addComponent(JLabel label, JComboBox<String> dropdown) {
         label.setBounds(50, yCoordinate, 150, 20);
-        JComboBox dropdown = new JComboBox<>(list);
+        //dropdown = new JComboBox<>(list);
         dropdown.setBounds(400, yCoordinate, 150, 20);
+        dropdown.addActionListener(e -> {
+            if (Objects.equals(menuDropdown.getSelectedItem(), "Appetizer")){
+                productDropdown.removeAllItems();
+                productDropdown.addItem("Salad");
+            }
+            if(Objects.equals(menuDropdown.getSelectedItem(), "Main Dish")){
+                productDropdown.removeAllItems();
+                productDropdown.addItem("Cheeseburger");
+            }
+            if(Objects.equals(menuDropdown.getSelectedItem(), "Dessert")){
+                productDropdown.removeAllItems();
+                productDropdown.addItem("Cake");
+            }
+            if(Objects.equals(menuDropdown.getSelectedItem(), "Drink")){
+                productDropdown.removeAllItems();
+                productDropdown.addItem("Water");
+            }
+        });
         menuPanel.add(label);
         menuPanel.add(dropdown);
         yCoordinate += 60;
