@@ -103,7 +103,7 @@ public class OwnerMenu implements ActionListener {
     public static void setFrameProperties() {
         frame.setLayout(new BorderLayout());
         frame.setTitle("Edit Menu");
-        frame.setSize(650,650);
+        frame.setSize(700,700);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
     }
@@ -120,20 +120,29 @@ public class OwnerMenu implements ActionListener {
     public void actionPerformed(ActionEvent e) {
 
         if (e.getSource() == deleteButton && table.getSelectedRow() != -1){
-            tableModel.removeRow(table.getSelectedRow());
-            JOptionPane.showMessageDialog(null, "Selected item deleted successfully");
+            int selectedRow = table.getSelectedRow();
+            long productId = Integer.parseInt(tableModel.getValueAt(selectedRow,0).toString());
+            menu.setId(productId);
+            try {
+                if (menu.deleteMenu()){
+                    tableModel.removeRow(table.getSelectedRow());
+                    JOptionPane.showMessageDialog(null, "Selected item deleted successfully");
+                }
+            } catch (SQLException | ClassNotFoundException ex) {
+                throw new RuntimeException(ex);
+            }
 
         }
     }
 
     public static void setDimensions(){
 //        table.setRowHeight(80);
-        table.getColumnModel().getColumn(5).setPreferredWidth(1000);
-        table.getColumnModel().getColumn(4).setPreferredWidth(250);
-        table.getColumnModel().getColumn(3).setPreferredWidth(250);
-        table.getColumnModel().getColumn(2).setPreferredWidth(200);
-        table.getColumnModel().getColumn(1).setPreferredWidth(400);
-        table.getColumnModel().getColumn(0).setPreferredWidth(300);
+//        table.getColumnModel().getColumn(5).setPreferredWidth(1000);
+//        table.getColumnModel().getColumn(4).setPreferredWidth(250);
+//        table.getColumnModel().getColumn(3).setPreferredWidth(250);
+//        table.getColumnModel().getColumn(2).setPreferredWidth(200);
+//        table.getColumnModel().getColumn(1).setPreferredWidth(400);
+//        table.getColumnModel().getColumn(0).setPreferredWidth(300);
 
 
     }

@@ -84,8 +84,10 @@ public class EditMenu {
                 menu.setServingAmount(Long.parseLong(portionText.getText()));
                 menu.setDishTypeId(dishType.getSalaryType((String) productType.getSelectedItem()));
                 try {
-                    if (menu.updateMenu())
+                    if (menu.updateMenu()) {
                         JOptionPane.showMessageDialog(null, "Changes to item have been saved!");
+                        frame.setVisible(false);
+                    }
                 } catch (SQLException | ClassNotFoundException ex) {
                     throw new RuntimeException(ex);
                 }
