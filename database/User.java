@@ -30,8 +30,8 @@ public class User {
     }
 
     public User(long id, String username, long user_role) {
-        this.username = username;
         this.id = id;
+        this.username = username;
         this.userRole = user_role;
     }
 
@@ -133,8 +133,12 @@ public class User {
         if (!rs.next()){
             throw new SQLException("user id not found!");
         }
-        return new User(rs.getString(1),rs.getString(2),
-                Long.parseLong(rs.getString(4)));
+//        System.out.println(rs.getString(1));// id
+//        System.out.println(rs.getString(2));// username
+//        System.out.println(rs.getString(4));// role id
+        return new User(Integer.parseInt(rs.getString(1)),
+                rs.getString(2),
+                Integer.parseInt(rs.getString(4)));
     }
 
     public Boolean doesUserExists(String username) throws SQLException {
@@ -155,6 +159,19 @@ public class User {
                 '}';
     }
 
-    public void deleteUserUsername(String username) {
+    public boolean deleteUserUsername(String username) throws SQLException {
+        String SQL_INSERT = "DELETE FROM user WHERE user.username = ?";
+        try (
+                PreparedStatement statement = conn.prepareStatement(SQL_INSERT,
+                        Statement.RETURN_GENERATED_KEYS)
+        ) {
+            statement.setString(1,username);
+            int affectedRows = statement.executeUpdate();
+
+            if (affectedRows == 0) {
+                throw new SQLException("Creating user failed, no rows affected.");
+            }
+            return true;
+        }
     }
 }
