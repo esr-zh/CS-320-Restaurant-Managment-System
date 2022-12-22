@@ -77,8 +77,8 @@ public class UserTest extends database.Tests.DBTestable {
 
     @Test
     public void getUserByUsernameTest() throws SQLException, ClassNotFoundException {
-        String username = "diamond3";
+        String username = "diamond2";
         User currentUser = user.getUserByUsername(username);
-        assertEquals(29,currentUser.getId());
+        assertEquals(4,currentUser.getId());
     }
 }
