@@ -37,13 +37,12 @@ public class OwnerMenu implements ActionListener {
         frame = new JFrame();
         setFrameProperties();
 
-        String[] columnNames = {"Type", "Name", "Price", "Quantity", "Portion", "Description"};
+        String[] columnNames = {"Id","Type", "Name", "Price", "Quantity", "Portion", "Description"};
         tableModel = new DefaultTableModel(null, columnNames);
 
         List<List<String>> result = menu.listAllMenu();
 
         for(List<String> row : result){
-            // id, name,description,
             Object[] insertedRow = new Object[row.size()];
             for (int i = 0; i < row.size(); i++) {
                 insertedRow[i] = row.get(i);
@@ -66,13 +65,16 @@ public class OwnerMenu implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int selectedRow = table.getSelectedRow();
-                String productName = (String) tableModel.getValueAt(selectedRow,1);
-                String productPrice = (String) tableModel.getValueAt(selectedRow,2);
-                String productType = (String) tableModel.getValueAt(selectedRow,0);
-                String productQuantity = (String) tableModel.getValueAt(selectedRow,3);
-                String productPortion = (String) tableModel.getValueAt(selectedRow,4);
-                String productDesc = (String) tableModel.getValueAt(selectedRow,5);
+                long productId = Integer.parseInt(tableModel.getValueAt(selectedRow,0).toString());
+                String productType = (String) tableModel.getValueAt(selectedRow,1);
+                String productName = (String) tableModel.getValueAt(selectedRow,2);
+                String productPrice = (String) tableModel.getValueAt(selectedRow,3);
+                String productQuantity = (String) tableModel.getValueAt(selectedRow,4);
+                String productPortion = (String) tableModel.getValueAt(selectedRow,5);
+                String productDesc = (String) tableModel.getValueAt(selectedRow,6);
+                System.out.println(productType);
                 EditMenu.generateUI();
+                EditMenu.itemId = productId;
                 EditMenu.productType.setSelectedItem(productType);
                 EditMenu.productName.setText(productName);
                 EditMenu.productPrice.setText(productPrice);

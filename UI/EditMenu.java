@@ -1,23 +1,30 @@
 package UI;
 
+import database.DishType;
+import database.Menu;
+import database.utils.Connect;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+import java.sql.SQLException;
 
 
 public class EditMenu {
+    public static Connect connect = new Connect();
+    public static database.Menu menu = new Menu(connect.connection);
     public static int yCoordinate  = 60;
     public static JPanel panel;
     public static JFrame frame;
     public static JTextArea descText;
+    public static long itemId;
     public static JLabel typeLabel, nameLabel, priceLabel, lb1, quantityLabel, descLabel, portionLabel;
     public static JTextField productName, productPrice, productQuantity, portionText;
     public static JButton confirmBtn;
     public static JComboBox<String> productType;
     public static String typep, name, price, quantity, portion, description;
-    public static String[] type = {"Appetizer","Main Dish","Dessert","Drink"};
+    public static String[] type = {"appetizer","main dish","dessert","drinks"};
 
 
     public static void generateUI(){
@@ -68,16 +75,20 @@ public class EditMenu {
         confirmBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                typep  = (String) productType.getSelectedItem();
-                name = productName.getText();
-                price = productPrice.getText();
-                quantity = productQuantity.getText();
-                portion = portionText.getText();
-                description = descText.getText();
-                System.out.println(typep + "\n" + name + "\n" + price + "\n" + quantity +
-                        "\n" + portion + "\n" + description);
-                JOptionPane.showMessageDialog(null, "Changes to item have been saved!");
-
+                DishType dishType = new DishType();
+                menu.setId(itemId);
+                menu.setQuantity(Long.parseLong(productQuantity.getText()));
+                menu.setName(productName.getText());
+                menu.setPrice(Double.parseDouble(productPrice.getText()));
+                menu.setDescription(descText.getText());
+                menu.setServingAmount(Long.parseLong(portionText.getText()));
+                menu.setDishTypeId(dishType.getSalaryType((String) productType.getSelectedItem()));
+                try {
+                    if (menu.updateMenu())
+                        JOptionPane.showMessageDialog(null, "Changes to item have been saved!");
+                } catch (SQLException | ClassNotFoundException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         });
         btnProperties(confirmBtn);

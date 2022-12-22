@@ -96,7 +96,7 @@ public class Menu {
 
     // list all menus
     public List<List<String>> listAllMenu() throws SQLException {
-        String SQL_QUERY = "select dish_type_name,name,price,quantity,serving_amount,description from menu join dish_type dt on dt.id = menu.dish_type_id;";
+        String SQL_QUERY = "select menu.id,dish_type_name,name,price,quantity,serving_amount,description from menu join dish_type dt on dt.id = menu.dish_type_id;";
         PreparedStatement statement = conn.prepareStatement(SQL_QUERY);
         ResultSet rs = statement.executeQuery();
         return Connect.returnArraylist(rs);
