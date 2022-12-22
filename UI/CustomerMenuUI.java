@@ -1,6 +1,8 @@
 package UI;
 import database.DishType;
 import database.Menu;
+import database.OrderDetails;
+import database.TransactionHistory;
 import database.utils.Connect;
 
 import javax.swing.*;
@@ -9,12 +11,10 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
-import java.util.Objects;
-import java.util.Vector;
 
-public class CustomerMenuUI implements ActionListener {
+public class CustomerMenuUI{
     public static Connect connect = new Connect();
     public static Menu menu = new Menu(connect.connection);
     public static int yCoordinate = 50;
@@ -30,7 +30,7 @@ public class CustomerMenuUI implements ActionListener {
     public static JButton addButton, deleteButton, checkoutButton, transactionButton;
 
     public static List<List<String>> data = new ArrayList<>();
-    public static String[] options = {"Yes", "No"}, productTypes;
+    public static String[] options = {"No", "Yes"}, productTypes;
 
     public static DefaultTableModel tableModel;
 
@@ -82,12 +82,25 @@ public class CustomerMenuUI implements ActionListener {
         addTable();
 
         checkoutButton = new JButton("Checkout");
+        checkoutButton.addActionListener(new ActionListener() {
+
+            TransactionHistory TH = new TransactionHistory(connect.connection);
+            OrderDetails OD = new OrderDetails(connect.connection);
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showOptionDialog(null,
+                    "Do you want a receipt?",
+                    "Checkout Success",
+                    JOptionPane.DEFAULT_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    options,
+                    options[0]);
+            }
+        });
         btnProperties(checkoutButton);
         checkoutButton.setBounds(260, 280, 150, 25);
-        checkoutButton.setForeground(Color.WHITE);
-        checkoutButton.setBackground(Color.BLACK);
         cartPanel.add(checkoutButton);
-
         addButton = new JButton("Add to Cart");
 
         addButton.addActionListener(new ActionListener() {
@@ -123,6 +136,12 @@ public class CustomerMenuUI implements ActionListener {
         menuPanel.add(addButton);
 
         deleteButton = new JButton("Delete");
+        deleteButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                tableModel.removeRow(table.getSelectedRow());
+            }
+        });
         btnProperties(deleteButton);
         deleteButton.setBounds(550, 240, 100, 25);
         btnProperties(deleteButton);
@@ -146,8 +165,6 @@ public class CustomerMenuUI implements ActionListener {
         // Column Names
         String[] columnNames = {"Menu Type", "Product", "Quantity", "Price"};
         tableModel = new DefaultTableModel(null, columnNames);
-
-
 
         table = new JTable(tableModel);
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); //prevent a user from selecting multiple rows
@@ -233,27 +250,6 @@ public class CustomerMenuUI implements ActionListener {
     private static void btnProperties(JButton button) {
         button.setBorderPainted(true);
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
-        button.addActionListener((ActionListener) new CustomerMenuUI());
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == deleteButton && table.getSelectedRow() != -1) {
-            tableModel.removeRow(table.getSelectedRow());
-            JOptionPane.showMessageDialog(null, "Selected product removed from cart");
-        }
-        if (e.getSource() == addButton){
-            JOptionPane.showMessageDialog(null, "Product added to cart!");
-        }
-        if (e.getSource() == checkoutButton){
-            JOptionPane.showOptionDialog(null,
-                    "Do you want a receipt?",
-                    "Checkout Success",
-                    JOptionPane.DEFAULT_OPTION,
-                    JOptionPane.QUESTION_MESSAGE,
-                    null,
-                    options,
-                    options[0]);
-        }
-    }
 }
