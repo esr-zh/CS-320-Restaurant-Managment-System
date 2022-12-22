@@ -1,5 +1,6 @@
 package UI;
 
+import UI.utils.Helper;
 import database.Employee;
 import database.utils.Connect;
 
@@ -14,17 +15,15 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-public class editEmployeeUI implements ActionListener{
-    // frame
+public class EditEmployeeUI{
+    public static Connect connect = new Connect();
+    public static Employee employee = new Employee(connect.connection);
     public static JFrame employeeFrame;
     // Table
-    public static JTable data_table;
-
+    public static JTable dataTable;
     public static JButton editButton, deleteButton;
-
     public static DefaultTableModel tableModel;
-
-    public static void generate_table_ui() {
+    public static void generateUI() {
         {
             //used box layout, available at: https://docs.oracle.com/javase/tutorial/uiswing/layout/box.html
             //all layouts available at: https://docs.oracle.com/javase/tutorial/uiswing/layout/using.html
@@ -46,29 +45,63 @@ public class editEmployeeUI implements ActionListener{
 
             // Data to be displayed in the JTable
             String[][] data = {
-                    {"1", "Esrah", "Chef", "Monthly", "1:00-8:00", "$499"},
-                    {"2", "Mohammad", "Waiter", "Weekly", "3:00-4:00", "$100"},
+                    {"1", "Esrah", "Chef", "Monthly", "1:00","8:00", "$499"},
+                    {"2", "Mohammad", "Waiter", "Weekly", "3:00","4:00", "$100"},
                     {"", "", "", "", "", ""},
                     {"", "", "", "", "", ""},
                     {"", "", "", "", "", ""},
                     {"", "", "", "", "", ""},
             };
             // Column Names
-            String[] columnNames = {"ID", "Name", "Role", "Contract", "Working Hours", "Salary"};
+            String[] columnNames = {"ID", "Name", "Role", "Contract", "Working From","Working To", "Salary"};
             tableModel = new DefaultTableModel(data, columnNames);
-            data_table = new JTable(tableModel);
-            data_table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); //prevent a user from selecting multiple rows
-            JScrollPane sp = new JScrollPane(data_table);
+            dataTable = new JTable(tableModel);
+            dataTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); //prevent a user from selecting multiple rows
+            JScrollPane sp = new JScrollPane(dataTable);
             tablePanel.add(sp);
 
             buttonPanel.add(Box.createHorizontalGlue());
             editButton = new JButton("Edit");
+            editButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    int row = dataTable.getSelectedRow();
+                    if (dataTable.getSelectedRow() != -1) {
+                        //edit employee based on ID:
+                        int idColumn = 0; //
+                        AddEmployeeUI.generateEmployeeUI();
+                        AddEmployeeUI.inputName.setText(dataTable.getModel().getValueAt(row, 1).toString());
+                        AddEmployeeUI.roleList.setSelectedItem(dataTable.getModel().getValueAt(row, 2).toString());
+                        AddEmployeeUI.contractList.setSelectedItem(dataTable.getModel().getValueAt(row, 3).toString());
+                        AddEmployeeUI.fromList.setSelectedItem(dataTable.getModel().getValueAt(row, 4).toString());
+                        AddEmployeeUI.toList.setSelectedItem(dataTable.getModel().getValueAt(row, 5).toString());
+                        AddEmployeeUI.inputSalary.setText(dataTable.getModel().getValueAt(row, 6).toString());
+
+                    }
+                }
+            });
             btnProperties(editButton);
             buttonPanel.add(editButton);
 
             buttonPanel.add(Box.createRigidArea(new Dimension(20, 0))); //space between the two buttons of 20 pixels.
 
             deleteButton = new JButton("Delete");
+            deleteButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    int row = dataTable.getSelectedRow();
+                    System.out.println(row);
+                    if (dataTable.getSelectedRow() != -1){
+                        try {
+                            employee.deleteEmployee(dataTable.getModel().getValueAt(row, 1).toString());
+                            tableModel.removeRow(dataTable.getSelectedRow());
+//                            JOptionPane.showMessageDialog(null, "Selected employee deleted successfully");
+                        } catch (SQLException | ClassNotFoundException ex) {
+                            JOptionPane.showMessageDialog(null, ex.getMessage());
+                        }
+                    }
+                }
+            });
             btnProperties(deleteButton);
             buttonPanel.add(deleteButton);
             buttonPanel.add(Box.createHorizontalGlue());
@@ -84,43 +117,15 @@ public class editEmployeeUI implements ActionListener{
         button.setOpaque(true);
         button.setBorderPainted(false);
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
-        button.addActionListener((ActionListener) new editEmployeeUI());
     }
 
     private static void setFrameProperties(){
         employeeFrame.setLayout(new BorderLayout());
         employeeFrame.setTitle("Edit Menu");
         employeeFrame.setSize(700, 700);
+        Helper.centerWindow(employeeFrame);
         employeeFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         employeeFrame.setVisible(true);
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        Connect connect = new Connect();
-        Employee employee = new Employee(connect.connection);
-        int row = data_table.getSelectedRow();
-
-        if (e.getSource() == editButton && data_table.getSelectedRow() != -1) {
-            //edit employee based on ID:
-            int idColumn = 0; //
-            addEmployeeUI.generateEmployeeUI();
-            addEmployeeUI.inputName.setText(data_table.getModel().getValueAt(row, 1).toString());
-            addEmployeeUI.roleList.setSelectedItem(data_table.getModel().getValueAt(row, 2).toString());
-            addEmployeeUI.contractList.setSelectedItem(data_table.getModel().getValueAt(row, 3).toString());
-            addEmployeeUI.fromList.setSelectedItem(data_table.getModel().getValueAt(row, 4).toString().substring(0, 4));
-            addEmployeeUI.toList.setSelectedItem(data_table.getModel().getValueAt(row, 4).toString().substring(5, 9));
-            addEmployeeUI.inputSalary.setText(data_table.getModel().getValueAt(row, 5).toString());
-        }
-
-        if (e.getSource() == deleteButton && data_table.getSelectedRow() != -1){
-            tableModel.removeRow(data_table.getSelectedRow());
-            try {
-                employee.deleteEmployee(data_table.getModel().getValueAt(row, 1).toString());
-                JOptionPane.showMessageDialog(null, "Selected employee deleted successfully");
-            } catch (SQLException | ClassNotFoundException ex) {
-                throw new RuntimeException(ex);
-            }
-        }
-    }
 }

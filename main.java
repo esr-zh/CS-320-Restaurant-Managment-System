@@ -1,9 +1,14 @@
-import UI.TransactionHistUI;
 import UI.*;
+
+import javax.swing.*;
+
 public class main {
     public static void main(String args[]) {
-        //Login_UI.generate_login_ui();
-        //new TransactionHistUI();
-        editEmployeeUI.generate_table_ui();
+        try {
+            UIManager.setLookAndFeel( UIManager.getCrossPlatformLookAndFeelClassName() );
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        EditEmployeeUI.generateUI();
     }
 }

@@ -1,4 +1,8 @@
 package UI;
+import UI.utils.Helper;
+import database.Employee;
+import database.utils.Connect;
+
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicComboBoxRenderer;
 import java.awt.*;
@@ -6,7 +10,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Objects;
 
-public class addEmployeeUI extends BasicComboBoxRenderer implements ActionListener{
+public class AddEmployeeUI extends BasicComboBoxRenderer{
+
+    public static Connect connect = new Connect();
+    public static Employee employee = new Employee(connect.connection);
     public static int yCoordinate = 60;
     public static JPanel employeePanel;
     public static JLabel nameLabel, roleLabel, workingHourLabel, contractLabel, salaryLabel;
@@ -46,17 +53,19 @@ public class addEmployeeUI extends BasicComboBoxRenderer implements ActionListen
         addComponentToPanel(salaryLabel, inputSalary);
 
         submitButton = new JButton("Submit");
+        submitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                employee.setSalary(Long.parseLong(inputSalary.getText()));
+                // continue working here
+                JOptionPane.showMessageDialog(null, "Employee added successfully!");
+
+            }
+        });
         submitButton.setBounds(300, 350, 90, 25);
         btnProperties(submitButton);
         employeePanel.add(submitButton);
         addEmployeeFrame.setVisible(true);
-    }
-    public static void centerWindow(Window frame) {
-        Rectangle bounds = frame.getGraphicsConfiguration().getBounds();
-        Dimension dimension = bounds.getSize();
-        int x = (int) (((dimension.getWidth() - frame.getWidth()) / 2) + bounds.getMinX());
-        int y = (int) (((dimension.getHeight() - frame.getHeight()) / 2) + bounds.getMinY());
-        frame.setLocation(x, y);
     }
 
     public static void addTimeDropDown(JLabel label, String[] fromTime, String[] toTime){
@@ -134,7 +143,7 @@ public class addEmployeeUI extends BasicComboBoxRenderer implements ActionListen
         button.setOpaque(true);
         button.setBorderPainted(false);
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
-        button.addActionListener((ActionListener) new addEmployeeUI());
+        button.addActionListener((ActionListener) new AddEmployeeUI());
     }
 
     private static void setFrameProperties(JFrame frame){
@@ -142,15 +151,9 @@ public class addEmployeeUI extends BasicComboBoxRenderer implements ActionListen
         frame.setSize(700, 700);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setBounds(10,10,625,500);
-        centerWindow(frame);
+        Helper.centerWindow(frame);
         frame.setResizable(false);
 
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == submitButton) {
-            JOptionPane.showMessageDialog(null, "Employee added successfully!");
-        }
-    }
 }
