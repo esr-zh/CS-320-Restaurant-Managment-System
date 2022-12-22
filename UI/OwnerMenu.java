@@ -51,10 +51,8 @@ public class OwnerMenu implements ActionListener {
         }
         System.out.println(result);
 
-
         table = new JTable(tableModel);
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);//prevent a user from selecting multiple rows
-        setDimensions();
 
         JScrollPane sp = new JScrollPane(table);
         tablePanel.add(sp);
@@ -134,22 +132,5 @@ public class OwnerMenu implements ActionListener {
 
         }
     }
-
-    public static void setDimensions(){
-//        table.setRowHeight(80);
-//        table.getColumnModel().getColumn(5).setPreferredWidth(1000);
-//        table.getColumnModel().getColumn(4).setPreferredWidth(250);
-//        table.getColumnModel().getColumn(3).setPreferredWidth(250);
-//        table.getColumnModel().getColumn(2).setPreferredWidth(200);
-//        table.getColumnModel().getColumn(1).setPreferredWidth(400);
-//        table.getColumnModel().getColumn(0).setPreferredWidth(300);
-
-
-    }
-
-
-
-
-
 
 }
