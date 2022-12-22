@@ -128,8 +128,8 @@ public class editEmployeeUI implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e) {
-//        Connect connect = new Connect();
-//        Employee employee = new Employee(connect.connection);
+        Connect connect = new Connect();
+        Employee employee = new Employee(connect.connection);
 
         if (e.getSource() == editButton && data_table.getSelectedRow() != -1) {
             //edit employee based on ID:
