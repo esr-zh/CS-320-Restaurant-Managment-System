@@ -32,8 +32,8 @@ public class TransactionHistUI extends JFrame {
         }
         double value = 0;
         System.out.println(result);
-        boolean isFirstRow = true;
-        String currentId = "";
+        boolean isFirstRow = true; //set flag to check if it is first row
+        String currentId = ""; //to check whether the ID is same or not
         double totalGroupPrice = 0;
         for (List<String> row : result) {
             Object[] insertedRow = new Object[row.size() + 1];
@@ -41,17 +41,18 @@ public class TransactionHistUI extends JFrame {
             for (int i = 0; i < row.size(); i++) {
                 insertedRow[i] = row.get(i);
             }
+            //adds a row if it's not in the first row and the ID is changed
             if(!isFirstRow && !row.get(0).equals(currentId)){
                 model.addRow(new Object[]{null, null, null, "Total", totalGroupPrice});
-                totalGroupPrice = 0;
+                totalGroupPrice = 0; // after adding total price row for current transaction, group price set to 0
             }
             currentId = row.get(0);
-            double totalPrice = Double.parseDouble(row.get(2)) * Double.parseDouble(row.get(3));
+            double totalPrice = Double.parseDouble(row.get(2)) * Double.parseDouble(row.get(3)); //total price for one row
             totalGroupPrice += totalPrice;
-            insertedRow[row.size()] = Double.parseDouble( row.get(2)) * Double.parseDouble(row.get(3));
+            insertedRow[row.size()] = totalPrice; //add total price to last column
             model.addRow(insertedRow);
 
-            isFirstRow = false;
+            isFirstRow = false;// flag set to false after first row
         }
         model.addRow(new Object[]{null,null,null,"Total",totalGroupPrice});
         model.addRow(new Object[]{null,null,null,"Total of all transactions",value});
