@@ -12,11 +12,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Vector;
 
 public class CustomerMenuUI implements ActionListener {
     public static Connect connect = new Connect();
     public static Menu menu = new Menu(connect.connection);
     public static int yCoordinate = 50;
+
+    public static final int doesNotExist = -1;
     public static JPanel customerMainPanel;
     public static JPanel menuPanel, cartPanel;
     public static JLabel menuLabel, productLabel, quantityLabel, priceLabel, priceCalculatedLabel;
@@ -93,14 +96,26 @@ public class CustomerMenuUI implements ActionListener {
                 if (menuDropdown.getSelectedItem() != null &&
                         productDropdown.getSelectedItem() != null &&
                         quantityDropdown.getSelectedItem() !=null){
-                    List<String> row = new ArrayList<>();
-                    row.add(menuDropdown.getSelectedItem().toString());
-                    row.add(productDropdown.getSelectedItem().toString());
-                    row.add(quantityDropdown.getSelectedItem().toString());
-                    row.add(String.valueOf(selectedItem.getPrice()));
-                    data.add(row);
-
+                    Object[] insertedRow = new Object[4];
+                    // check if product item already exists in the cart table
+                    int exists = checkIfAlreadyExists(tableModel,productDropdown.getSelectedItem().toString());
+                    if (exists == doesNotExist){
+                        insertedRow[0] = menuDropdown.getSelectedItem().toString();
+                        insertedRow[1] = productDropdown.getSelectedItem().toString();
+                        insertedRow[2] = quantityDropdown.getSelectedItem().toString();
+                        insertedRow[3] = String.valueOf(selectedItem.getPrice());
+                        tableModel.addRow(insertedRow);
+                    }else {
+                        tableModel.setValueAt(quantityDropdown.getSelectedItem().toString(), exists, 2);
+                    }
                 }
+            }
+
+            private int checkIfAlreadyExists(DefaultTableModel tableModel,String productName) {
+                for (int i = 0; i < tableModel.getRowCount(); i++) {
+                    if (tableModel.getValueAt(i,1).equals(productName)) return i;
+                }
+                return doesNotExist;
             }
         });
         btnProperties(addButton);
@@ -132,13 +147,6 @@ public class CustomerMenuUI implements ActionListener {
         String[] columnNames = {"Menu Type", "Product", "Quantity", "Price"};
         tableModel = new DefaultTableModel(null, columnNames);
 
-            for (List<String> row : data) {
-                Object[] insertedRow = new Object[row.size()];
-                for (int i = 0; i < row.size(); i++) {
-                    insertedRow[i] = row.get(i);
-                }
-                tableModel.addRow(insertedRow);
-            }
 
 
         table = new JTable(tableModel);
