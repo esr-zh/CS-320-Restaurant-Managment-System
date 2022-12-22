@@ -31,17 +31,9 @@ public class EditMenu implements ActionListener {
         setFrameProperties();
 
         String[][] data = {
-                {"Drink", "Water", "$0.5", "25", "225g", "bubuwefwoifejvjofkeovkeokvkr"},
-                {"Dessert", "Cheesecake", "$5", "45", "700g", "nfifniwlfoofnv;svo;;sdl[[[["},
-                {"Drink", "Water", "$0.5", "25", "225g", "bubuwefwoifejvjofkeovkeokvkr"},
-                {"Dessert", "Cheesecake", "$5", "45", "700g", "nfifniwlfoofnv;svo;;sdl[[[["},
-                {"Dessert", "Cheesecake", "$5", "45", "700g", "nfifniwlfoofnv;svo;;sdl[[[["},
-                {"Dessert", "Cheesecake", "$5", "45", "700g", "nfifniwlfoofnv;svo;;sdl[[[["},
-                {"Dessert", "Cheesecake", "$5", "45", "700g", "nfifniwlfoofnv;svo;;sdl[[[["},
-                {"Dessert", "Cheesecake", "$5", "45", "700g", "nfifniwlfoofnv;svo;;sdl[[[["},
-                {"Dessert", "Cheesecake", "$5", "45", "700g", "nfifniwlfoofnv;svo;;sdl[[[["},
-                {"Dessert", "Cheesecake", "$5", "45", "700g", "nfifniwlfoofnv;svo;;sdl[[[["},
-
+                {"Drink", "Water", "$0.5", "25", "225g", "this drink is good"},
+                {"Dessert", "Cheesecake", "$5", "45", "700g", "this cheesecake is nice"},
+                {"Drink", "Water", "$0.5", "25", "225g", "this water is great"},
 
         };
 
@@ -56,6 +48,25 @@ public class EditMenu implements ActionListener {
 
         buttonPanel.add(Box.createHorizontalGlue());
         editButton = new JButton("Edit");
+        editButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int selectedRow = table.getSelectedRow();
+                String productName = (String) tableModel.getValueAt(selectedRow,1);
+                String productPrice = (String) tableModel.getValueAt(selectedRow,2);
+                String productType = (String) tableModel.getValueAt(selectedRow,0);
+                String productQuantity = (String) tableModel.getValueAt(selectedRow,3);
+                String productPortion = (String) tableModel.getValueAt(selectedRow,4);
+                String productDesc = (String) tableModel.getValueAt(selectedRow,5);
+                OwnerMenu.generateUI();
+                OwnerMenu.productType.setSelectedItem(productType);
+                OwnerMenu.productName.setText(productName);
+                OwnerMenu.productPrice.setText(productPrice);
+                OwnerMenu.productQuantity.setText(productQuantity);
+                OwnerMenu.portionText.setText(productPortion);
+                OwnerMenu.descText.setText(productDesc);
+            }
+        });
         btnProperties(editButton);
         buttonPanel.add(editButton);
 
@@ -76,7 +87,7 @@ public class EditMenu implements ActionListener {
     public static void setFrameProperties() {
         frame.setLayout(new BorderLayout());
         frame.setTitle("Edit Menu");
-        frame.setSize(2400,2000);
+        frame.setSize(650,650);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
     }
@@ -91,9 +102,6 @@ public class EditMenu implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == editButton) {
-            JOptionPane.showMessageDialog(null, "clicked Edit!");
-        }
 
         if (e.getSource() == deleteButton && table.getSelectedRow() != -1){
             tableModel.removeRow(table.getSelectedRow());
@@ -103,7 +111,7 @@ public class EditMenu implements ActionListener {
     }
 
     public static void setDimensions(){
-        table.setRowHeight(80);
+//        table.setRowHeight(80);
         table.getColumnModel().getColumn(5).setPreferredWidth(1000);
         table.getColumnModel().getColumn(4).setPreferredWidth(250);
         table.getColumnModel().getColumn(3).setPreferredWidth(250);

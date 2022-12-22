@@ -3,6 +3,7 @@ import UI.OwnerMenu;
 
 public class main {
     public static void main(String args[]) {
-        OwnerMenu.generateUI();
+        EditMenu.generateUI();
+//        OwnerMenu.generateUI();
     }
 }

@@ -13,9 +13,9 @@ public class OwnerMenu implements ActionListener {
     public static JFrame frame;
     public static JTextArea descText;
     public static JLabel typeLabel, nameLabel, priceLabel, lb1, quantityLabel, descLabel, portionLabel;
-    public static JTextField nameText, priceText, quantityText, portionText;
+    public static JTextField productName, productPrice, productQuantity, portionText;
     public static JButton button;
-    public static JComboBox<String> l;
+    public static JComboBox<String> productType;
     public static String typep, name, price, quantity, portion, description;
     public static String[] type = {"Appetizer","Main Dish","Dessert","Drink"};
 
@@ -35,32 +35,32 @@ public class OwnerMenu implements ActionListener {
         panel.add(lb1);
 
         //Creating a drop-down menu
-        typeLabel = new JLabel("Item Type: ");
+        typeLabel = new JLabel("Type: ");
         typeLabel.setBounds(100, yCoordinate,140, 20);
         panel.add(typeLabel);
-        l = new JComboBox<>(type);
-        l.setBounds(200, yCoordinate, 140,25);
-        panel.add(l);
+        productType = new JComboBox<>(type);
+        productType.setBounds(200, yCoordinate, 140,25);
+        panel.add(productType);
         yCoordinate+=60;
 
-        nameLabel = new JLabel("Item Name: ");
-        nameText =  new JTextField();
-        addToPanel(nameLabel, nameText);
+        nameLabel = new JLabel("Name: ");
+        productName =  new JTextField();
+        addToPanel(nameLabel, productName);
 
-        priceLabel = new JLabel("Item Price: ");
-        priceText = new JTextField();
-        addToPanel(priceLabel, priceText);
+        priceLabel = new JLabel("Price: ");
+        productPrice = new JTextField();
+        addToPanel(priceLabel, productPrice);
 
-        quantityLabel = new JLabel("Item Quantity: ");
-        quantityText = new JTextField();
-        addToPanel(quantityLabel,quantityText);
+        quantityLabel = new JLabel("Quantity: ");
+        productQuantity = new JTextField();
+        addToPanel(quantityLabel, productQuantity);
 
-        portionLabel = new JLabel("Item Portion:");
+        portionLabel = new JLabel("Portion:");
         portionText = new JTextField();
         addToPanel(portionLabel,portionText);
 
         //Creating a Text Area big enough for description
-        descLabel = new JLabel("Item Description:");
+        descLabel = new JLabel("Description:");
         descText = new JTextArea();
         addTextArea(descLabel, descText);
 
@@ -74,10 +74,10 @@ public class OwnerMenu implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == button) {
             JOptionPane.showMessageDialog(null, "Changes to item have been saved!");
-            typep  = (String) l.getSelectedItem();
-            name = nameText.getText();
-            price = priceText.getText();
-            quantity = quantityText.getText();
+            typep  = (String) productType.getSelectedItem();
+            name = productName.getText();
+            price = productPrice.getText();
+            quantity = productQuantity.getText();
             portion = portionText.getText();
             description = descText.getText();
             System.out.println(typep + "\n" + name + "\n" + price + "\n" + quantity +
@@ -89,7 +89,6 @@ public class OwnerMenu implements ActionListener {
         label.setBounds(100, yCoordinate,140, 20);
         panel.add(label);
         text.setBounds(200, yCoordinate,140,25);
-        text.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         panel.add(text);
         yCoordinate+=60;
     }
@@ -106,7 +105,6 @@ public class OwnerMenu implements ActionListener {
         label.setBounds(100, yCoordinate,140,20);
         panel.add(descLabel);
         Atext.setBounds(200, yCoordinate,140,80);
-        Atext.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         Atext.setLineWrap(true);
         Atext.setWrapStyleWord(true);
         panel.add(Atext);
