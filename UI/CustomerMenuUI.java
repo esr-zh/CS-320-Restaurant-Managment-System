@@ -66,8 +66,13 @@ public class CustomerMenuUI implements ActionListener {
         quantityDropdown = new JComboBox<>();
         menuPanel.add(quantityDropdown);
         updateProductDropdown(menuDropdown, productDropdown);
+        menuDropdown.setBounds(400, yCoordinate, 150, 20);
+        yCoordinate += 60;
         updateQuantityDropdown(productDropdown, quantityDropdown);
+        productDropdown.setBounds(400, yCoordinate, 150, 20);
+        yCoordinate += 60;
         updatePriceCalculatedLabel(quantityDropdown,priceCalculatedLabel);
+        quantityDropdown.setBounds(400, yCoordinate, 150, 20);
         addTable();
 
         checkoutButton = new JButton("Checkout");
@@ -129,61 +134,56 @@ public class CustomerMenuUI implements ActionListener {
 
     private static void updateProductDropdown(JComboBox<String> watchingDropdown, JComboBox<String> changeDropdown) {
         DishType dishType = new DishType();
-        watchingDropdown.setBounds(400, yCoordinate, 150, 20);
         watchingDropdown.addActionListener(e -> {
             changeDropdown.removeAllItems();
-            if (Objects.equals(menuDropdown.getSelectedItem(), "Appetizer")){
-                int dishTypeNum = dishType.getDishType("appetizer");
-                addItemsList(changeDropdown, dishTypeNum);
-            }
-            if(Objects.equals(watchingDropdown.getSelectedItem(), "Main Dish")){
-                int dishTypeNum = dishType.getDishType("main dish");
-                addItemsList(changeDropdown, dishTypeNum);
-            }
-            if(Objects.equals(menuDropdown.getSelectedItem(), "Dessert")){
-                int dishTypeNum = dishType.getDishType("dessert");
-                addItemsList(changeDropdown, dishTypeNum);
-            }
-            if(Objects.equals(watchingDropdown.getSelectedItem(), "Drinks")){
-                int dishTypeNum = dishType.getDishType("drinks");
-                addItemsList(changeDropdown, dishTypeNum);
+            if (menuDropdown.getSelectedItem() != null) {
+                if (Objects.equals(menuDropdown.getSelectedItem(), "Appetizer")) {
+                    int dishTypeNum = dishType.getDishType("appetizer");
+                    addItemsList(changeDropdown, dishTypeNum);
+                }
+                if (Objects.equals(watchingDropdown.getSelectedItem(), "Main Dish")) {
+                    int dishTypeNum = dishType.getDishType("main dish");
+                    addItemsList(changeDropdown, dishTypeNum);
+                }
+                if (Objects.equals(menuDropdown.getSelectedItem(), "Dessert")) {
+                    int dishTypeNum = dishType.getDishType("dessert");
+                    addItemsList(changeDropdown, dishTypeNum);
+                }
+                if (Objects.equals(watchingDropdown.getSelectedItem(), "Drinks")) {
+                    int dishTypeNum = dishType.getDishType("drinks");
+                    addItemsList(changeDropdown, dishTypeNum);
+                }
             }
         });
-        yCoordinate += 60;
     }
     public static Menu selectedItem;
     private static void updateQuantityDropdown(JComboBox<String> watchingDropdown, JComboBox<String> changeDropdown) {
-        watchingDropdown.setBounds(400, yCoordinate, 150, 20);
-        yCoordinate += 60;
+
         watchingDropdown.addActionListener(e -> {
             changeDropdown.removeAllItems();
-            System.out.println(productDropdown.getSelectedItem());
-            try {
-                selectedItem = menu.getMenuByName((String) productDropdown.getSelectedItem());
-                for (int i = 0; i < selectedItem.getQuantity(); i++) {
-                    changeDropdown.addItem(String.valueOf(i+1));
+            if (productDropdown.getSelectedItem() != null) {
+                try {
+                    selectedItem = menu.getMenuByName((String) productDropdown.getSelectedItem());
+                    for (int i = 0; i < selectedItem.getQuantity(); i++) {
+                        changeDropdown.addItem(String.valueOf(i + 1));
+                    }
+                } catch (SQLException | ClassNotFoundException ex) {
+                    throw new RuntimeException(ex);
                 }
-            } catch (SQLException | ClassNotFoundException ex) {
-                throw new RuntimeException(ex);
             }
         });
     }
 
     private static void updatePriceCalculatedLabel(JComboBox<String> quantityDropdown, JLabel priceCalculatedLabel) {
-        quantityDropdown.setBounds(400, yCoordinate, 150, 20);
-//        Object q =  quantityDropdown.getSelectedItem();
-//        System.out.println(selectedItem.getPrice());
-//        quantityDropdown.addActionListener(e -> {
-//            priceCalculatedLabel.setText("0 TL");
-//            System.out.println(q);
-//            System.out.println(selectedItem.getPrice());
-
-//                priceCalculatedLabel.
-//                        setText(
-//                                String.format("%f TL",
-//                                        selectedItem.getPrice() * q)
-//                        );
-//        });
+        quantityDropdown.addActionListener(e -> {
+            if (quantityDropdown.getSelectedItem() != null) {
+                priceCalculatedLabel.
+                        setText(
+                                String.format("%f TL",
+                                        selectedItem.getPrice() * Integer.parseInt(quantityDropdown.getSelectedItem().toString()))
+                        );
+            }
+        });
     }
 
     private static void addItemsList(JComboBox<String> menuDropdown, int dishTypeNum) {
