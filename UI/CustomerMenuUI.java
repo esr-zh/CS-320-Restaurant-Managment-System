@@ -17,6 +17,8 @@ import java.util.List;
 public class CustomerMenuUI{
     public static Connect connect = new Connect();
     public static Menu menu = new Menu(connect.connection);
+    public static TransactionHistory TH = new TransactionHistory(connect.connection);
+    public static OrderDetails OD = new OrderDetails(connect.connection);
     public static int yCoordinate = 50;
 
     public static final int doesNotExist = -1;
@@ -79,13 +81,10 @@ public class CustomerMenuUI{
         yCoordinate += 60;
         updatePriceCalculatedLabel(quantityDropdown,priceCalculatedLabel);
         quantityDropdown.setBounds(400, yCoordinate, 150, 20);
-        addTable();
+        addTable();// adding table comp
 
         checkoutButton = new JButton("Checkout");
         checkoutButton.addActionListener(new ActionListener() {
-
-            TransactionHistory TH = new TransactionHistory(connect.connection);
-            OrderDetails OD = new OrderDetails(connect.connection);
             @Override
             public void actionPerformed(ActionEvent e) {
                 JOptionPane.showOptionDialog(null,
@@ -96,6 +95,14 @@ public class CustomerMenuUI{
                     null,
                     options,
                     options[0]);
+
+//                try {
+//                    TH.setUserId(4);
+//                    TH.setHasPaid(false);
+//                    TH.createTransactionHistory();
+//                } catch (SQLException | ClassNotFoundException ex) {
+//                    throw new RuntimeException(ex);
+//                }
             }
         });
         btnProperties(checkoutButton);
@@ -165,7 +172,6 @@ public class CustomerMenuUI{
         // Column Names
         String[] columnNames = {"Menu Type", "Product", "Quantity", "Price"};
         tableModel = new DefaultTableModel(null, columnNames);
-
         table = new JTable(tableModel);
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); //prevent a user from selecting multiple rows
         JScrollPane sp = new JScrollPane(table);
