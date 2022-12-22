@@ -1,6 +1,6 @@
 import UI.AddEmployeeUI;
 import UI.TransactionHistUI;
-import UI.loginUI;
+import UI.LoginUI;
 
 import javax.swing.*;
 
