@@ -67,7 +67,6 @@ public class CustomerMenuUI implements ActionListener {
         navBar.add(transactionButton );
 
 
-
         menuPanel.setBorder(BorderFactory.createTitledBorder("Menu"));
         cartPanel.setBorder(BorderFactory.createTitledBorder("Cart"));
 
