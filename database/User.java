@@ -125,16 +125,16 @@ public class User {
         return new User(id,rs.getString(2), Long.parseLong(rs.getString(4)));
     }
 
-    public static User getUserByUsername(String username) throws SQLException, ClassNotFoundException {
-        Connect connect = Connect.getInstance();
-        ResultSet resultSet = connect.statement.executeQuery(
-                String.format("SELECT * from user where user.username = '%s'",username));
-        if (!resultSet.next()){
-            throw new SQLException("username id not found!");
+    public User getUserByUsername(String username) throws SQLException, ClassNotFoundException {
+        String SQL_INSERT = "SELECT * from user where user.username = ?";
+        PreparedStatement statement = conn.prepareStatement(SQL_INSERT);
+        statement.setString(1, username);
+        ResultSet rs = statement.executeQuery();
+        if (!rs.next()){
+            throw new SQLException("user id not found!");
         }
-        User return_user = new User(resultSet.getString(1),resultSet.getString(2),
-                Long.parseLong(resultSet.getString(4)));
-        return return_user;
+        return new User(rs.getString(1),rs.getString(2),
+                Long.parseLong(rs.getString(4)));
     }
 
     public Boolean doesUserExists(String username) throws SQLException {
@@ -153,5 +153,8 @@ public class User {
                 ", password='" + password + '\'' +
                 ", user_role=" + userRole +
                 '}';
+    }
+
+    public void deleteUserUsername(String username) {
     }
 }
