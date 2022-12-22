@@ -12,8 +12,10 @@ import org.junit.jupiter.api.Test;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
-import static org.testng.Assert.assertTrue;
-import static org.testng.AssertJUnit.assertEquals;
+
+import static org.junit.Assert.assertEquals;
+//import static org.testng.Assert.assertTrue;
+//import static org.testng.AssertJUnit.assertEquals;
 
 public class UserTest extends database.Tests.DBTestable {
     User user;

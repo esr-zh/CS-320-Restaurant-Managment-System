@@ -12,7 +12,7 @@ public class addEmployeeUI extends BasicComboBoxRenderer implements ActionListen
     public static JLabel nameLabel, roleLabel, workingHourLabel, contractLabel, salaryLabel;
     public static JTextField inputName, inputRole, inputWorkingHourFrom, inputWorkingHourTo, inputContract, inputSalary;
     public static JButton submitButton;
-    public static JComboBox contractList, toList, fromList;
+    public static JComboBox<String> contractList, roleList, toList, fromList;
     public static void generateEmployeeUI() {
         employeePanel = new JPanel();
         employeePanel.setLayout(null);
@@ -93,7 +93,7 @@ public class addEmployeeUI extends BasicComboBoxRenderer implements ActionListen
     public static void addRoleDropDown(JLabel label, String[] list){
         label.setBounds(150, yCoordinate, 150, 20);
         employeePanel.add(label);
-        JComboBox<String> roleList = new JComboBox<>(list);
+        roleList = new JComboBox<>(list);
         roleList.addActionListener(e -> {
             String selectedItem = (String) roleList.getSelectedItem();
             if(selectedItem.equals("Waiter"))

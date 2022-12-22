@@ -9,8 +9,11 @@ import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;
 
-import static org.testng.Assert.assertTrue;
-import static org.testng.AssertJUnit.assertEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+//import static org.testng.Assert.assertTrue;
+//import static org.testng.AssertJUnit.assertEquals;
 
 public class ShiftTest extends DBTestable{
 
