@@ -2,6 +2,7 @@ package UI;
 import database.*;
 import database.utils.Connect;
 
+import javax.sound.midi.SysexMessage;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicComboBoxRenderer;
 import java.awt.*;
@@ -15,9 +16,9 @@ public class AddEmployeeUI extends BasicComboBoxRenderer implements ActionListen
     public static int yCoordinate = 60;
     public static JPanel employeePanel;
     public static JLabel nameLabel, roleLabel, workingHourLabel, contractLabel, salaryLabel;
-    public static JTextField inputName, inputRole, inputWorkingHourFrom, inputWorkingHourTo, inputContract, inputSalary;
+    public static JTextField inputName, inputSalary;
     public static JButton submitButton;
-    public static JComboBox contractList, toList, fromList;
+    public static JComboBox contractList, roleList, toList, fromList;
 
     public static void generateEmployeeUI() {
         employeePanel = new JPanel();
@@ -34,12 +35,8 @@ public class AddEmployeeUI extends BasicComboBoxRenderer implements ActionListen
         nameLabel = new JLabel("Employee Name:");
         inputName = new JTextField();
         roleLabel = new JLabel(" Employee Role:");
-        inputRole = new JTextField();
         workingHourLabel = new JLabel("Working Hours:");
-        inputWorkingHourFrom = new JTextField();
-        inputWorkingHourTo = new JTextField();
         contractLabel = new JLabel("Contract Type:");
-        inputContract = new JTextField();
         salaryLabel = new JLabel("Salary:");
         inputSalary = new JTextField();
 
@@ -100,7 +97,7 @@ public class AddEmployeeUI extends BasicComboBoxRenderer implements ActionListen
     public static void addRoleDropDown(JLabel label, String[] list) {
         label.setBounds(150, yCoordinate, 150, 20);
         employeePanel.add(label);
-        JComboBox<String> roleList = new JComboBox<>(list);
+        roleList = new JComboBox<>(list);
         roleList.addActionListener(e -> {
             String selectedItem = (String) roleList.getSelectedItem();
             if (selectedItem.equals("Waiter")) {
@@ -165,23 +162,41 @@ public class AddEmployeeUI extends BasicComboBoxRenderer implements ActionListen
         if (e.getSource() == submitButton) {
             user.setUsername(inputName.getText());
             user.setPassword(inputName.getText());
-            shift.setWorkingFrom(Long.parseLong(fromList.getSelectedItem().toString().split(":")[0]));
-            shift.setWorkingTo(Long.parseLong(toList.getSelectedItem().toString().split(":")[0]));
-            employee.setSalaryType(salaryType.getSalaryType(inputContract.getText()));
-            user.setUserRole(userRole.getUserRole(inputRole.getText().toLowerCase(Locale.ROOT)));
+
+            long workingFrom = Long.parseLong(fromList.getSelectedItem().toString().split(":")[0]);
+            long workingTo = Long.parseLong(toList.getSelectedItem().toString().split(":")[0]);
+
+            if(workingFrom >= workingTo){
+                JOptionPane.showMessageDialog(null, "Enter valid time!");
+                return;
+            }
+
+            shift.setWorkingFrom(workingFrom);
+            shift.setWorkingTo(workingTo);
+            employee.setSalaryType(salaryType.getSalaryType(contractList.getSelectedItem().toString().toLowerCase()));
+            user.setUserRole(userRole.getUserRole(roleList.getSelectedItem().toString().toLowerCase()));
+
+            /*
+            System.out.println(inputName.getText());
+            System.out.println(userRole.getUserRole(roleList.getSelectedItem().toString().toLowerCase()));
+            System.out.println(workingFrom);
+            System.out.println(workingTo);
+            System.out.println(salaryType.getSalaryType(contractList.getSelectedItem().toString().toLowerCase()));
+            System.out.println(Long.parseLong(inputSalary.getText().substring(1)));
+            */
 
             try {
                 String salary = inputSalary.getText().substring(1);
                 employee.setSalary(Long.parseLong(salary));
             } catch (NumberFormatException nfe) {
                 JOptionPane.showMessageDialog(null, nfe.getMessage());
+                return;
             }
             try {
                 User newUser = user.createUser();
                 employee.setUserId(newUser.getId());
                 shift.setUserId(newUser.getId());
             } catch (SQLException ex) {
-                System.out.printf(ex.getMessage());
                 JOptionPane.showMessageDialog(null, ex.getMessage());
                 return;
             } catch (ClassNotFoundException ex) {
@@ -193,8 +208,10 @@ public class AddEmployeeUI extends BasicComboBoxRenderer implements ActionListen
                 JOptionPane.showMessageDialog(null, "Employee added successfully!");
             } catch (SQLException ex) {
                     JOptionPane.showMessageDialog(null, ex.getMessage());
+                    return;
                 }
             }
+
 
 
         }
