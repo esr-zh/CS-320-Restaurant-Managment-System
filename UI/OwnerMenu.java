@@ -26,7 +26,7 @@ public class OwnerMenu implements ActionListener {
         frame = new JFrame();
         frame.setTitle("Edit Menu");
         frame.setSize(500,600);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        yCoordinate = 60;
         frame.add(panel);
 
 
