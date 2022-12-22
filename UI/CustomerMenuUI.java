@@ -4,8 +4,6 @@ import database.Menu;
 import database.utils.Connect;
 
 import javax.swing.*;
-import javax.swing.event.MenuEvent;
-import javax.swing.event.MenuListener;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -18,7 +16,7 @@ public class CustomerMenuUI implements ActionListener {
     public static Connect connect = new Connect();
     public static Menu menu = new Menu(connect.connection);
     public static int yCoordinate = 50;
-    public static JFrame customerFrame;
+    public static JPanel customerMainPanel;
     public static JPanel menuPanel, cartPanel;
     public static JLabel menuLabel, productLabel, quantityLabel, priceLabel, priceCalculatedLabel;
     public static JComboBox<String> menuDropdown;
@@ -30,62 +28,16 @@ public class CustomerMenuUI implements ActionListener {
 
     public static DefaultTableModel tableModel;
 
-    public static void generateCustomerUI() {
-        customerFrame = new JFrame();
+    public static JPanel generateCustomerUI() {
+        customerMainPanel = new JPanel();
         setFrameProperties();
-        JTabbedPane tabbedPane = new JTabbedPane();
-        tabbedPane.add("Menu", customerFrame);
-        tabbedPane.add("Transaction History", customerFrame);
-        customerFrame.add(tabbedPane);
 
         menuPanel = new JPanel();
         cartPanel = new JPanel();
-//        navBar = new JPanel();
-//        JMenuBar mb = new JMenuBar();
-//        JMenu menuNavbarM = new JMenu("Menu");
-//        JMenu menuNavbarTH = new JMenu("Transaction History");
-
-//        mb.add(menuNavbarM);
-//        mb.add(menuNavbarTH);
-//        customerFrame.setJMenuBar(mb);
 
         menuPanel.setLayout(null);
         cartPanel.setLayout(null);
         transactionButton=new JButton("Transaction History");
-//        menuNavbarTH.addMenuListener(new SampleMenuListener());
-//        menuNavbarTH.addMenuListener(new MenuListener() {
-//            @Override
-//            public void menuSelected(MenuEvent e) {
-//                JMenu menu, TH;
-//                JFrame frame = new JFrame("Menu and MenuItem Example");
-//
-//                TransactionHistUI transactionHistUI = new TransactionHistUI();;
-//                frame.add(transactionHistUI.getUIComponent());
-//
-//                JMenuBar mb = new JMenuBar();
-//                menu = new JMenu("Menu");
-//                TH = new JMenu("Transaction History");
-//                mb.add(menu);
-//                mb.add(TH);
-//                frame.setJMenuBar(mb);
-//
-//                frame.setSize(800,800);
-//                frame.setVisible(true);
-//            }
-//
-//            @Override
-//            public void menuDeselected(MenuEvent e) {
-//
-//            }
-//
-//            @Override
-//            public void menuCanceled(MenuEvent e) {
-//
-//            }
-//        });
-
-
-
         menuPanel.setBorder(BorderFactory.createTitledBorder("Menu"));
         cartPanel.setBorder(BorderFactory.createTitledBorder("Cart"));
         cartPanel.setBounds(0, 370, 700, 500);
@@ -136,9 +88,11 @@ public class CustomerMenuUI implements ActionListener {
         btnProperties(deleteButton);
         cartPanel.add(deleteButton);
 
-        customerFrame.add(menuPanel);
-        customerFrame.add(cartPanel);
-        customerFrame.setVisible(true);
+        customerMainPanel.add(menuPanel);
+        customerMainPanel.add(cartPanel);
+        customerMainPanel.setVisible(true);
+
+        return customerMainPanel;
     }
 
     private static void menuLabelProperties(JLabel label) {
@@ -249,11 +203,7 @@ public class CustomerMenuUI implements ActionListener {
     }
 
     private static void setFrameProperties() {
-        customerFrame.setLayout(null);
-        customerFrame.setTitle("Welcome");
-        customerFrame.setResizable(false);
-        customerFrame.setSize(700, 750);
-        customerFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        customerMainPanel.setLayout(null);
     }
 
     private static void btnProperties(JButton button) {
