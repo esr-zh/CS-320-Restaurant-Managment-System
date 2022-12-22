@@ -96,8 +96,6 @@ public class OwnerMenu implements ActionListener {
 
     public static void btnProperties(JButton b){
         b.setBounds(180, yCoordinate+60,120,30);
-        b.setForeground(Color.WHITE);
-        b.setBackground(Color.BLACK);
         b.setAlignmentX(Component.CENTER_ALIGNMENT);
         b.setOpaque(true);
         b.addActionListener(new OwnerMenu());
