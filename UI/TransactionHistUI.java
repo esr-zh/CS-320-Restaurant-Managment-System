@@ -55,7 +55,7 @@ public class TransactionHistUI extends JFrame {
 
     public static void main(String args[]){
         JMenu menu, TH;
-        JFrame frame = new JFrame("Menu and MenuItem Example");
+        JFrame frame = new JFrame("Transaction History");
 
         TransactionHistUI transactionHistUI = new TransactionHistUI();;
         frame.add(transactionHistUI.getUIComponent());
