@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -46,7 +47,7 @@ public class editEmployeeUI implements ActionListener{
             // Data to be displayed in the JTable
             String[][] data = {
                     {"1", "Esrah", "Chef", "Monthly", "1:00-8:00", "$499"},
-                    {"2", "Mohammad", "Waiter", "Weekly", "3:00-4:00", "100"},
+                    {"2", "Mohammad", "Waiter", "Weekly", "3:00-4:00", "$100"},
                     {"", "", "", "", "", ""},
                     {"", "", "", "", "", ""},
                     {"", "", "", "", "", ""},
@@ -77,38 +78,6 @@ public class editEmployeeUI implements ActionListener{
             employeeFrame.pack();
         }
     }
-
-//    public static void generate_table_ui(){
-//        employeeFrame = new JFrame();
-//        setFrameProperties();
-//        String[][] data = {
-//                    {"Drink", "Water", "$0.5"},
-//                    {"Dessert", "Cheesecake", "$5"},
-//                    {"Main", "Cheeseburger", "4.99"},
-//                    {"Drink", "Water", "$0.5"},
-//                    {"Dessert", "Cheesecake", "$5"},
-//                    {"Main", "Cheeseburger", "4.99"},
-//                    {"Drink", "Water", "$0.5"},
-//                    {"Dessert", "Cheesecake", "$5"},
-//                    {"Main", "Cheeseburger", "4.99"},
-//                    {"Drink", "Water", "$0.5"},
-//                    {"Dessert", "Cheesecake", "$5"},
-//                    {"Main", "Cheeseburger", "4.99"},
-//                    {"Drink", "Water", "$0.5"},
-//                    {"Dessert", "Cheesecake", "$5"},
-//                    {"Main", "Cheeseburger", "4.99"},
-//                    {"Dessert", "Cheesecake", "$5"},
-//                    {"Dessert", "Cheesecake", "$5"},
-//                    {"Dessert", "Cheesecake", "$5"}
-//            };
-//    String[] columnNames = {"Type", "Name", "Price"};
-//    TableUI tableUI = new TableUI(data,columnNames);
-//    JTable table = tableUI.getTable();
-//    employeeFrame.add(table);
-//    employeeFrame.add(table, BorderLayout.CENTER);
-//    employeeFrame.add(table, BorderLayout.PAGE_END);
-//    employeeFrame.pack();
-//    }
     private static void btnProperties(JButton button) {
         button.setForeground(Color.WHITE);
         button.setBackground(Color.BLACK);
@@ -130,23 +99,28 @@ public class editEmployeeUI implements ActionListener{
     public void actionPerformed(ActionEvent e) {
         Connect connect = new Connect();
         Employee employee = new Employee(connect.connection);
+        int row = data_table.getSelectedRow();
 
         if (e.getSource() == editButton && data_table.getSelectedRow() != -1) {
             //edit employee based on ID:
-            int idColumn = 0; //c
-            int row = data_table.getSelectedRow();
-            String value = data_table.getModel().getValueAt(row, idColumn).toString();
+            int idColumn = 0; //
             addEmployeeUI.generateEmployeeUI();
             addEmployeeUI.inputName.setText(data_table.getModel().getValueAt(row, 1).toString());
             addEmployeeUI.roleList.setSelectedItem(data_table.getModel().getValueAt(row, 2).toString());
             addEmployeeUI.contractList.setSelectedItem(data_table.getModel().getValueAt(row, 3).toString());
+            addEmployeeUI.fromList.setSelectedItem(data_table.getModel().getValueAt(row, 4).toString().substring(0, 4));
+            addEmployeeUI.toList.setSelectedItem(data_table.getModel().getValueAt(row, 4).toString().substring(5, 9));
             addEmployeeUI.inputSalary.setText(data_table.getModel().getValueAt(row, 5).toString());
         }
 
         if (e.getSource() == deleteButton && data_table.getSelectedRow() != -1){
             tableModel.removeRow(data_table.getSelectedRow());
-            JOptionPane.showMessageDialog(null, "Selected employee deleted successfully");
-
+            try {
+                employee.deleteEmployee(data_table.getModel().getValueAt(row, 1).toString());
+                JOptionPane.showMessageDialog(null, "Selected employee deleted successfully");
+            } catch (SQLException | ClassNotFoundException ex) {
+                throw new RuntimeException(ex);
+            }
         }
     }
 }

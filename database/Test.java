@@ -9,7 +9,9 @@ public class Test {
     public static void main(String[] args) throws ClassNotFoundException, SQLException {
         Connect connect = new Connect();
         Menu menu = new Menu(connect.connection);
-        List<List<String>> result = menu.getMenuItemsByDishType(new DishType().getSalaryType("appetizer"));
-        System.out.println(result);
+        User user = new User(connect.connection);
+        String username = "diamond3";
+//         user.deleteUserUsername(username);
+        System.out.println(user.deleteUserUsername(username));
     }
 }

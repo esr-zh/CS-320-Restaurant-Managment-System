@@ -30,8 +30,8 @@ public class User {
     }
 
     public User(long id, String username, long user_role) {
-        this.username = username;
         this.id = id;
+        this.username = username;
         this.userRole = user_role;
     }
 
@@ -125,16 +125,20 @@ public class User {
         return new User(id,rs.getString(2), Long.parseLong(rs.getString(4)));
     }
 
-    public static User getUserByUsername(String username) throws SQLException, ClassNotFoundException {
-        Connect connect = Connect.getInstance();
-        ResultSet resultSet = connect.statement.executeQuery(
-                String.format("SELECT * from user where user.username = '%s'",username));
-        if (!resultSet.next()){
-            throw new SQLException("username id not found!");
+    public User getUserByUsername(String username) throws SQLException, ClassNotFoundException {
+        String SQL_INSERT = "SELECT * from user where user.username = ?";
+        PreparedStatement statement = conn.prepareStatement(SQL_INSERT);
+        statement.setString(1, username);
+        ResultSet rs = statement.executeQuery();
+        if (!rs.next()){
+            throw new SQLException("user id not found!");
         }
-        User return_user = new User(resultSet.getString(1),resultSet.getString(2),
-                Long.parseLong(resultSet.getString(4)));
-        return return_user;
+//        System.out.println(rs.getString(1));// id
+//        System.out.println(rs.getString(2));// username
+//        System.out.println(rs.getString(4));// role id
+        return new User(Integer.parseInt(rs.getString(1)),
+                rs.getString(2),
+                Integer.parseInt(rs.getString(4)));
     }
 
     public Boolean doesUserExists(String username) throws SQLException {
@@ -153,5 +157,21 @@ public class User {
                 ", password='" + password + '\'' +
                 ", user_role=" + userRole +
                 '}';
+    }
+
+    public boolean deleteUserUsername(String username) throws SQLException {
+        String SQL_INSERT = "DELETE FROM user WHERE user.username = ?";
+        try (
+                PreparedStatement statement = conn.prepareStatement(SQL_INSERT,
+                        Statement.RETURN_GENERATED_KEYS)
+        ) {
+            statement.setString(1,username);
+            int affectedRows = statement.executeUpdate();
+
+            if (affectedRows == 0) {
+                throw new SQLException("Creating user failed, no rows affected.");
+            }
+            return true;
+        }
     }
 }

@@ -65,6 +65,25 @@ public class Employee {
                 rs.getLong(4));
     }
 
+    public Boolean deleteEmployee(String username) throws SQLException, ClassNotFoundException {
+        User user = new User(conn);
+        User employeeUser = user.getUserByUsername(username);
+        user.deleteUserUsername(username);
+        String SQL_INSERT = "DELETE FROM employee WHERE employee.user_id = ?";
+        try (
+                PreparedStatement statement = conn.prepareStatement(SQL_INSERT,
+                        Statement.RETURN_GENERATED_KEYS)
+        ) {
+            statement.setLong(1,employeeUser.getId());
+            int affectedRows = statement.executeUpdate();
+
+            if (affectedRows == 0) {
+                throw new SQLException("Creating user failed, no rows affected.");
+            }
+            return true;
+        }
+    }
+
     public Employee createEmployee() throws SQLException {
         String SQL_INSERT = "INSERT INTO employee(salary,user_id,salary_type) VALUES (?, ?, ?)";
         if (!doesEmployeeExists(userId)) {
