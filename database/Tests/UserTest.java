@@ -4,14 +4,16 @@ import database.User;
 import database.utils.Connect;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+//import org.junit.After;
+//import org.junit.Before;
+//import org.junit.Test;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
-import static org.junit.jupiter.api.Assertions.*;
-//import static org.testng.Assert.assertTrue;
-//import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.Assert.assertTrue;
+import static org.testng.AssertJUnit.assertEquals;
 
 public class UserTest extends database.Tests.DBTestable {
     User user;

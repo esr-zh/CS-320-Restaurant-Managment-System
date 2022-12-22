@@ -1,18 +1,15 @@
 package database.Tests;
 
-import database.*;
-import database.Shift;
+import database.Employee;
+import database.SalaryType;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 
 import java.sql.SQLException;
 
-import static org.junit.Assert.assertEquals;
-
-//import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.Assert.assertTrue;
+import static org.testng.AssertJUnit.assertEquals;
 
 public class EmployeeTest extends DBTestable{
     Employee employee;

@@ -1,6 +1,7 @@
 package database;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 public class DishType {
     private HashMap<Integer,String> userRoleTable = new HashMap<>();
@@ -15,5 +16,12 @@ public class DishType {
 
     public String getDishType(int key){
         return userRoleTable.get(key);
+    }
+
+    public int getSalaryType(String value){
+        for (Integer item: userRoleTable.keySet()) {
+            if (Objects.equals(userRoleTable.get(item), value)) return item;
+        }
+        return 0;
     }
 }
