@@ -19,7 +19,7 @@ public class UserRole {
         return userRoleTable.get(key);
     }
 
-    public int getSalaryType(String value){
+    public int getUserRole(String value){
         for (Integer item: userRoleTable.keySet()) {
             if (Objects.equals(userRoleTable.get(item), value)) return item;
         }

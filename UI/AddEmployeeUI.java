@@ -1,6 +1,5 @@
 package UI;
-import database.Employee;
-import database.User;
+import database.*;
 import database.utils.Connect;
 
 import javax.swing.*;
@@ -9,6 +8,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.util.Locale;
 import java.util.Objects;
 
 public class AddEmployeeUI extends BasicComboBoxRenderer implements ActionListener {
@@ -159,31 +159,44 @@ public class AddEmployeeUI extends BasicComboBoxRenderer implements ActionListen
         Connect connect = new Connect();
         User user = new User(connect.connection);
         Employee employee = new Employee(connect.connection);
+        Shift shift = new Shift(connect.connection);
+        UserRole userRole = new UserRole();
+        SalaryType salaryType = new SalaryType();
         if (e.getSource() == submitButton) {
             user.setUsername(inputName.getText());
             user.setPassword(inputName.getText());
+            shift.setWorkingFrom(Long.parseLong(fromList.getSelectedItem().toString().split(":")[0]));
+            shift.setWorkingTo(Long.parseLong(toList.getSelectedItem().toString().split(":")[0]));
+            employee.setSalaryType(salaryType.getSalaryType(inputContract.getText()));
+            user.setUserRole(userRole.getUserRole(inputRole.getText().toLowerCase(Locale.ROOT)));
+
             try {
                 String salary = inputSalary.getText().substring(1);
                 employee.setSalary(Long.parseLong(salary));
-
             } catch (NumberFormatException nfe) {
                 JOptionPane.showMessageDialog(null, nfe.getMessage());
             }
             try {
                 User newUser = user.createUser();
                 employee.setUserId(newUser.getId());
+                shift.setUserId(newUser.getId());
             } catch (SQLException ex) {
-                throw new RuntimeException(ex);
+                System.out.printf(ex.getMessage());
+                JOptionPane.showMessageDialog(null, ex.getMessage());
+                return;
             } catch (ClassNotFoundException ex) {
                 throw new RuntimeException(ex);
             }
             try {
                 employee.createEmployee();
+                shift.createShiftTime();
                 JOptionPane.showMessageDialog(null, "Employee added successfully!");
             } catch (SQLException ex) {
-                JOptionPane.showMessageDialog(null, ex.getMessage());
+                    JOptionPane.showMessageDialog(null, ex.getMessage());
+                }
             }
+
 
         }
     }
-}
+
