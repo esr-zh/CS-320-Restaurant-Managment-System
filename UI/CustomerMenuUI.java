@@ -9,6 +9,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -23,7 +24,9 @@ public class CustomerMenuUI implements ActionListener {
     public static JComboBox<String> productDropdown;
     public static JComboBox<String> quantityDropdown;
     public static JTable table;
-    public static JButton addButton, deleteButton, checkoutButton, menuButton, transactionButton;
+    public static JButton addButton, deleteButton, checkoutButton, transactionButton;
+
+    public static List<List<String>> data = new ArrayList<>();
     public static String[] options = {"Yes", "No"}, productTypes;
 
     public static DefaultTableModel tableModel;
@@ -83,6 +86,23 @@ public class CustomerMenuUI implements ActionListener {
         cartPanel.add(checkoutButton);
 
         addButton = new JButton("Add to Cart");
+
+        addButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (menuDropdown.getSelectedItem() != null &&
+                        productDropdown.getSelectedItem() != null &&
+                        quantityDropdown.getSelectedItem() !=null){
+                    List<String> row = new ArrayList<>();
+                    row.add(menuDropdown.getSelectedItem().toString());
+                    row.add(productDropdown.getSelectedItem().toString());
+                    row.add(quantityDropdown.getSelectedItem().toString());
+                    row.add(String.valueOf(selectedItem.getPrice()));
+                    data.add(row);
+
+                }
+            }
+        });
         btnProperties(addButton);
         addButton.setBounds(410, 300, 120, 25);
         menuPanel.add(addButton);
@@ -108,23 +128,19 @@ public class CustomerMenuUI implements ActionListener {
 
 
     private static void addTable() {
-        String[][] data = {
-                {"", "", "", ""},
-                {"", "", "", ""},
-                {"", "", "", ""},
-                {"", "", "", ""},
-                {"", "", "", ""},
-                {"", "", "", ""},
-                {"", "", "", ""},
-                {"", "", "", ""},
-                {"", "", "", ""},
-                {"", "", "", ""},
-                {"", "", "", ""},
-                {"", "", "", ""},
-        };
         // Column Names
-        String[] columnNames = {"Menu", "Product", "Quantity", "Price"};
-        tableModel = new DefaultTableModel(data, columnNames);
+        String[] columnNames = {"Menu Type", "Product", "Quantity", "Price"};
+        tableModel = new DefaultTableModel(null, columnNames);
+
+            for (List<String> row : data) {
+                Object[] insertedRow = new Object[row.size()];
+                for (int i = 0; i < row.size(); i++) {
+                    insertedRow[i] = row.get(i);
+                }
+                tableModel.addRow(insertedRow);
+            }
+
+
         table = new JTable(tableModel);
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); //prevent a user from selecting multiple rows
         JScrollPane sp = new JScrollPane(table);

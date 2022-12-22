@@ -57,16 +57,9 @@ public class TransactionHistUI extends JFrame {
         JMenu menu, TH;
         JFrame frame = new JFrame("Transaction History");
 
-        TransactionHistUI transactionHistUI = new TransactionHistUI();;
+        TransactionHistUI transactionHistUI = new TransactionHistUI();
         frame.add(transactionHistUI.getUIComponent());
 
-        JMenuBar mb = new JMenuBar();
-        menu = new JMenu("Menu");
-        TH = new JMenu("Transaction History");
-
-        mb.add(menu);
-        mb.add(TH);
-        frame.setJMenuBar(mb);
 
         frame.setSize(800,800);
         frame.setVisible(true);
