@@ -10,12 +10,12 @@ public class CustomerMenuUI implements ActionListener {
     public static int yCoordinate = 50;
     public static JFrame customerFrame;
     public static JPanel menuPanel, cartPanel, navBar;
-    public static JLabel menuLabel, productLabel, quantityLabel, priceLabel, priceCalculatedLabel, cart;
+    public static JLabel menuLabel, productLabel, quantityLabel, priceLabel, priceCalculatedLabel;
     public static JComboBox<String> menuDropdown;
     public static JComboBox<String> productDropdown;
     public static JComboBox<String> quantityDropdown;
     public static JTable table;
-    public static JButton addButton, deleteButton, checkoutButton, menuButton, transactionButton, navCheckoutButton;
+    public static JButton addButton, deleteButton, checkoutButton, menuButton, transactionButton;
     public static String[] options = {"Yes", "No"}, productTypes;
 
     public static DefaultTableModel tableModel;
@@ -30,7 +30,7 @@ public class CustomerMenuUI implements ActionListener {
 
         menuPanel.setLayout(null);
         cartPanel.setLayout(null);
-        navBar.setLayout(new GridLayout(1,3));
+        navBar.setLayout(new GridLayout(1,2));
 
         menuButton = new JButton("Menu");
         menuButton.addActionListener(new ActionListener() {
@@ -43,7 +43,6 @@ public class CustomerMenuUI implements ActionListener {
         transactionButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
                 JMenu menu, TH;
                 JFrame frame = new JFrame("Menu and MenuItem Example");
 
@@ -62,18 +61,11 @@ public class CustomerMenuUI implements ActionListener {
                 frame.setVisible(true);
             }
         });
-        navCheckoutButton=new JButton("Checkout");
-        navCheckoutButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
 
 
         navBar.add(menuButton);
         navBar.add(transactionButton );
-        navBar.add(navCheckoutButton);
+
 
 
         menuPanel.setBorder(BorderFactory.createTitledBorder("Menu"));
