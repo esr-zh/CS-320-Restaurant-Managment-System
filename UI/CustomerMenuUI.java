@@ -84,27 +84,30 @@ public class CustomerMenuUI implements ActionListener {
         navBar.setBounds(0,0,700,20);
 
         String[] menuTypes = {"Appetizer", "Main Dish", "Dessert", "Drinks"};
-        String[] quantity = {"1", "2", "3", "4", "5", "6", "7"};
         productTypes = new String[]{""};
 
         menuLabel = new JLabel("Select Menu Type:");
-        menuProperties(menuLabel);
+        menuLabelProperties(menuLabel);
         productLabel = new JLabel("Select Product:");
-        menuProperties(productLabel);
+        menuLabelProperties(productLabel);
         quantityLabel = new JLabel("Select Quantity:");
-        menuProperties(quantityLabel);
+        menuLabelProperties(quantityLabel);
         priceLabel = new JLabel("Calculated Price:");
-        priceCalculatedLabel = new JLabel("$100");
+        menuLabelProperties(priceLabel);
+        priceCalculatedLabel = new JLabel("0 TL");
+        menuPanel.add(priceCalculatedLabel);
+        priceCalculatedLabel.setBounds(400, yCoordinate - 60, 150, 20);
+        yCoordinate = 60;
 
         menuDropdown = new JComboBox<>(menuTypes);
         menuPanel.add(menuDropdown);
         productDropdown = new JComboBox<>();
         menuPanel.add(productDropdown);
-        quantityDropdown = new JComboBox<>(quantity);
+        quantityDropdown = new JComboBox<>();
         menuPanel.add(quantityDropdown);
-        addComponent(menuDropdown, productDropdown);
-        addComponent2(productDropdown, quantityDropdown);
-        quantityDropdown.setBounds(400, yCoordinate, 150, 20);
+        updateProductDropdown(menuDropdown, productDropdown);
+        updateQuantityDropdown(productDropdown, quantityDropdown);
+        updatePriceCalculatedLabel(quantityDropdown,priceCalculatedLabel);
         addTable();
 
         checkoutButton = new JButton("Checkout");
@@ -131,11 +134,10 @@ public class CustomerMenuUI implements ActionListener {
         customerFrame.setVisible(true);
     }
 
-
-
-    private static void menuProperties(JLabel label) {
+    private static void menuLabelProperties(JLabel label) {
         menuPanel.add(label);
         label.setBounds(50, yCoordinate, 150, 20);
+        yCoordinate+= 60;
     }
 
 
@@ -164,7 +166,7 @@ public class CustomerMenuUI implements ActionListener {
         cartPanel.add(sp);
     }
 
-    private static void addComponent(JComboBox<String> watchingDropdown,JComboBox<String> changeDropdown) {
+    private static void updateProductDropdown(JComboBox<String> watchingDropdown, JComboBox<String> changeDropdown) {
         DishType dishType = new DishType();
         watchingDropdown.setBounds(400, yCoordinate, 150, 20);
         watchingDropdown.addActionListener(e -> {
@@ -188,22 +190,39 @@ public class CustomerMenuUI implements ActionListener {
         });
         yCoordinate += 60;
     }
-
-    private static void addComponent2(JComboBox<String> watchingDropdown,JComboBox<String> changeDropdown) {
+    public static Menu selectedItem;
+    private static void updateQuantityDropdown(JComboBox<String> watchingDropdown, JComboBox<String> changeDropdown) {
         watchingDropdown.setBounds(400, yCoordinate, 150, 20);
         yCoordinate += 60;
         watchingDropdown.addActionListener(e -> {
             changeDropdown.removeAllItems();
             System.out.println(productDropdown.getSelectedItem());
             try {
-                Menu selectedMenu = menu.getMenuByName((String) productDropdown.getSelectedItem());
-                for (int i = 0; i < selectedMenu.getQuantity(); i++) {
+                selectedItem = menu.getMenuByName((String) productDropdown.getSelectedItem());
+                for (int i = 0; i < selectedItem.getQuantity(); i++) {
                     changeDropdown.addItem(String.valueOf(i+1));
                 }
             } catch (SQLException | ClassNotFoundException ex) {
                 throw new RuntimeException(ex);
             }
         });
+    }
+
+    private static void updatePriceCalculatedLabel(JComboBox<String> quantityDropdown, JLabel priceCalculatedLabel) {
+        quantityDropdown.setBounds(400, yCoordinate, 150, 20);
+//        Object q =  quantityDropdown.getSelectedItem();
+//        System.out.println(selectedItem.getPrice());
+//        quantityDropdown.addActionListener(e -> {
+//            priceCalculatedLabel.setText("0 TL");
+//            System.out.println(q);
+//            System.out.println(selectedItem.getPrice());
+
+//                priceCalculatedLabel.
+//                        setText(
+//                                String.format("%f TL",
+//                                        selectedItem.getPrice() * q)
+//                        );
+//        });
     }
 
     private static void addItemsList(JComboBox<String> menuDropdown, int dishTypeNum) {
