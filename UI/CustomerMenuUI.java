@@ -100,9 +100,20 @@ public class CustomerMenuUI{
                     if (response == 0) {  // 1 is the index of the "Yes" option in the options array
                         // Create a new panel with today's date
                         JPanel datePanel = new JPanel();
+                        datePanel.setLayout(new BoxLayout(datePanel, BoxLayout.PAGE_AXIS));
                         String today = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
                         datePanel.add(new JLabel("Transaction date: "+today));
                         datePanel.add(table);
+
+                        double totalPrice = 0;
+                        for (int i = 0; i < table.getRowCount(); i++) {
+                            Object quantity = table.getValueAt(i, 2);
+                            Object price = table.getValueAt(i, 3);
+                            totalPrice = totalPrice + (Double.parseDouble(quantity.toString()) * Double.parseDouble(price.toString()));
+
+                        }
+
+                        datePanel.add(new JLabel("Price to be paid: "+totalPrice));
 
                         // Show the panel in a new dialog window
                         JOptionPane.showMessageDialog(null, datePanel, "Your receipt:", JOptionPane.PLAIN_MESSAGE);
