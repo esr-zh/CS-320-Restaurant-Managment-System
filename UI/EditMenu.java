@@ -93,6 +93,7 @@ public class EditMenu implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == editButton) {
             JOptionPane.showMessageDialog(null, "clicked Edit!");
+            OwnerMenu.generateUI();
         }
 
         if (e.getSource() == deleteButton && table.getSelectedRow() != -1){

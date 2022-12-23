@@ -7,7 +7,7 @@ import java.awt.event.ActionListener;
 
 
 
-public class OwnerMenu implements ActionListener {
+public class OwnerMenu() implements ActionListener {
     public static int yCoordinate  = 60;
     public static JPanel panel;
     public static JFrame frame;
