@@ -12,11 +12,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-//import static org.testng.AssertJUnit.assertEquals;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
-public class OrderDetailsTest extends DBTestable{
+
+public class OrderDetailsTest extends database.Tests.DBTestable {
     OrderDetails OD;
     public OrderDetailsTest() throws SQLException, ClassNotFoundException {
        super();
@@ -76,13 +76,20 @@ public class OrderDetailsTest extends DBTestable{
     }
 
     @Test
-    public void deleteOrderDetailsByIdWrongIdTest() throws SQLException {
+    public void deleteOrderDetailsByIdWrongIdTest()  {
         OD.setId(12);
         try {
             OD.deleteOrderDetailsById();
         }catch (Exception e){
             assertEquals("order details id not found",e.getMessage());
         }
+    }
+
+    @Test
+    public void getTotalPriceByTransactionIdTest() throws SQLException {
+        OD.setTransactionId(2);
+        int result = OD.getTotalPriceByTransactionId();
+        assertEquals(75+165,result);
     }
 
 }

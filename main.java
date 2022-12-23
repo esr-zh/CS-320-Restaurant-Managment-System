@@ -1,10 +1,15 @@
-import UI.EditMenu;
 import UI.OwnerMenu;
 
-public class main {
-    public static void main(String args[]) {
+import javax.swing.*;
+import java.sql.SQLException;
 
-        //Login_UI.generate_login_ui();
-        EditMenu.generateUI();
+public class main {
+    public static void main(String args[]) throws SQLException {
+        try {
+            UIManager.setLookAndFeel( UIManager.getCrossPlatformLookAndFeelClassName() );
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        OwnerMenu.generateUI();
     }
 }

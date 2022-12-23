@@ -1,123 +1,127 @@
 package UI;
 
+import database.DishType;
+import database.Menu;
+import database.utils.Connect;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
+import java.sql.SQLException;
 
-public class EditMenu implements ActionListener {
+
+public class EditMenu {
+    public static Connect connect = new Connect();
+    public static database.Menu menu = new Menu(connect.connection);
+    public static int yCoordinate  = 60;
+    public static JPanel panel;
     public static JFrame frame;
-    public static JTable table;
-    public static JButton editButton, deleteButton;
-    public static DefaultTableModel tableModel;
+    public static JTextArea descText;
+    public static long itemId;
+    public static JLabel typeLabel, nameLabel, priceLabel, lb1, quantityLabel, descLabel, portionLabel;
+    public static JTextField productName, productPrice, productQuantity, portionText;
+    public static JButton confirmBtn;
+    public static JComboBox<String> productType;
+    public static String typep, name, price, quantity, portion, description;
+    public static String[] type = {"appetizer","main dish","dessert","drinks"};
+
 
     public static void generateUI(){
-        JPanel tablePanel = new JPanel();
-        JPanel buttonPanel = new JPanel();
-
-        BoxLayout layout1 = new BoxLayout(tablePanel, BoxLayout.PAGE_AXIS);
-        BoxLayout layout2 = new BoxLayout(buttonPanel, BoxLayout.LINE_AXIS);
-
-        tablePanel.setLayout(layout1);
-        buttonPanel.setLayout(layout2);
-
-        tablePanel.setBorder(BorderFactory.createTitledBorder("Menu Table"));
-        buttonPanel.setBorder(BorderFactory.createTitledBorder("Select and Manage Menu Items"));
-
+        panel = new JPanel();
+        panel.setLayout(null);
         frame = new JFrame();
-        setFrameProperties();
-
-        String[][] data = {
-                {"Drink", "Water", "$0.5", "25", "225g", "bubuwefwoifejvjofkeovkeokvkr"},
-                {"Dessert", "Cheesecake", "$5", "45", "700g", "nfifniwlfoofnv;svo;;sdl[[[["},
-                {"Drink", "Water", "$0.5", "25", "225g", "bubuwefwoifejvjofkeovkeokvkr"},
-                {"Dessert", "Cheesecake", "$5", "45", "700g", "nfifniwlfoofnv;svo;;sdl[[[["},
-                {"Dessert", "Cheesecake", "$5", "45", "700g", "nfifniwlfoofnv;svo;;sdl[[[["},
-                {"Dessert", "Cheesecake", "$5", "45", "700g", "nfifniwlfoofnv;svo;;sdl[[[["},
-                {"Dessert", "Cheesecake", "$5", "45", "700g", "nfifniwlfoofnv;svo;;sdl[[[["},
-                {"Dessert", "Cheesecake", "$5", "45", "700g", "nfifniwlfoofnv;svo;;sdl[[[["},
-                {"Dessert", "Cheesecake", "$5", "45", "700g", "nfifniwlfoofnv;svo;;sdl[[[["},
-                {"Dessert", "Cheesecake", "$5", "45", "700g", "nfifniwlfoofnv;svo;;sdl[[[["},
-
-
-        };
-
-        String[] columnNames = {"Type", "Name", "Price", "Quantity", "Portion", "Description"};
-        tableModel = new DefaultTableModel(data, columnNames);
-        table = new JTable(tableModel);
-        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);//prevent a user from selecting multiple rows
-        setDimensions();
-
-        JScrollPane sp = new JScrollPane(table);
-        tablePanel.add(sp);
-
-        buttonPanel.add(Box.createHorizontalGlue());
-        editButton = new JButton("Edit");
-        btnProperties(editButton);
-        buttonPanel.add(editButton);
-
-        buttonPanel.add(Box.createRigidArea(new Dimension(20, 0)));
-
-        deleteButton = new JButton("Delete");
-        btnProperties(deleteButton);
-        buttonPanel.add(deleteButton);
-        buttonPanel.add(Box.createHorizontalGlue());
-
-        frame.add(tablePanel, BorderLayout.CENTER);
-        frame.add(buttonPanel, BorderLayout.PAGE_END);
-        frame.pack();
-
-
-    }
-
-    public static void setFrameProperties() {
-        frame.setLayout(new BorderLayout());
         frame.setTitle("Edit Menu");
-        frame.setSize(2400,2000);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(500,600);
+        yCoordinate = 60;
+        frame.add(panel);
+
+
+        lb1 = new JLabel("Edit the following item to your preference: ");
+        lb1.setBounds(5,10,300,20);
+        panel.add(lb1);
+
+        //Creating a drop-down menu
+        typeLabel = new JLabel("Type: ");
+        typeLabel.setBounds(100, yCoordinate,140, 20);
+        panel.add(typeLabel);
+        productType = new JComboBox<>(type);
+        productType.setBounds(200, yCoordinate, 140,25);
+        panel.add(productType);
+        yCoordinate+=60;
+
+        nameLabel = new JLabel("Name: ");
+        productName =  new JTextField();
+        addToPanel(nameLabel, productName);
+
+        priceLabel = new JLabel("Price: ");
+        productPrice = new JTextField();
+        addToPanel(priceLabel, productPrice);
+
+        quantityLabel = new JLabel("Quantity: ");
+        productQuantity = new JTextField();
+        addToPanel(quantityLabel, productQuantity);
+
+        portionLabel = new JLabel("Portion:");
+        portionText = new JTextField();
+        addToPanel(portionLabel,portionText);
+
+        //Creating a Text Area big enough for description
+        descLabel = new JLabel("Description:");
+        descText = new JTextArea();
+        addTextArea(descLabel, descText);
+
+        confirmBtn = new JButton("Confirm");
+        confirmBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                DishType dishType = new DishType();
+                menu.setId(itemId);
+                menu.setQuantity(Long.parseLong(productQuantity.getText()));
+                menu.setName(productName.getText());
+                menu.setPrice(Double.parseDouble(productPrice.getText()));
+                menu.setDescription(descText.getText());
+                menu.setServingAmount(Long.parseLong(portionText.getText()));
+                menu.setDishTypeId(dishType.getSalaryType((String) productType.getSelectedItem()));
+                try {
+                    if (menu.updateMenu()) {
+                        JOptionPane.showMessageDialog(null, "Changes to item have been saved!");
+                        frame.setVisible(false);
+                    }
+                } catch (SQLException | ClassNotFoundException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        });
+        btnProperties(confirmBtn);
+
         frame.setVisible(true);
     }
 
-    private static void btnProperties(JButton button) {
-        button.setForeground(Color.WHITE);
-        button.setBackground(Color.BLACK);
-        button.setOpaque(true);
-        button.setBorderPainted(false);
-        button.setAlignmentX(Component.CENTER_ALIGNMENT);
-        button.addActionListener(new EditMenu());
+
+    public static void addToPanel(JLabel label, JTextField text){
+        label.setBounds(100, yCoordinate,140, 20);
+        panel.add(label);
+        text.setBounds(200, yCoordinate,140,25);
+        panel.add(text);
+        yCoordinate+=60;
     }
 
-    public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == editButton) {
-            JOptionPane.showMessageDialog(null, "clicked Edit!");
-            OwnerMenu.generateUI();
-        }
-
-        if (e.getSource() == deleteButton && table.getSelectedRow() != -1){
-            tableModel.removeRow(table.getSelectedRow());
-            JOptionPane.showMessageDialog(null, "Selected item deleted successfully");
-
-        }
+    public static void btnProperties(JButton b){
+        b.setBounds(180, yCoordinate+60,120,30);
+        b.setAlignmentX(Component.CENTER_ALIGNMENT);
+        b.setOpaque(true);
+        panel.add(b);
     }
 
-    public static void setDimensions(){
-        table.setRowHeight(80);
-        table.getColumnModel().getColumn(5).setPreferredWidth(1000);
-        table.getColumnModel().getColumn(4).setPreferredWidth(250);
-        table.getColumnModel().getColumn(3).setPreferredWidth(250);
-        table.getColumnModel().getColumn(2).setPreferredWidth(200);
-        table.getColumnModel().getColumn(1).setPreferredWidth(400);
-        table.getColumnModel().getColumn(0).setPreferredWidth(300);
-
-
+    public static void addTextArea(JLabel label, JTextArea Atext){
+        label.setBounds(100, yCoordinate,140,20);
+        panel.add(descLabel);
+        Atext.setBounds(200, yCoordinate,140,80);
+        Atext.setLineWrap(true);
+        Atext.setWrapStyleWord(true);
+        panel.add(Atext);
+        yCoordinate+=60;
     }
-
-
-
-
-
 
 }
