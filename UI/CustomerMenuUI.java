@@ -11,6 +11,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
 
@@ -32,7 +33,7 @@ public class CustomerMenuUI{
     public static JButton addButton, deleteButton, checkoutButton, transactionButton;
 
     public static List<List<String>> data = new ArrayList<>();
-    public static String[] options = {"No", "Yes"}, productTypes;
+    public static String[] options = {"Yes", "No"}, productTypes;
 
     public static DefaultTableModel tableModel;
 
@@ -87,15 +88,26 @@ public class CustomerMenuUI{
         checkoutButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showOptionDialog(null,
-                    "Do you want a receipt?",
-                    "Checkout Success",
-                    JOptionPane.DEFAULT_OPTION,
-                    JOptionPane.QUESTION_MESSAGE,
-                    null,
-                    options,
-                    options[0]);
+                    int response = JOptionPane.showOptionDialog(null,
+                            "Do you want a receipt?",
+                            "Checkout Success",
+                            JOptionPane.DEFAULT_OPTION,
+                            JOptionPane.QUESTION_MESSAGE,
+                            null,
+                            options,
+                            options[0]);
 
+                    if (response == 0) {  // 1 is the index of the "Yes" option in the options array
+                        // Create a new panel with today's date
+                        JPanel datePanel = new JPanel();
+                        String today = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+                        datePanel.add(new JLabel("Transaction date: "+today));
+                        datePanel.add(table);
+
+                        // Show the panel in a new dialog window
+                        JOptionPane.showMessageDialog(null, datePanel, "Your receipt:", JOptionPane.PLAIN_MESSAGE);
+                    }
+                }
 //                try {
 //                    TH.setUserId(4);
 //                    TH.setHasPaid(false);
@@ -103,7 +115,6 @@ public class CustomerMenuUI{
 //                } catch (SQLException | ClassNotFoundException ex) {
 //                    throw new RuntimeException(ex);
 //                }
-            }
         });
         btnProperties(checkoutButton);
         checkoutButton.setBounds(260, 280, 150, 25);
