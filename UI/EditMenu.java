@@ -5,6 +5,8 @@ import database.Menu;
 import database.utils.Connect;
 
 import javax.swing.*;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -86,6 +88,8 @@ public class EditMenu {
                 try {
                     if (menu.updateMenu()) {
                         JOptionPane.showMessageDialog(null, "Changes to item have been saved!");
+                        OwnerMenu.frame.dispose();
+                        OwnerMenu.generateUI();
                         frame.setVisible(false);
                     }
                 } catch (SQLException | ClassNotFoundException ex) {
@@ -123,5 +127,11 @@ public class EditMenu {
         panel.add(Atext);
         yCoordinate+=60;
     }
+//    yourtableObject.getModel().addTableModelListener(new TableModelListener() {
+//
+//        public void tableChanged(TableModelEvent e) {
+//            // your code goes here, whatever you want to do when something changes in the table
+//        }
+//    });
 
 }
