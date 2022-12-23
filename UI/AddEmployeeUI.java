@@ -186,7 +186,7 @@ public class AddEmployeeUI extends BasicComboBoxRenderer implements ActionListen
             */
 
             try {
-                String salary = inputSalary.getText().substring(1);
+                String salary = inputSalary.getText();
                 employee.setSalary(Long.parseLong(salary));
             } catch (NumberFormatException nfe) {
                 JOptionPane.showMessageDialog(null, nfe.getMessage());
