@@ -17,7 +17,7 @@ public class SalaryType {
 
     public int getSalaryType(String value){
         for (Integer item: userRoleTable.keySet()) {
-            if (Objects.equals(userRoleTable.get(item), value)) return item;
+            if (Objects.equals(userRoleTable.get(item), value.toLowerCase())) return item;
         }
         return 0;
     }

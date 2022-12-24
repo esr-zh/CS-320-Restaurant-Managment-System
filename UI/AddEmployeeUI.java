@@ -16,6 +16,7 @@ public class AddEmployeeUI extends BasicComboBoxRenderer{
     public static Connect connect = new Connect();
     public static Employee employee = new Employee(connect.connection);
     public static User user = new User(connect.connection);
+    public static JFrame addEmployeeFrame = new JFrame();
     public static long empUserID;
     public static SalaryType salaryType = new SalaryType();
     public static UserRole userRole = new UserRole();
@@ -28,8 +29,6 @@ public class AddEmployeeUI extends BasicComboBoxRenderer{
     public static void generateEmployeeUI(){
         employeePanel = new JPanel();
         employeePanel.setLayout(null);
-
-        JFrame addEmployeeFrame = new JFrame();
         setFrameProperties(addEmployeeFrame);
         addEmployeeFrame.add(employeePanel);
 
@@ -70,13 +69,14 @@ public class AddEmployeeUI extends BasicComboBoxRenderer{
         submitButton.setBounds(300, 350, 90, 25);
         submitButton.addActionListener(e -> {
             try {
+                // i will run the program and you will see what i mena
                 long userRoleNum = userRole.getUserRole(inputRole.getText());
-                String username = nameLabel.getText();
+                String username = inputName.getText();
+                long salaryTypeNum = salaryType.getSalaryType(Objects.requireNonNull(contractList.getSelectedItem()).toString());
                 System.out.println("this is " + empUserID);
                 employee.setUserId(empUserID);// this is passed from edit employee ui
                 employee.setSalary(Long.parseLong(inputSalary.getText()));
-                System.out.println(inputContract.getText());
-                employee.setSalaryType(salaryType.getSalaryType(inputContract.getText()));// how can the get the selected id
+                employee.setSalaryType(salaryTypeNum);
                 int workingFromIndex = Objects.requireNonNull(fromList.getSelectedItem()).toString().indexOf(":");
                 int workingToIndex = Objects.requireNonNull(toList.getSelectedItem()).toString().indexOf(":");
                 int workingFrom =Integer.parseInt(fromList.getSelectedItem().toString().substring(0,workingFromIndex));
@@ -84,8 +84,8 @@ public class AddEmployeeUI extends BasicComboBoxRenderer{
                 Shift newShift = new Shift(workingFrom,workingTo);
                 if (employee.updateEmployee(username,userRoleNum,newShift)) {
                     JOptionPane.showMessageDialog(null, "Changes to item have been saved!");
-                    OwnerMenu.frame.dispose();
-                    OwnerMenu.generateUI();
+                    AddEmployeeUI.addEmployeeFrame.dispose();
+                    AddEmployeeUI.generateEmployeeUI();
                     addEmployeeFrame.setVisible(false);
                 }
             } catch (SQLException | ClassNotFoundException ex) {

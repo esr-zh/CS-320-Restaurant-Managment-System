@@ -122,7 +122,7 @@ public class Shift {
 
     public Boolean updateShift() throws SQLException { // only updates username and user role
         String SQL_QUERY = "UPDATE shift SET working_from = ?, working_to = ? WHERE shift.user_id = ?";
-        Shift currentShift = getShiftByUserId(id);
+        Shift currentShift = getShiftByUserId(userId);
         try (PreparedStatement statement = conn.prepareStatement(SQL_QUERY, Statement.RETURN_GENERATED_KEYS)) {
             if (workingTo != currentShift.getWorkingTo()) {
                 setWorkingTo(workingTo);
@@ -137,7 +137,7 @@ public class Shift {
 
             statement.setLong(1,workingFrom);
             statement.setLong(2,workingTo);
-            statement.setLong(3,id);
+            statement.setLong(3,userId);
 
             int affectedRows = statement.executeUpdate();
 

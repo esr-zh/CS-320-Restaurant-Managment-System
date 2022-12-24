@@ -143,7 +143,7 @@ public class User {
 
     public Boolean updateUser() throws SQLException { // only updates username and user role
 
-        String SQL_QUERY = "UPDATE user SET username = ? user_role = ? WHERE user.id = ?";
+        String SQL_QUERY = "UPDATE user SET username = ?, user_role = ? WHERE user.id = ?";
         User currentUser = getUserById(id);
         try (PreparedStatement statement = conn.prepareStatement(SQL_QUERY, Statement.RETURN_GENERATED_KEYS)) {
             if (!username.equals(currentUser.getUsername())) {

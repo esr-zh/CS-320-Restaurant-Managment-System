@@ -209,11 +209,12 @@ public class Employee {
         // -----------------------
 
         // updating shift
+        shift.setUserId(userId);
         shift.setWorkingTo(newShift.getWorkingTo());
         shift.setWorkingFrom(newShift.getWorkingFrom());
         // ---------
 
-        String SQL_QUERY = "UPDATE employee SET salary = ? salary_type = ? WHERE employee.user_id = ?";
+        String SQL_QUERY = "UPDATE employee SET salary = ?, salary_type = ? WHERE employee.user_id = ?";
         Employee currentEmp = getEmployeeId(userId);
         try (PreparedStatement statement = conn.prepareStatement(SQL_QUERY, Statement.RETURN_GENERATED_KEYS)) {
 
