@@ -10,6 +10,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -44,17 +45,24 @@ public class EditEmployeeUI{
             setFrameProperties();
 
             // Data to be displayed in the JTable
-            String[][] data = {
-                    {"1", "Esrah", "Chef", "Monthly", "1:00","8:00", "$499"},
-                    {"2", "Mohammad", "Waiter", "Weekly", "3:00","4:00", "$100"},
-                    {"", "", "", "", "", ""},
-                    {"", "", "", "", "", ""},
-                    {"", "", "", "", "", ""},
-                    {"", "", "", "", "", ""},
-            };
+
             // Column Names
+
             String[] columnNames = {"ID", "Name", "Role", "Contract", "Working From","Working To", "Salary"};
-            tableModel = new DefaultTableModel(data, columnNames);
+            tableModel = new DefaultTableModel(null, columnNames);
+            try {
+                List<List<String>> results = employee.getAllEmployees();
+                for (List<String> row : results) {
+                    Object[] insertedRow = new Object[row.size()];
+                    for (int i = 0; i < row.size(); i++) {
+                        insertedRow[i] = row.get(i);
+                    }
+                    tableModel.addRow(insertedRow);
+                }
+                System.out.println(results);
+            } catch (Exception e){
+
+            }
             dataTable = new JTable(tableModel);
             dataTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); //prevent a user from selecting multiple rows
             JScrollPane sp = new JScrollPane(dataTable);

@@ -1,6 +1,9 @@
 package database;
 
+import database.utils.Connect;
+
 import java.sql.*;
+import java.util.List;
 
 public class Employee {
     private Connection conn;
@@ -49,6 +52,14 @@ public class Employee {
 
     public void setSalaryType(long salaryType) {
         this.salaryType = salaryType;
+    }
+
+    public List<List<String>> getAllEmployees() throws SQLException {
+//        String[] columnNames = {"ID", "Name", "Role", "Contract", "Working From","Working To", "Salary"};
+        String SQL_INSERT = "SELECT employee.id, user.username, user.user_role, employee.salary_type, shift.working_from, shift.working_to, employee.salary from employee join user on employee.user_id = user.id join shift on employee.user_id=shift.user_id";
+        PreparedStatement statement = conn.prepareStatement(SQL_INSERT);
+        ResultSet rs = statement.executeQuery();
+        return Connect.returnArraylist(rs);
     }
 
     public Employee getEmployeeId(long userId) throws SQLException {

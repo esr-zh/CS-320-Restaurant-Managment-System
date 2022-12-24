@@ -20,7 +20,7 @@ public class AddEmployeeUI extends BasicComboBoxRenderer{
     public static JTextField inputName, inputRole, inputWorkingHourFrom, inputWorkingHourTo, inputContract, inputSalary;
     public static JButton submitButton;
     public static JComboBox<String> contractList, roleList, toList, fromList;
-    public static void generateEmployeeUI() {
+    public static void generateEmployeeUI(){
         employeePanel = new JPanel();
         employeePanel.setLayout(null);
 
@@ -44,7 +44,7 @@ public class AddEmployeeUI extends BasicComboBoxRenderer{
         salaryLabel = new JLabel("Salary:");
         inputSalary = new JTextField();
 
-        inputSalary.setText("$100");
+        inputSalary.setText("100");
 
         addComponentToPanel(nameLabel, inputName);
         addRoleDropDown(roleLabel, role);
@@ -143,13 +143,13 @@ public class AddEmployeeUI extends BasicComboBoxRenderer{
         button.setOpaque(true);
         button.setBorderPainted(false);
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
-        button.addActionListener((ActionListener) new AddEmployeeUI());
+//        button.addActionListener((ActionListener) new AddEmployeeUI());
     }
 
     private static void setFrameProperties(JFrame frame){
         frame.setTitle("Add New Employee!");
         frame.setSize(700, 700);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        yCoordinate = 60;
         frame.setBounds(10,10,625,500);
         Helper.centerWindow(frame);
         frame.setResizable(false);
