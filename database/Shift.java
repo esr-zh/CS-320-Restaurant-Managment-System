@@ -16,6 +16,13 @@ public class Shift {
         this.conn = conn;
     }
 
+    public Shift(long id, long userId, long workingFrom, long workingTo){
+        this.id = id;
+        this.userId = userId;
+        this.workingFrom = workingFrom;
+        this.workingTo = workingTo;
+    }
+
     public long getId() {
         return id;
     }
@@ -96,5 +103,18 @@ public class Shift {
             return (int) (getHowManyWorkingHoursByUserId(userId) * employee.getSalary() * 30);
 
         return 0;
+    }
+
+    public Shift getShiftByUserId(long userId) throws SQLException {
+        String SQL_QUERY = "SELECT * FROM shift WHERE shift.user_id = ?";
+        PreparedStatement statement = conn.prepareStatement(SQL_QUERY);
+        statement.setLong(1, userId);
+        ResultSet rs = statement.executeQuery();
+        if (!rs.next()){
+            throw new SQLException("shift info not found!");
+        }
+
+        return new Shift(rs.getLong(1),rs.getLong(2),rs.getLong(3),rs.getLong(4) );
+
     }
 }

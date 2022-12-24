@@ -66,7 +66,8 @@ public class AddEmployeeUI extends BasicComboBoxRenderer{
         submitButton.setBounds(300, 350, 90, 25);
         submitButton.addActionListener(e -> {
             try {
-                if (employee.updateMenu()) {
+                // we pass useername to update empolyee
+                if (employee.updateEmployee(username)) {
                     JOptionPane.showMessageDialog(null, "Changes to item have been saved!");
                     OwnerMenu.frame.dispose();
                     OwnerMenu.generateUI();

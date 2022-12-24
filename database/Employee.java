@@ -152,4 +152,83 @@ public class Employee {
             return true;
         }
     }
+
+//    public boolean updateEmployee(String username) throws SQLException, ClassNotFoundException {
+//        String SQL_QUERY = "UPDATE employee SET user.username = ? employee.user_id = ?, user.user_role = ?,  employee.salary = ?, employee.salary_type = ?," +
+//                "shift.working_from = ?,shift.working_to = ? WHERE employee.user_id = ? from employee join user on employee.user_id = user.id join shift on employee.user_id=shift.user_id";
+//        Employee current = getEmployeeId(id);
+//        try (PreparedStatement statement = conn.prepareStatement(SQL_QUERY, Statement.RETURN_GENERATED_KEYS)) {
+//            statement.setLong(7, id);
+//
+//            if (user.username = null){
+//
+//            }
+//            if (user.user_role = null){
+//
+//            }
+//            if (shift.working_from = null){
+//
+//            }
+//            if (shift.working_to = null){
+//
+//            }
+//            if (salary == 0)
+//                setSalary(current.getSalary());
+//            if (salaryType == 0)
+//                setSalaryType(current.getSalaryType());
+//            if (userId == 0)
+//                setUserId(current.getUserId());
+//
+//            System.out.println(this);
+//            int affectedRows = execute(statement);
+//            if (affectedRows == 0) {
+//                throw new SQLException("deleting menu failed, no rows affected.");
+//            }
+//            return true;
+//        }
+//    }
+
+    public boolean updateEmployee(String username, User user) throws SQLException, ClassNotFoundException {
+        // if the user wants to update usernaame or user role id
+        User user = new User(conn);
+        Shift shift = new Shift(conn);
+        User empUser = user.getUserByUsername(username);// this will throw an error if not username found
+        long empUserID = empUser.getId();
+        Employee currentEmp = getEmployeeId(empUserID);
+        Shift currentShift = shift.getShiftByUserId(empUserID);// we need to implement this inside hte shift model
+        if (empUser.getUserRole() == userRole){ //
+
+        }
+        if (shift.working_from = null){
+
+        }
+        if (shift.working_to = null){
+
+        }
+        if (salary == 0)
+            setSalary(current.getSalary());
+        if (salaryType == 0)
+            setSalaryType(current.getSalaryType());
+        if (userId == 0)
+            setUserId(current.getUserId());
+
+        System.out.println(this);
+        int affectedRows = execute(statement);
+        if (affectedRows == 0) {
+            throw new SQLException("deleting menu failed, no rows affected.");
+        }
+        return true;
+    }
+    private int execute(PreparedStatement statement) throws SQLException {
+        statement.setString(1, name);
+        statement.setString(2, description);
+        statement.setLong(3, servingAmount);
+        statement.setDouble(4, price);
+        statement.setLong(5, dishTypeId);
+        statement.setLong(6, quantity);
+
+        return statement.executeUpdate();
+    }
+
 }
+
