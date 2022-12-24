@@ -1,118 +1,157 @@
 package UI;
 
+import database.Menu;
+import database.utils.Connect;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-
+import java.sql.SQLException;
+import java.util.List;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 public class OwnerMenu implements ActionListener {
-    public static int yCoordinate  = 60;
-    public static JPanel panel;
+    public static Connect connect = new Connect();
+    public static Menu menu = new Menu(connect.connection);
     public static JFrame frame;
-    public static JTextArea descText;
-    public static JLabel typeLabel, nameLabel, priceLabel, lb1, quantityLabel, descLabel, portionLabel;
-    public static JTextField nameText, priceText, quantityText, portionText;
-    public static JButton button;
-    public static JComboBox<String> l;
-    public static String typep, name, price, quantity, portion, description;
-    public static String[] type = {"Appetizer","Main Dish","Dessert","Drink"};
+    public static JTable table;
+    public static JButton editButton, deleteButton, addButton;
+    public static DefaultTableModel tableModel;
 
+    public static void generateUI() throws SQLException {
+        JPanel tablePanel = new JPanel();
+        JPanel buttonPanel = new JPanel();
 
-    public static void generateUI(){
-        panel = new JPanel();
-        panel.setLayout(null);
+        BoxLayout layout1 = new BoxLayout(tablePanel, BoxLayout.PAGE_AXIS);
+        BoxLayout layout2 = new BoxLayout(buttonPanel, BoxLayout.LINE_AXIS);
+
+        tablePanel.setLayout(layout1);
+        buttonPanel.setLayout(layout2);
+
+        tablePanel.setBorder(BorderFactory.createTitledBorder("Menu Table"));
+        buttonPanel.setBorder(BorderFactory.createTitledBorder("Select and Manage Menu Items"));
+
         frame = new JFrame();
+        setFrameProperties();
+
+        String[] columnNames = {"Id","Type", "Name", "Price", "Quantity", "Portion", "Description"};
+        tableModel = new DefaultTableModel(null, columnNames);
+
+        List<List<String>> result = menu.listAllMenu();
+
+        for(List<String> row : result){
+            Object[] insertedRow = new Object[row.size()];
+            for (int i = 0; i < row.size(); i++) {
+                insertedRow[i] = row.get(i);
+            }
+            tableModel.addRow(insertedRow);
+        }
+        System.out.println(result);
+
+        table = new JTable(tableModel);
+        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);//prevent a user from selecting multiple rows
+
+        JScrollPane sp = new JScrollPane(table);
+        tablePanel.add(sp);
+
+        buttonPanel.add(Box.createHorizontalGlue());
+        addButton = new JButton("Add");
+        addButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                AddMenu.generateUI();
+            }
+
+        });
+        btnProperties(addButton);
+        buttonPanel.add(addButton);
+        buttonPanel.add(Box.createRigidArea(new Dimension(20, 0)));
+
+        editButton = new JButton("Edit");
+        editButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int selectedRow = table.getSelectedRow();
+                long productId = Integer.parseInt(tableModel.getValueAt(selectedRow,0).toString());
+                String productType = (String) tableModel.getValueAt(selectedRow,1);
+                String productName = (String) tableModel.getValueAt(selectedRow,2);
+                String productPrice = (String) tableModel.getValueAt(selectedRow,3);
+                String productQuantity = (String) tableModel.getValueAt(selectedRow,4);
+                String productPortion = (String) tableModel.getValueAt(selectedRow,5);
+                String productDesc = (String) tableModel.getValueAt(selectedRow,6);
+                System.out.println(productType);
+                EditMenu.generateUI();
+                EditMenu.itemId = productId;
+                EditMenu.productType.setSelectedItem(productType);
+                EditMenu.productName.setText(productName);
+                EditMenu.productPrice.setText(productPrice);
+                EditMenu.productQuantity.setText(productQuantity);
+                EditMenu.portionText.setText(productPortion);
+                EditMenu.descText.setText(productDesc);
+            }
+        });
+        btnProperties(editButton);
+        buttonPanel.add(editButton);
+
+
+        buttonPanel.add(Box.createRigidArea(new Dimension(20, 0)));
+
+        deleteButton = new JButton("Delete");
+        btnProperties(deleteButton);
+        buttonPanel.add(deleteButton);
+        buttonPanel.add(Box.createHorizontalGlue());
+
+        frame.add(tablePanel, BorderLayout.CENTER);
+        frame.add(buttonPanel, BorderLayout.PAGE_END);
+        frame.pack();
+
+
+    }
+
+    public static void setFrameProperties() {
+        frame.setLayout(new BorderLayout());
         frame.setTitle("Edit Menu");
-        frame.setSize(500,600);
+        frame.setSize(700,700);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.add(panel);
-
-
-        lb1 = new JLabel("Edit the following item to your preference: ");
-        lb1.setBounds(5,10,300,20);
-        panel.add(lb1);
-
-        //Creating a drop-down menu
-        typeLabel = new JLabel("Item Type: ");
-        typeLabel.setBounds(100, yCoordinate,140, 20);
-        panel.add(typeLabel);
-        l = new JComboBox<>(type);
-        l.setBounds(200, yCoordinate, 140,25);
-        panel.add(l);
-        yCoordinate+=60;
-
-        nameLabel = new JLabel("Item Name: ");
-        nameText =  new JTextField();
-        addToPanel(nameLabel, nameText);
-
-        priceLabel = new JLabel("Item Price: ");
-        priceText = new JTextField();
-        addToPanel(priceLabel, priceText);
-
-        quantityLabel = new JLabel("Item Quantity: ");
-        quantityText = new JTextField();
-        addToPanel(quantityLabel,quantityText);
-
-        portionLabel = new JLabel("Item Portion:");
-        portionText = new JTextField();
-        addToPanel(portionLabel,portionText);
-
-        //Creating a Text Area big enough for description
-        descLabel = new JLabel("Item Description:");
-        descText = new JTextArea();
-        addTextArea(descLabel, descText);
-
-        button = new JButton("Confirm");
-        btnProperties(button);
-
+        centerWindow(frame);
         frame.setVisible(true);
     }
 
-    @Override
+    private static void btnProperties(JButton button) {
+        button.setForeground(Color.WHITE);
+        button.setBackground(Color.BLACK);
+        button.setOpaque(true);
+        button.setBorderPainted(false);
+        button.setAlignmentX(Component.CENTER_ALIGNMENT);
+        button.addActionListener(new OwnerMenu());
+    }
+
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == button) {
-            JOptionPane.showMessageDialog(null, "Changes to item have been saved!");
-            typep  = (String) l.getSelectedItem();
-            name = nameText.getText();
-            price = priceText.getText();
-            quantity = quantityText.getText();
-            portion = portionText.getText();
-            description = descText.getText();
-            System.out.println(typep + "\n" + name + "\n" + price + "\n" + quantity +
-                    "\n" + portion + "\n" + description);
+
+        if (e.getSource() == deleteButton && table.getSelectedRow() != -1){
+            int selectedRow = table.getSelectedRow();
+            long productId = Integer.parseInt(tableModel.getValueAt(selectedRow,0).toString());
+            menu.setId(productId);
+            try {
+                if (menu.deleteMenu()){
+                    tableModel.removeRow(table.getSelectedRow());
+                    JOptionPane.showMessageDialog(null, "Selected item deleted successfully");
+                }
+            } catch (SQLException | ClassNotFoundException ex) {
+                throw new RuntimeException(ex);
+            }
+
         }
     }
-
-    public static void addToPanel(JLabel label, JTextField text){
-        label.setBounds(100, yCoordinate,140, 20);
-        panel.add(label);
-        text.setBounds(200, yCoordinate,140,25);
-        text.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        panel.add(text);
-        yCoordinate+=60;
-    }
-
-    public static void btnProperties(JButton b){
-        b.setBounds(180, yCoordinate+60,120,30);
-        b.setForeground(Color.WHITE);
-        b.setBackground(Color.BLACK);
-        b.setAlignmentX(Component.CENTER_ALIGNMENT);
-        b.setOpaque(true);
-        b.addActionListener(new OwnerMenu());
-        panel.add(b);
-    }
-
-    public static void addTextArea(JLabel label, JTextArea Atext){
-        label.setBounds(100, yCoordinate,140,20);
-        panel.add(descLabel);
-        Atext.setBounds(200, yCoordinate,140,80);
-        Atext.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        Atext.setLineWrap(true);
-        Atext.setWrapStyleWord(true);
-        panel.add(Atext);
-        yCoordinate+=60;
+    public static void centerWindow(Window frame) {
+        Rectangle bounds = frame.getGraphicsConfiguration().getBounds();
+        Dimension dimension = bounds.getSize();
+        int x = (int) (((dimension.getWidth() - frame.getWidth()) / 2) + bounds.getMinX());
+        int y = (int) (((dimension.getHeight() - frame.getHeight()) / 2) + bounds.getMinY());
+        frame.setLocation(x, y);
     }
 
 }

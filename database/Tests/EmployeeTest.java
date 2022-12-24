@@ -8,8 +8,8 @@ import org.junit.Test;
 
 import java.sql.SQLException;
 
-import static org.testng.Assert.assertTrue;
-import static org.testng.AssertJUnit.assertEquals;
+import static org.junit.Assert.assertEquals;
+
 
 public class EmployeeTest extends DBTestable{
     Employee employee;

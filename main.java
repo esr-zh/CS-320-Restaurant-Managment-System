@@ -1,9 +1,15 @@
-import UI.TransactionHistUI;
-import UI.*;
+import UI.OwnerMenu;
+
+import javax.swing.*;
+import java.sql.SQLException;
+
 public class main {
-    public static void main(String args[]) {
-        //Login_UI.generate_login_ui();
-        //new TransactionHistUI();
-        addEmployeeUI.generateEmployeeUI();
+    public static void main(String args[]) throws SQLException {
+        try {
+            UIManager.setLookAndFeel( UIManager.getCrossPlatformLookAndFeelClassName() );
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        OwnerMenu.generateUI();
     }
 }

@@ -1,19 +1,17 @@
 package UI;
 
+import UI.EditMenu.*;
 import database.DishType;
 import database.Menu;
 import database.utils.Connect;
 
 import javax.swing.*;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
-
-public class EditMenu {
+public class AddMenu {
     public static Connect connect = new Connect();
     public static database.Menu menu = new Menu(connect.connection);
     public static int yCoordinate  = 60;
@@ -23,24 +21,21 @@ public class EditMenu {
     public static long itemId;
     public static JLabel typeLabel, nameLabel, priceLabel, lb1, quantityLabel, descLabel, portionLabel;
     public static JTextField productName, productPrice, productQuantity, portionText;
-    public static JButton confirmBtn;
+    public static JButton submitBtn;
     public static JComboBox<String> productType;
-    public static String typep, name, price, quantity, portion, description;
     public static String[] type = {"appetizer","main dish","dessert","drinks"};
-
-
     public static void generateUI(){
         panel = new JPanel();
         panel.setLayout(null);
         frame = new JFrame();
-        frame.setTitle("Edit Menu");
+        frame.setTitle("Add Menu");
         frame.setSize(500,600);
         yCoordinate = 60;
         frame.add(panel);
         centerWindow(frame);
 
 
-        lb1 = new JLabel("Edit the following item to your preference: ");
+        lb1 = new JLabel("Add the following item of your preference: ");
         lb1.setBounds(5,10,300,20);
         panel.add(lb1);
 
@@ -74,8 +69,8 @@ public class EditMenu {
         descText = new JTextArea();
         addTextArea(descLabel, descText);
 
-        confirmBtn = new JButton("Confirm");
-        confirmBtn.addActionListener(new ActionListener() {
+        submitBtn = new JButton("Submit");
+        submitBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 DishType dishType = new DishType();
@@ -87,23 +82,21 @@ public class EditMenu {
                 menu.setServingAmount(Long.parseLong(portionText.getText()));
                 menu.setDishTypeId(dishType.getSalaryType((String) productType.getSelectedItem()));
                 try {
-                    if (menu.updateMenu()) {
-                        JOptionPane.showMessageDialog(null, "Changes to item have been saved!");
-                        OwnerMenu.frame.dispose();
-                        OwnerMenu.generateUI();
-                        frame.setVisible(false);
-                    }
+                    menu.createMenu();
+                    JOptionPane.showMessageDialog(null, "Item added successfully!");
+                    OwnerMenu.frame.dispose();
+                    OwnerMenu.generateUI();
+                    frame.setVisible(false);
+
                 } catch (SQLException | ClassNotFoundException ex) {
                     throw new RuntimeException(ex);
                 }
             }
         });
-        btnProperties(confirmBtn);
+        btnProperties(submitBtn);
 
         frame.setVisible(true);
     }
-
-
     public static void addToPanel(JLabel label, JTextField text){
         label.setBounds(100, yCoordinate,140, 20);
         panel.add(label);
@@ -136,4 +129,10 @@ public class EditMenu {
         frame.setLocation(x, y);
     }
 
+
+
 }
+
+
+
+
