@@ -77,15 +77,13 @@ public class EmployeeTableUI {
                     int row = dataTable.getSelectedRow();
                     if (dataTable.getSelectedRow() != -1) {
                         //edit employee based on ID:
-                        EditEmployeeUI2.generateUI();
-                        // for refresh table you need to pass "tableModel" into "AddEmployeeUI" ui
-                        EditEmployeeUI2.empUserID =  Integer.parseInt(dataTable.getModel().getValueAt(row, 0).toString());// this is important
-                        EmployeeUI.inputName.setText(dataTable.getModel().getValueAt(row, 1).toString());
-                        EmployeeUI.roleList.setSelectedItem(dataTable.getModel().getValueAt(row, 2).toString());
-                        EmployeeUI.contractList.setSelectedItem(dataTable.getModel().getValueAt(row, 3).toString());
-                        EmployeeUI.fromList.setSelectedItem(dataTable.getModel().getValueAt(row, 4).toString());
-                        EmployeeUI.toList.setSelectedItem(dataTable.getModel().getValueAt(row, 5).toString());
-                        EmployeeUI.inputSalary.setText(dataTable.getModel().getValueAt(row, 6).toString());
+                        EditEmployeeUI2 editEmployeeUI2 = new EditEmployeeUI2(Integer.parseInt(dataTable.getModel().getValueAt(row, 0).toString()));
+                        editEmployeeUI2.changeName(dataTable.getModel().getValueAt(row, 1).toString());
+                        editEmployeeUI2.roleList.setSelectedItem(dataTable.getModel().getValueAt(row, 2).toString());
+                        editEmployeeUI2.contractList.setSelectedItem(dataTable.getModel().getValueAt(row, 3).toString());
+                        editEmployeeUI2.fromList.setSelectedItem(dataTable.getModel().getValueAt(row, 4).toString());
+                        editEmployeeUI2.toList.setSelectedItem(dataTable.getModel().getValueAt(row, 5).toString());
+                        editEmployeeUI2.inputSalary.setText(dataTable.getModel().getValueAt(row, 6).toString());
                     }
                 }
             });

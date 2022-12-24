@@ -24,9 +24,14 @@ public class EmployeeUI extends BasicComboBoxRenderer{
     public static UserRole userRole = new UserRole();
     public static int yCoordinate = 60;
     JPanel employeePanel;
-    public static JLabel nameLabel, roleLabel, workingHourLabel, contractLabel, salaryLabel;
-    public static JTextField inputName, inputRole, inputWorkingHourFrom, inputWorkingHourTo, inputContract, inputSalary;
-    public static JComboBox<String> contractList, roleList, toList, fromList;
+    public JLabel nameLabel, roleLabel, workingHourLabel, contractLabel, salaryLabel;
+    private JTextField inputName;
+    public JTextField inputRole;
+    public JTextField inputWorkingHourFrom;
+    public JTextField inputWorkingHourTo;
+    public JTextField inputContract;
+    public JTextField inputSalary;
+    public JComboBox<String> contractList, roleList, toList, fromList;
     JButton button;
 
     public JButton getBtn() {
@@ -39,6 +44,14 @@ public class EmployeeUI extends BasicComboBoxRenderer{
 
     public JFrame getAddEmployeeFrame() {
         return addEmployeeFrame;
+    }
+
+    public void changeName(String newName){
+        inputName.setText(newName);
+    }
+
+    public String getNameInputText(){
+        return inputName.getText();
     }
 
     public void generateUI(){
@@ -170,5 +183,8 @@ public class EmployeeUI extends BasicComboBoxRenderer{
 
     }
 
+    void closeWindow(){
+        addEmployeeFrame.dispose();
+    }
 }
 

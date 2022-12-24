@@ -16,7 +16,6 @@ public class AddEmployeeUI {
         });
         EmployeeUI ui = new EmployeeUI();
         ui.setBtn(button);
-        ui.generateUI();
 
     }
 
