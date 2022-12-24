@@ -18,7 +18,7 @@ public class OwnerMenu implements ActionListener {
     public static Menu menu = new Menu(connect.connection);
     public static JFrame frame;
     public static JTable table;
-    public static JButton editButton, deleteButton;
+    public static JButton editButton, deleteButton, addButton;
     public static DefaultTableModel tableModel;
 
     public static void generateUI() throws SQLException {
@@ -58,6 +58,18 @@ public class OwnerMenu implements ActionListener {
         tablePanel.add(sp);
 
         buttonPanel.add(Box.createHorizontalGlue());
+        addButton = new JButton("Add");
+        addButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                AddMenu.generateUI();
+            }
+
+        });
+        btnProperties(addButton);
+        buttonPanel.add(addButton);
+        buttonPanel.add(Box.createRigidArea(new Dimension(20, 0)));
+
         editButton = new JButton("Edit");
         editButton.addActionListener(new ActionListener() {
             @Override
@@ -84,6 +96,7 @@ public class OwnerMenu implements ActionListener {
         btnProperties(editButton);
         buttonPanel.add(editButton);
 
+
         buttonPanel.add(Box.createRigidArea(new Dimension(20, 0)));
 
         deleteButton = new JButton("Delete");
@@ -103,6 +116,7 @@ public class OwnerMenu implements ActionListener {
         frame.setTitle("Edit Menu");
         frame.setSize(700,700);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        centerWindow(frame);
         frame.setVisible(true);
     }
 
@@ -131,6 +145,13 @@ public class OwnerMenu implements ActionListener {
             }
 
         }
+    }
+    public static void centerWindow(Window frame) {
+        Rectangle bounds = frame.getGraphicsConfiguration().getBounds();
+        Dimension dimension = bounds.getSize();
+        int x = (int) (((dimension.getWidth() - frame.getWidth()) / 2) + bounds.getMinX());
+        int y = (int) (((dimension.getHeight() - frame.getHeight()) / 2) + bounds.getMinY());
+        frame.setLocation(x, y);
     }
 
 }
