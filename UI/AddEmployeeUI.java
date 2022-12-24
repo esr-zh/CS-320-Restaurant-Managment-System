@@ -20,13 +20,13 @@ public class AddEmployeeUI extends BasicComboBoxRenderer implements ActionListen
     public static JButton submitButton;
     public static JComboBox contractList, roleList, toList, fromList;
 
-    public static void generateEmployeeUI() {
+    public static JPanel generateEmployeeUI() {
         employeePanel = new JPanel();
         employeePanel.setLayout(null);
 
-        JFrame addEmployeeFrame = new JFrame();
+        /*JFrame addEmployeeFrame = new JFrame();
         setFrameProperties(addEmployeeFrame);
-        addEmployeeFrame.add(employeePanel);
+        addEmployeeFrame.add(employeePanel);*/
 
         String[] role = {"Chef", "Waiter"};
         String[] contact = {"Hourly", "Monthly"};
@@ -52,7 +52,8 @@ public class AddEmployeeUI extends BasicComboBoxRenderer implements ActionListen
         submitButton.setBounds(300, 350, 90, 25);
         btnProperties(submitButton);
         employeePanel.add(submitButton);
-        addEmployeeFrame.setVisible(true);
+       // addEmployeeFrame.setVisible(true);
+        return employeePanel;
     }
 
     public static void centerWindow(Window frame) {
@@ -184,7 +185,7 @@ public class AddEmployeeUI extends BasicComboBoxRenderer implements ActionListen
             System.out.println(salaryType.getSalaryType(contractList.getSelectedItem().toString().toLowerCase()));
             System.out.println(Long.parseLong(inputSalary.getText().substring(1)));
             */
-
+            //System.out.println(salaryType.getSalaryType(contractList.getSelectedItem().toString().toLowerCase()));
             try {
                 String salary = inputSalary.getText();
                 employee.setSalary(Long.parseLong(salary));
