@@ -1,4 +1,5 @@
-import UI.*;
+import UI.EmployeeManeger.AddEmployeeUI;
+import UI.EmployeeManeger.EmployeeTableUI;
 
 import javax.swing.*;
 
@@ -10,6 +11,7 @@ public class main {
             e.printStackTrace();
         }
 //        AddEmployeeUI.generateEmployeeUI();
-        EditEmployeeUI.generateUI();
+//        EmployeeTableUI.generateUI();
+        AddEmployeeUI.generateUI();
     }
 }

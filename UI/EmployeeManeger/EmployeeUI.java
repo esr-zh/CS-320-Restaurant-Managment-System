@@ -1,4 +1,9 @@
-package UI;
+package UI.EmployeeManeger;
+
+import database.Employee;
+import database.User;
+import database.utils.Connect;
+
 import UI.utils.Helper;
 import database.*;
 import database.utils.Connect;
@@ -10,23 +15,24 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.Objects;
+public class EmployeeUI extends BasicComboBoxRenderer{
+    Connect connect = new Connect();
+    Employee employee = new Employee(connect.connection);
+    User user = new User(connect.connection);
+    JFrame addEmployeeFrame = new JFrame();
+    SalaryType salaryType = new SalaryType();
+    UserRole userRole = new UserRole();
+    int yCoordinate = 60;
+    JPanel employeePanel;
+    JLabel nameLabel, roleLabel, workingHourLabel, contractLabel, salaryLabel;
+    JTextField inputName, inputRole, inputWorkingHourFrom, inputWorkingHourTo, inputContract, inputSalary;
+    JComboBox<String> contractList, roleList, toList, fromList;
 
-public class AddEmployeeUI extends BasicComboBoxRenderer{
+    public JFrame getAddEmployeeFrame() {
+        return addEmployeeFrame;
+    }
 
-    public static Connect connect = new Connect();
-    public static Employee employee = new Employee(connect.connection);
-    public static User user = new User(connect.connection);
-    public static JFrame addEmployeeFrame = new JFrame();
-    public static long empUserID;
-    public static SalaryType salaryType = new SalaryType();
-    public static UserRole userRole = new UserRole();
-    public static int yCoordinate = 60;
-    public static JPanel employeePanel;
-    public static JLabel nameLabel, roleLabel, workingHourLabel, contractLabel, salaryLabel;
-    public static JTextField inputName, inputRole, inputWorkingHourFrom, inputWorkingHourTo, inputContract, inputSalary;
-    public static JButton submitButton;
-    public static JComboBox<String> contractList, roleList, toList, fromList;
-    public static void generateEmployeeUI(){
+    public void generateUI(){
         employeePanel = new JPanel();
         employeePanel.setLayout(null);
         setFrameProperties(addEmployeeFrame);
@@ -55,50 +61,16 @@ public class AddEmployeeUI extends BasicComboBoxRenderer{
         addTimeDropDown(workingHourLabel, fromTime, toTime);
         addContractDropDown(contractLabel, contact);
         addComponentToPanel(salaryLabel, inputSalary);
-
-        submitButton = new JButton("Submit");
-        submitButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                employee.setSalary(Long.parseLong(inputSalary.getText()));
-                // continue working here
-                JOptionPane.showMessageDialog(null, "Employee added successfully!");
-
-            }
-        });
-        submitButton.setBounds(300, 350, 90, 25);
-        submitButton.addActionListener(e -> {
-            try {
-                // i will run the program and you will see what i mena
-                long userRoleNum = userRole.getUserRole(inputRole.getText());
-                String username = inputName.getText();
-                long salaryTypeNum = salaryType.getSalaryType(Objects.requireNonNull(contractList.getSelectedItem()).toString());
-                System.out.println("this is " + empUserID);
-                employee.setUserId(empUserID);// this is passed from edit employee ui
-                employee.setSalary(Long.parseLong(inputSalary.getText()));
-                employee.setSalaryType(salaryTypeNum);
-                int workingFromIndex = Objects.requireNonNull(fromList.getSelectedItem()).toString().indexOf(":");
-                int workingToIndex = Objects.requireNonNull(toList.getSelectedItem()).toString().indexOf(":");
-                int workingFrom =Integer.parseInt(fromList.getSelectedItem().toString().substring(0,workingFromIndex));
-                int workingTo =Integer.parseInt(toList.getSelectedItem().toString().substring(0,workingToIndex));
-                Shift newShift = new Shift(workingFrom,workingTo);
-                if (employee.updateEmployee(username,userRoleNum,newShift)) {
-                    JOptionPane.showMessageDialog(null, "Changes to item have been saved!");
-                    AddEmployeeUI.addEmployeeFrame.dispose();
-                    AddEmployeeUI.generateEmployeeUI();
-                    addEmployeeFrame.setVisible(false);
-                }
-            } catch (SQLException | ClassNotFoundException ex) {
-                throw new RuntimeException(ex);
-            }
-        }
-        );
-        btnProperties(submitButton);
-        employeePanel.add(submitButton);
+        // or we can make a method that adding a button to this frame
+        // we should the button here
         addEmployeeFrame.setVisible(true);
     }
 
-    public static void addTimeDropDown(JLabel label, String[] fromTime, String[] toTime){
+    public void addButton(JButton btn){
+        addEmployeeFrame.add(btn);
+    }
+
+    public void addTimeDropDown(JLabel label, String[] fromTime, String[] toTime){
         label.setBounds(150, yCoordinate, 150, 20);
         employeePanel.add(label);
         JLabel to = new JLabel(" to ");
@@ -121,7 +93,7 @@ public class AddEmployeeUI extends BasicComboBoxRenderer{
         yCoordinate+=60;
     }
 
-    public static void addComponentToPanel(JLabel label, JTextField textField){
+    public void addComponentToPanel(JLabel label, JTextField textField){
         label.setBounds(150, yCoordinate, 150, 20);
         employeePanel.add(label);
         textField.setBounds(250, yCoordinate, 193, 28);
@@ -129,7 +101,7 @@ public class AddEmployeeUI extends BasicComboBoxRenderer{
         yCoordinate+=60;
     }
 
-    public static void addRoleDropDown(JLabel label, String[] list){
+    public void addRoleDropDown(JLabel label, String[] list){
         label.setBounds(150, yCoordinate, 150, 20);
         employeePanel.add(label);
         roleList = new JComboBox<>(list);
@@ -147,7 +119,7 @@ public class AddEmployeeUI extends BasicComboBoxRenderer{
         employeePanel.add(roleList);
         yCoordinate+=60;
     }
-    public static void addContractDropDown(JLabel label, String[] list){
+    public void addContractDropDown(JLabel label, String[] list){
         label.setBounds(150, yCoordinate, 150, 20);
         employeePanel.add(label);
         contractList = new JComboBox<>(list);
@@ -167,16 +139,8 @@ public class AddEmployeeUI extends BasicComboBoxRenderer{
         yCoordinate+=60;
     }
 
-    private static void btnProperties(JButton button) {
-        button.setForeground(Color.WHITE);
-        button.setBackground(Color.BLACK);
-        button.setOpaque(true);
-        button.setBorderPainted(false);
-        button.setAlignmentX(Component.CENTER_ALIGNMENT);
-//        button.addActionListener((ActionListener) new AddEmployeeUI());
-    }
 
-    private static void setFrameProperties(JFrame frame){
+    private void setFrameProperties(JFrame frame){
         frame.setTitle("Add New Employee!");
         frame.setSize(700, 700);
         yCoordinate = 60;
@@ -187,3 +151,4 @@ public class AddEmployeeUI extends BasicComboBoxRenderer{
     }
 
 }
+

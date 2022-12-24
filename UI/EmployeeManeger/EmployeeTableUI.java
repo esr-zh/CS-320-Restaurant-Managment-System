@@ -1,5 +1,6 @@
-package UI;
+package UI.EmployeeManeger;
 
+import UI.EmployeeManeger.EditEmployeeUI;
 import UI.utils.Helper;
 import database.Employee;
 import database.utils.Connect;
@@ -16,7 +17,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-public class EditEmployeeUI{
+public class EmployeeTableUI {
     public static Connect connect = new Connect();
     public static Employee employee = new Employee(connect.connection);
     public static JFrame employeeFrame;
@@ -76,14 +77,15 @@ public class EditEmployeeUI{
                     int row = dataTable.getSelectedRow();
                     if (dataTable.getSelectedRow() != -1) {
                         //edit employee based on ID:
-                        AddEmployeeUI.generateEmployeeUI();
-                        AddEmployeeUI.empUserID =  Integer.parseInt(dataTable.getModel().getValueAt(row, 0).toString());// this is important
-                        AddEmployeeUI.inputName.setText(dataTable.getModel().getValueAt(row, 1).toString());
-                        AddEmployeeUI.roleList.setSelectedItem(dataTable.getModel().getValueAt(row, 2).toString());
-                        AddEmployeeUI.contractList.setSelectedItem(dataTable.getModel().getValueAt(row, 3).toString());
-                        AddEmployeeUI.fromList.setSelectedItem(dataTable.getModel().getValueAt(row, 4).toString());
-                        AddEmployeeUI.toList.setSelectedItem(dataTable.getModel().getValueAt(row, 5).toString());
-                        AddEmployeeUI.inputSalary.setText(dataTable.getModel().getValueAt(row, 6).toString());
+                        EditEmployeeUI.generateEmployeeUI();
+                        // for refresh table you need to pass "tableModel" into "AddEmployeeUI" ui
+                        EditEmployeeUI.empUserID =  Integer.parseInt(dataTable.getModel().getValueAt(row, 0).toString());// this is important
+                        EditEmployeeUI.inputName.setText(dataTable.getModel().getValueAt(row, 1).toString());
+                        EditEmployeeUI.roleList.setSelectedItem(dataTable.getModel().getValueAt(row, 2).toString());
+                        EditEmployeeUI.contractList.setSelectedItem(dataTable.getModel().getValueAt(row, 3).toString());
+                        EditEmployeeUI.fromList.setSelectedItem(dataTable.getModel().getValueAt(row, 4).toString());
+                        EditEmployeeUI.toList.setSelectedItem(dataTable.getModel().getValueAt(row, 5).toString());
+                        EditEmployeeUI.inputSalary.setText(dataTable.getModel().getValueAt(row, 6).toString());
 
                     }
                 }
