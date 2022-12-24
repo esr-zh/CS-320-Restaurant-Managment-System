@@ -9,7 +9,7 @@ public class main {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        AddEmployeeUI.generateEmployeeUI();
+//        AddEmployeeUI.generateEmployeeUI();
         EditEmployeeUI.generateUI();
     }
 }

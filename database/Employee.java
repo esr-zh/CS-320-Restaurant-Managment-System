@@ -56,7 +56,7 @@ public class Employee {
 
     public List<List<String>> getAllEmployees() throws SQLException {
 //        String[] columnNames = {"ID", "Name", "Role", "Contract", "Working From","Working To", "Salary"};
-        String SQL_INSERT = "SELECT employee.id, user.username, user.user_role, employee.salary_type, shift.working_from, shift.working_to, employee.salary from employee join user on employee.user_id = user.id join shift on employee.user_id=shift.user_id";
+        String SQL_INSERT = "SELECT user.id, user.username, user.user_role, employee.salary_type, shift.working_from, shift.working_to, employee.salary from employee join user on employee.user_id = user.id join shift on employee.user_id=shift.user_id";
         PreparedStatement statement = conn.prepareStatement(SQL_INSERT);
         ResultSet rs = statement.executeQuery();
         return Connect.returnArraylist(rs);
@@ -188,46 +188,63 @@ public class Employee {
 //        }
 //    }
 
-    public boolean updateEmployee(String username, User user) throws SQLException, ClassNotFoundException {
-        // if the user wants to update usernaame or user role id
-        User user = new User(conn);
-        Shift shift = new Shift(conn);
-        User empUser = user.getUserByUsername(username);// this will throw an error if not username found
-        long empUserID = empUser.getId();
-        Employee currentEmp = getEmployeeId(empUserID);
-        Shift currentShift = shift.getShiftByUserId(empUserID);// we need to implement this inside hte shift model
-        if (empUser.getUserRole() == userRole){ //
-
-        }
-        if (shift.working_from = null){
-
-        }
-        if (shift.working_to = null){
-
-        }
-        if (salary == 0)
-            setSalary(current.getSalary());
-        if (salaryType == 0)
-            setSalaryType(current.getSalaryType());
-        if (userId == 0)
-            setUserId(current.getUserId());
-
-        System.out.println(this);
-        int affectedRows = execute(statement);
-        if (affectedRows == 0) {
-            throw new SQLException("deleting menu failed, no rows affected.");
-        }
-        return true;
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "conn=" + conn +
+                ", id=" + id +
+                ", salary=" + salary +
+                ", userId=" + userId +
+                ", salaryType=" + salaryType +
+                '}';
     }
-    private int execute(PreparedStatement statement) throws SQLException {
-        statement.setString(1, name);
-        statement.setString(2, description);
-        statement.setLong(3, servingAmount);
-        statement.setDouble(4, price);
-        statement.setLong(5, dishTypeId);
-        statement.setLong(6, quantity);
 
-        return statement.executeUpdate();
+    public boolean updateEmployee(String newUsername, long userRole, Shift newShift) throws SQLException, ClassNotFoundException {
+        Shift shift = new Shift(conn);
+        User user = new User(conn);
+        // updating username or userRole
+        user.setId(userId);// this should not be invalid
+        user.setUsername(newUsername);// update username
+        user.setUserRole(userRole);// update user role
+        // -----------------------
+
+        // updating shift
+        shift.setWorkingTo(newShift.getWorkingTo());
+        shift.setWorkingFrom(newShift.getWorkingFrom());
+        // ---------
+
+        String SQL_QUERY = "UPDATE employee SET salary = ? salary_type = ? WHERE employee.user_id = ?";
+        Employee currentEmp = getEmployeeId(userId);
+        try (PreparedStatement statement = conn.prepareStatement(SQL_QUERY, Statement.RETURN_GENERATED_KEYS)) {
+
+            if (salary != currentEmp.getSalary()) {
+                setSalary(salary);
+
+            }else {
+                setSalary(currentEmp.getSalary());
+            }
+
+            if (salaryType != currentEmp.getSalaryType()){
+                setSalaryType(salaryType);
+            }else {
+                setSalaryType(currentEmp.getSalaryType());
+            }
+
+            statement.setLong(1,salary);
+            statement.setLong(2,salaryType);
+            statement.setLong(3,userId);
+            System.out.println(this);
+            int affectedRows = statement.executeUpdate();
+
+            if (affectedRows == 0) {
+                throw new SQLException("updating employee failed, no rows affected.");
+            }
+
+            return user.updateUser() && shift.updateShift();
+        }
+
+
+
     }
 
 }

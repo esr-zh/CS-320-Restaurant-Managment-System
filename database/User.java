@@ -141,6 +141,38 @@ public class User {
                 Integer.parseInt(rs.getString(4)));
     }
 
+    public Boolean updateUser() throws SQLException { // only updates username and user role
+
+        String SQL_QUERY = "UPDATE user SET username = ? user_role = ? WHERE user.id = ?";
+        User currentUser = getUserById(id);
+        try (PreparedStatement statement = conn.prepareStatement(SQL_QUERY, Statement.RETURN_GENERATED_KEYS)) {
+            if (!username.equals(currentUser.getUsername())) {
+                setUsername(username);
+            }else {
+                setUsername(currentUser.getUsername());
+            }
+            if (userRole != currentUser.getUserRole()){
+                setUserRole(userRole);
+            }else {
+                setUserRole(currentUser.getUserRole());
+            }
+
+            statement.setString(1,username);
+            statement.setLong(2,userRole);
+            statement.setLong(3,id);
+
+            int affectedRows = statement.executeUpdate();
+
+            if (affectedRows == 0) {
+                throw new SQLException("deleting menu failed, no rows affected.");
+            }
+
+            return true;
+        }
+
+
+    }
+
     public Boolean doesUserExists(String username) throws SQLException {
         String SQL_QUERY = "SELECT * from user where user.username = ?";
         PreparedStatement statement = conn.prepareStatement(SQL_QUERY);

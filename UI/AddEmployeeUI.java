@@ -1,6 +1,6 @@
 package UI;
 import UI.utils.Helper;
-import database.Employee;
+import database.*;
 import database.utils.Connect;
 
 import javax.swing.*;
@@ -15,6 +15,10 @@ public class AddEmployeeUI extends BasicComboBoxRenderer{
 
     public static Connect connect = new Connect();
     public static Employee employee = new Employee(connect.connection);
+    public static User user = new User(connect.connection);
+    public static long empUserID;
+    public static SalaryType salaryType = new SalaryType();
+    public static UserRole userRole = new UserRole();
     public static int yCoordinate = 60;
     public static JPanel employeePanel;
     public static JLabel nameLabel, roleLabel, workingHourLabel, contractLabel, salaryLabel;
@@ -66,8 +70,19 @@ public class AddEmployeeUI extends BasicComboBoxRenderer{
         submitButton.setBounds(300, 350, 90, 25);
         submitButton.addActionListener(e -> {
             try {
-                // we pass useername to update empolyee
-                if (employee.updateEmployee(username)) {
+                long userRoleNum = userRole.getUserRole(inputRole.getText());
+                String username = nameLabel.getText();
+                System.out.println("this is " + empUserID);
+                employee.setUserId(empUserID);// this is passed from edit employee ui
+                employee.setSalary(Long.parseLong(inputSalary.getText()));
+                System.out.println(inputContract.getText());
+                employee.setSalaryType(salaryType.getSalaryType(inputContract.getText()));// how can the get the selected id
+                int workingFromIndex = Objects.requireNonNull(fromList.getSelectedItem()).toString().indexOf(":");
+                int workingToIndex = Objects.requireNonNull(toList.getSelectedItem()).toString().indexOf(":");
+                int workingFrom =Integer.parseInt(fromList.getSelectedItem().toString().substring(0,workingFromIndex));
+                int workingTo =Integer.parseInt(toList.getSelectedItem().toString().substring(0,workingToIndex));
+                Shift newShift = new Shift(workingFrom,workingTo);
+                if (employee.updateEmployee(username,userRoleNum,newShift)) {
                     JOptionPane.showMessageDialog(null, "Changes to item have been saved!");
                     OwnerMenu.frame.dispose();
                     OwnerMenu.generateUI();

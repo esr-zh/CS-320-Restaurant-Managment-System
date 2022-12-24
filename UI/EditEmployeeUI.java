@@ -61,7 +61,7 @@ public class EditEmployeeUI{
                 }
                 System.out.println(results);
             } catch (Exception e){
-
+                // show error info pop up
             }
             dataTable = new JTable(tableModel);
             dataTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); //prevent a user from selecting multiple rows
@@ -76,8 +76,8 @@ public class EditEmployeeUI{
                     int row = dataTable.getSelectedRow();
                     if (dataTable.getSelectedRow() != -1) {
                         //edit employee based on ID:
-                        int idColumn = 0; //
                         AddEmployeeUI.generateEmployeeUI();
+                        AddEmployeeUI.empUserID =  Integer.parseInt(dataTable.getModel().getValueAt(row, 0).toString());// this is important
                         AddEmployeeUI.inputName.setText(dataTable.getModel().getValueAt(row, 1).toString());
                         AddEmployeeUI.roleList.setSelectedItem(dataTable.getModel().getValueAt(row, 2).toString());
                         AddEmployeeUI.contractList.setSelectedItem(dataTable.getModel().getValueAt(row, 3).toString());
