@@ -8,6 +8,7 @@ import javax.swing.plaf.basic.BasicComboBoxRenderer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import java.util.Objects;
 
 public class AddEmployeeUI extends BasicComboBoxRenderer{
@@ -63,6 +64,19 @@ public class AddEmployeeUI extends BasicComboBoxRenderer{
             }
         });
         submitButton.setBounds(300, 350, 90, 25);
+        submitButton.addActionListener(e -> {
+            try {
+                if (employee.updateMenu()) {
+                    JOptionPane.showMessageDialog(null, "Changes to item have been saved!");
+                    OwnerMenu.frame.dispose();
+                    OwnerMenu.generateUI();
+                    addEmployeeFrame.setVisible(false);
+                }
+            } catch (SQLException | ClassNotFoundException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
+        );
         btnProperties(submitButton);
         employeePanel.add(submitButton);
         addEmployeeFrame.setVisible(true);
