@@ -67,6 +67,7 @@ public class EditEmployeeUI extends BasicComboBoxRenderer{
         });
         submitButton.setBounds(300, 350, 90, 25);
         submitButton.addActionListener(e -> {
+            // we have a problem
             try {
                 long userRoleNum = userRole.getUserRole(inputRole.getText());
                 String username = inputName.getText();
@@ -172,7 +173,6 @@ public class EditEmployeeUI extends BasicComboBoxRenderer{
         button.setOpaque(true);
         button.setBorderPainted(false);
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
-//        button.addActionListener((ActionListener) new AddEmployeeUI());
     }
 
     private static void setFrameProperties(JFrame frame){

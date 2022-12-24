@@ -16,17 +16,26 @@ import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.Objects;
 public class EmployeeUI extends BasicComboBoxRenderer{
-    Connect connect = new Connect();
-    Employee employee = new Employee(connect.connection);
+    private static Connect connect = new Connect();
+    public static Employee employee = new Employee(connect.connection);
     User user = new User(connect.connection);
-    JFrame addEmployeeFrame = new JFrame();
-    SalaryType salaryType = new SalaryType();
-    UserRole userRole = new UserRole();
-    int yCoordinate = 60;
+    public static JFrame addEmployeeFrame = new JFrame();
+    public static SalaryType salaryType = new SalaryType();
+    public static UserRole userRole = new UserRole();
+    public static int yCoordinate = 60;
     JPanel employeePanel;
-    JLabel nameLabel, roleLabel, workingHourLabel, contractLabel, salaryLabel;
-    JTextField inputName, inputRole, inputWorkingHourFrom, inputWorkingHourTo, inputContract, inputSalary;
-    JComboBox<String> contractList, roleList, toList, fromList;
+    public static JLabel nameLabel, roleLabel, workingHourLabel, contractLabel, salaryLabel;
+    public static JTextField inputName, inputRole, inputWorkingHourFrom, inputWorkingHourTo, inputContract, inputSalary;
+    public static JComboBox<String> contractList, roleList, toList, fromList;
+    JButton button;
+
+    public JButton getBtn() {
+        return button;
+    }
+
+    public void setBtn(JButton btn) {
+        this.button = btn;
+    }
 
     public JFrame getAddEmployeeFrame() {
         return addEmployeeFrame;
@@ -63,11 +72,22 @@ public class EmployeeUI extends BasicComboBoxRenderer{
         addComponentToPanel(salaryLabel, inputSalary);
         // or we can make a method that adding a button to this frame
         // we should the button here
+        btnProperties(button);
+        employeePanel.add(button);// this is where we link it with the panel;
         addEmployeeFrame.setVisible(true);
     }
 
-    public void addButton(JButton btn){
-        addEmployeeFrame.add(btn);
+    private static void btnProperties(JButton button) {
+        button.setBounds(300, 350, 90, 25);
+        button.setForeground(Color.WHITE);
+        button.setBackground(Color.BLACK);
+        button.setOpaque(true);
+        button.setBorderPainted(false);
+        button.setAlignmentX(Component.CENTER_ALIGNMENT);
+    }
+
+    public void addButton(){
+        employeePanel.add(button);
     }
 
     public void addTimeDropDown(JLabel label, String[] fromTime, String[] toTime){

@@ -77,16 +77,15 @@ public class EmployeeTableUI {
                     int row = dataTable.getSelectedRow();
                     if (dataTable.getSelectedRow() != -1) {
                         //edit employee based on ID:
-                        EditEmployeeUI.generateEmployeeUI();
+                        EditEmployeeUI2.generateUI();
                         // for refresh table you need to pass "tableModel" into "AddEmployeeUI" ui
-                        EditEmployeeUI.empUserID =  Integer.parseInt(dataTable.getModel().getValueAt(row, 0).toString());// this is important
-                        EditEmployeeUI.inputName.setText(dataTable.getModel().getValueAt(row, 1).toString());
-                        EditEmployeeUI.roleList.setSelectedItem(dataTable.getModel().getValueAt(row, 2).toString());
-                        EditEmployeeUI.contractList.setSelectedItem(dataTable.getModel().getValueAt(row, 3).toString());
-                        EditEmployeeUI.fromList.setSelectedItem(dataTable.getModel().getValueAt(row, 4).toString());
-                        EditEmployeeUI.toList.setSelectedItem(dataTable.getModel().getValueAt(row, 5).toString());
-                        EditEmployeeUI.inputSalary.setText(dataTable.getModel().getValueAt(row, 6).toString());
-
+                        EditEmployeeUI2.empUserID =  Integer.parseInt(dataTable.getModel().getValueAt(row, 0).toString());// this is important
+                        EmployeeUI.inputName.setText(dataTable.getModel().getValueAt(row, 1).toString());
+                        EmployeeUI.roleList.setSelectedItem(dataTable.getModel().getValueAt(row, 2).toString());
+                        EmployeeUI.contractList.setSelectedItem(dataTable.getModel().getValueAt(row, 3).toString());
+                        EmployeeUI.fromList.setSelectedItem(dataTable.getModel().getValueAt(row, 4).toString());
+                        EmployeeUI.toList.setSelectedItem(dataTable.getModel().getValueAt(row, 5).toString());
+                        EmployeeUI.inputSalary.setText(dataTable.getModel().getValueAt(row, 6).toString());
                     }
                 }
             });
