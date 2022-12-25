@@ -29,7 +29,7 @@ public class EditEmployeeUI2 extends EmployeeUI {
         setEmpUserID(x);
         JButton button = new JButton("Submit");
         employee.setUserId(x);// this is passed from edit employee ui
-        button.addActionListener(e -> {
+        button.addActionListener(e -> { // we had a scope issue here for emp user id
                     try {
                         long userRoleNum = userRole.getUserRole(inputRole.getText());
                         String username = getNameInputText();

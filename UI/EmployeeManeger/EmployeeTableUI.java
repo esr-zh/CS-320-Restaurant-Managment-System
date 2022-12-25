@@ -69,6 +69,17 @@ public class EmployeeTableUI {
             JScrollPane sp = new JScrollPane(dataTable);
             tablePanel.add(sp);
 
+            JButton addEmployeeBtn = new JButton("Add");
+            btnProperties(addEmployeeBtn);
+
+            addEmployeeBtn.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    new AddEmployeeUI();// generate add employee window
+                }
+            });
+
+            buttonPanel.add(addEmployeeBtn);
             buttonPanel.add(Box.createHorizontalGlue());
             editButton = new JButton("Edit");
             editButton.addActionListener(new ActionListener() {

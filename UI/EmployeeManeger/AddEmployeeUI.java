@@ -14,42 +14,28 @@ public class AddEmployeeUI extends EmployeeUI{
     public static Connect connect = new Connect();
     public static Employee employee = new Employee(connect.connection);
     public static User user = new User(connect.connection);
+    public static Shift shift = new Shift(connect.connection);
 
-    public static void generateAddUI() {
-        EmployeeUI ui = new EmployeeUI();
-        JButton button = new JButton("Submit");
+    public AddEmployeeUI() {
+        JButton button = new JButton("Add");
         button.addActionListener(e -> {
-            Connect connect = new Connect();
-            User user = new User(connect.connection);
-            Employee employee = new Employee(connect.connection);
-            Shift shift = new Shift(connect.connection);
-            UserRole userRole = new UserRole();
-            SalaryType salaryType = new SalaryType();
-            user.setUsername(inputName.getText());
-            user.setPassword(inputName.getText());
+            String username = this.getNameInputText();
+            user.setUsername(username);
+            user.setPassword(username);
 
-            long workingFrom = Long.parseLong(fromList.getSelectedItem().toString().split(":")[0]);
-            long workingTo = Long.parseLong(toList.getSelectedItem().toString().split(":")[0]);
+            long workingFrom = Long.parseLong(Objects.requireNonNull(fromList.getSelectedItem()).toString().split(":")[0]);
+            long workingTo = Long.parseLong(Objects.requireNonNull(toList.getSelectedItem()).toString().split(":")[0]);
 
-            if(workingFrom >= workingTo){
-                JOptionPane.showMessageDialog(null, "Enter valid time!");
-                return;
-            }
+//            if(workingFrom >= workingTo){
+//                JOptionPane.showMessageDialog(null, "Enter valid time!");
+//                return;
+//            }
 
             shift.setWorkingFrom(workingFrom);
             shift.setWorkingTo(workingTo);
-            employee.setSalaryType(salaryType.getSalaryType(contractList.getSelectedItem().toString().toLowerCase()));
-            user.setUserRole(userRole.getUserRole(roleList.getSelectedItem().toString().toLowerCase()));
+            employee.setSalaryType(salaryType.getSalaryType(Objects.requireNonNull(contractList.getSelectedItem()).toString().toLowerCase()));
+            user.setUserRole(userRole.getUserRole(Objects.requireNonNull(roleList.getSelectedItem()).toString().toLowerCase()));
 
-    /*
-    System.out.println(inputName.getText());
-    System.out.println(userRole.getUserRole(roleList.getSelectedItem().toString().toLowerCase()));
-    System.out.println(workingFrom);
-    System.out.println(workingTo);
-    System.out.println(salaryType.getSalaryType(contractList.getSelectedItem().toString().toLowerCase()));
-    System.out.println(Long.parseLong(inputSalary.getText().substring(1)));
-    */
-            //System.out.println(salaryType.getSalaryType(contractList.getSelectedItem().toString().toLowerCase()));
             try {
                 String salary = inputSalary.getText();
                 employee.setSalary(Long.parseLong(salary));
@@ -63,7 +49,7 @@ public class AddEmployeeUI extends EmployeeUI{
                 shift.setUserId(newUser.getId());
             } catch (SQLException ex) {
                 JOptionPane.showMessageDialog(null, ex.getMessage());
-                return;
+                return; // to break the code
             } catch (ClassNotFoundException ex) {
                 throw new RuntimeException(ex);
             }
@@ -73,10 +59,10 @@ public class AddEmployeeUI extends EmployeeUI{
                 JOptionPane.showMessageDialog(null, "Employee added successfully!");
             } catch (SQLException ex) {
                 JOptionPane.showMessageDialog(null, ex.getMessage());
-                return;
             }
+            this.closeWindow();
         });
-        ui.setBtn(button);
-        ui.generateUI();
+        this.setBtn(button);
+        this.generateUI();
     }
 }

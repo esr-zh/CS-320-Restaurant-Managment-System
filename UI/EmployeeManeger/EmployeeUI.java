@@ -25,7 +25,7 @@ public class EmployeeUI extends BasicComboBoxRenderer{
     public static int yCoordinate = 60;
     JPanel employeePanel;
     public JLabel nameLabel, roleLabel, workingHourLabel, contractLabel, salaryLabel;
-    public static JTextField inputName;
+    private JTextField inputName;
     public JTextField inputRole;
     public JTextField inputWorkingHourFrom;
     public JTextField inputWorkingHourTo;
