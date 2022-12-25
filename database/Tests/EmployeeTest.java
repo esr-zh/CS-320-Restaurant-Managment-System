@@ -2,16 +2,16 @@ package database.Tests;
 
 import database.Employee;
 import database.SalaryType;
-import database.Shift;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 
 import java.sql.SQLException;
 
-import static org.testng.AssertJUnit.assertEquals;
+import static org.junit.Assert.assertEquals;
+
+//import static org.testng.Assert.assertTrue;
+//import static org.testng.AssertJUnit.assertEquals;
 
 public class EmployeeTest extends DBTestable{
     Employee employee;
@@ -31,6 +31,27 @@ public class EmployeeTest extends DBTestable{
         connection.setAutoCommit(true);
     }
 
+    @Test
+    public void createEmployeeTest() throws SQLException {
+        employee.setUserId(17);
+        employee.setSalary(30);
+        SalaryType salaryType = new SalaryType();
+        employee.setSalaryType(salaryType.getSalaryType("monthly"));
+        employee.createEmployee();
+    }
+
+    @Test
+    public void createEmployeeTest2() {
+        employee.setUserId(16);
+        employee.setSalary(30);
+        SalaryType salaryType = new SalaryType();
+        employee.setSalaryType(salaryType.getSalaryType("monthly"));
+        try {
+            employee.createEmployee();
+        }catch (Exception e){
+            assertEquals("employee already exists!",e.getMessage());
+        }
+    }
     @Test
     public void getEmployeeIdTest() throws SQLException {
         Employee e = employee.getEmployeeId(15);

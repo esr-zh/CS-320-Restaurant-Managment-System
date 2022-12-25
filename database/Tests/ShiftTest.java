@@ -9,8 +9,11 @@ import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;
 
-import static org.testng.AssertJUnit.assertEquals;
-import static org.testng.AssertJUnit.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+//import static org.testng.Assert.assertTrue;
+//import static org.testng.AssertJUnit.assertEquals;
 
 public class ShiftTest extends DBTestable{
 
@@ -43,7 +46,7 @@ public class ShiftTest extends DBTestable{
     public void createShiftTimeTest2() throws SQLException {
         shift.setUserId(16);
         shift.setWorkingFrom(6);
-        shift.setWorkingFrom(11);
+        shift.setWorkingTo(11);
         assertTrue(shift.createShiftTime());
     }
 

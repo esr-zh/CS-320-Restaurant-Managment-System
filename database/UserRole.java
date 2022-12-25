@@ -15,8 +15,16 @@ public class UserRole {
         this.userRoleTable.put(4,"waiter");
     }
 
-    public String getUserRole(int key){
+    public String getUserRole(Integer key){
+        System.out.println(key);
         return userRoleTable.get(key);
+    }
+
+    public int getUserRole(String value){
+        for (Integer item: userRoleTable.keySet()) {
+            if (Objects.equals(userRoleTable.get(item), value)) return item;
+        }
+        return 0;
     }
 
 }

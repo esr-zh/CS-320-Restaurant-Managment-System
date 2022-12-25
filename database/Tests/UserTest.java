@@ -4,12 +4,16 @@ import database.User;
 import database.utils.Connect;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+//import org.junit.After;
+//import org.junit.Before;
+//import org.junit.Test;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
-import static org.junit.jupiter.api.Assertions.*;
+
+import static org.junit.Assert.assertEquals;
 //import static org.testng.Assert.assertTrue;
 //import static org.testng.AssertJUnit.assertEquals;
 
@@ -74,5 +78,12 @@ public class UserTest extends database.Tests.DBTestable {
         }catch (Exception e){
             assertEquals("user not found!",e.getMessage());
         }
+    }
+
+    @Test
+    public void getUserByUsernameTest() throws SQLException, ClassNotFoundException {
+        String username = "diamond2";
+        User currentUser = user.getUserByUsername(username);
+        assertEquals(4,currentUser.getId());
     }
 }

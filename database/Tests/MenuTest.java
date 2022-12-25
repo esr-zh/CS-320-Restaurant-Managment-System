@@ -11,7 +11,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+//import static org.testng.Assert.assertTrue;
+//import static org.testng.AssertJUnit.assertEquals;
 
 class MenuTest extends database.Tests.DBTestable {
     Menu menu;

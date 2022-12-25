@@ -96,7 +96,7 @@ public class Menu {
 
     // list all menus
     public List<List<String>> listAllMenu() throws SQLException {
-        String SQL_QUERY = "select menu.id,name,description,price,dish_type_name from menu join dish_type dt on dt.id = menu.dish_type_id;";
+        String SQL_QUERY = "select menu.id,dish_type_name,name,price,quantity,serving_amount,description from menu join dish_type dt on dt.id = menu.dish_type_id;";
         PreparedStatement statement = conn.prepareStatement(SQL_QUERY);
         ResultSet rs = statement.executeQuery();
         return Connect.returnArraylist(rs);
@@ -232,6 +232,16 @@ public class Menu {
                 }
                 return true;
             }
+    }
+    public List<List<String>> getMenuItemsByDishType(int dishTypeId) {
+        String SQL_QUERY = "SELECT * FROM menu WHERE menu.dish_type_id = ?";
+        try (PreparedStatement statement = conn.prepareStatement(SQL_QUERY, Statement.RETURN_GENERATED_KEYS);) {
+            statement.setInt(1, dishTypeId);
+            ResultSet rs = statement.executeQuery();
+            return Connect.returnArraylist(rs);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
     public long getQuantity() {
         return quantity;
