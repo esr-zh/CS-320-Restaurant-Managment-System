@@ -18,12 +18,12 @@ import javax.swing.table.DefaultTableModel;
 public class EmployeeTableUI {
     public static Connect connect = new Connect();
     public static Employee employee = new Employee(connect.connection);
-    public static JFrame employeeFrame;
+    static JPanel thisPanel;
     // Table
     public static JTable dataTable;
     public static JButton editButton, deleteButton;
     public static DefaultTableModel tableModel;
-    public static void generateUI() {
+    public static Component generateUI() {
         {
             //used box layout, available at: https://docs.oracle.com/javase/tutorial/uiswing/layout/box.html
             //all layouts available at: https://docs.oracle.com/javase/tutorial/uiswing/layout/using.html
@@ -40,11 +40,11 @@ public class EmployeeTableUI {
             buttonPanel.setBorder(BorderFactory.createTitledBorder("Select and Manage Employees"));
 
             // Frame initialization
-            employeeFrame = new JFrame();
-            setFrameProperties();
+            thisPanel = new JPanel();
+            thisPanel.setLayout(new BorderLayout());
 
             // Column Names
-            String[] columnNames = {"ID", "Name", "Role", "Contract", "Working From","Working To", "Salary"};
+            String[] columnNames = {"ID", "Name", "Role", "Contract", "Working From", "Working To", "Salary"};
             tableModel = new DefaultTableModel(null, columnNames);
             Helper.loadTableData(); // loading data for the table
             dataTable = new JTable(tableModel);
@@ -76,8 +76,8 @@ public class EmployeeTableUI {
                         editEmployeeUI.changeName(dataTable.getModel().getValueAt(row, 1).toString());
                         editEmployeeUI.roleList.setSelectedItem(dataTable.getModel().getValueAt(row, 2).toString());
                         editEmployeeUI.contractList.setSelectedItem(dataTable.getModel().getValueAt(row, 3).toString());
-                        editEmployeeUI.fromList.setSelectedItem(dataTable.getModel().getValueAt(row, 4).toString()+":00");
-                        editEmployeeUI.toList.setSelectedItem(dataTable.getModel().getValueAt(row, 5).toString()+":00");
+                        editEmployeeUI.fromList.setSelectedItem(dataTable.getModel().getValueAt(row, 4).toString() + ":00");
+                        editEmployeeUI.toList.setSelectedItem(dataTable.getModel().getValueAt(row, 5).toString() + ":00");
                         editEmployeeUI.inputSalary.setText(dataTable.getModel().getValueAt(row, 6).toString());
                     }
                 }
@@ -93,7 +93,7 @@ public class EmployeeTableUI {
                 public void actionPerformed(ActionEvent e) {
                     int row = dataTable.getSelectedRow();
                     System.out.println(row);
-                    if (dataTable.getSelectedRow() != -1){
+                    if (dataTable.getSelectedRow() != -1) {
                         try {
                             employee.deleteEmployee(dataTable.getModel().getValueAt(row, 1).toString());
                             tableModel.removeRow(dataTable.getSelectedRow());
@@ -108,10 +108,11 @@ public class EmployeeTableUI {
             buttonPanel.add(deleteButton);
             buttonPanel.add(Box.createHorizontalGlue());
 
-            employeeFrame.add(tablePanel, BorderLayout.CENTER);
-            employeeFrame.add(buttonPanel, BorderLayout.PAGE_END);
-            employeeFrame.pack();
+
+            thisPanel.add(tablePanel, BorderLayout.CENTER);
+            thisPanel.add(buttonPanel, BorderLayout.PAGE_END);
         }
+        return thisPanel;
     }
     private static void btnProperties(JButton button) {
         button.setForeground(Color.WHITE);
@@ -119,15 +120,6 @@ public class EmployeeTableUI {
         button.setOpaque(true);
         button.setBorderPainted(false);
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
-    }
-
-    private static void setFrameProperties(){
-        employeeFrame.setLayout(new BorderLayout());
-        employeeFrame.setTitle("Edit Menu");
-        employeeFrame.setSize(700, 700);
-        Helper.centerWindow(employeeFrame);
-        employeeFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        employeeFrame.setVisible(true);
     }
 
 }
