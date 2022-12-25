@@ -8,9 +8,6 @@ import java.sql.SQLException;
 
 public class OwnerNavBar {
     public static JFrame mainFrame;
-    public static void main(String[] args) throws SQLException {
-        generateOwnerNavBar();
-    }
     public static void generateOwnerNavBar() throws SQLException {
         try {
             UIManager.setLookAndFeel( UIManager.getCrossPlatformLookAndFeelClassName() );

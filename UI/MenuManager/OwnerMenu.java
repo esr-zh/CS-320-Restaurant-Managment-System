@@ -1,6 +1,5 @@
 package UI.MenuManager;
 
-import UI.CustomerManager.CustomerMenuUI;
 import database.Menu;
 import database.utils.Connect;
 
@@ -43,8 +42,8 @@ public class OwnerMenu implements ActionListener {
 
         List<List<String>> result = menu.listAllMenu();
 
-        CustomerMenuUI.loadData(result, tableModel);
-        System.out.println(result);
+       loadData(result, tableModel);
+        System.out.println("Owner menu list =>" + result);
 
         table = new JTable(tableModel);
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);//prevent a user from selecting multiple rows
@@ -106,6 +105,19 @@ public class OwnerMenu implements ActionListener {
 
         return thisPanel;
     }
+
+    private static void loadData(List<List<String>> result, DefaultTableModel tableModel) {
+//        String[] columnNames = {"Id","Type", "Name", "Price", "Quantity", "Portion", "Description"};
+        for (List<String> row : result) {
+            Object[] insertedRow = new Object[row.size()];
+            for (int i = 0; i < row.size(); i++) {
+                insertedRow[i] = row.get(i);
+
+            }
+            tableModel.addRow(insertedRow);
+        }
+    }
+
     private static void btnProperties(JButton button) {
         button.setForeground(Color.WHITE);
         button.setBackground(Color.BLACK);
@@ -119,6 +131,7 @@ public class OwnerMenu implements ActionListener {
 
         if (e.getSource() == deleteButton && table.getSelectedRow() != -1){
             int selectedRow = table.getSelectedRow();
+            System.out.println(selectedRow);
             long productId = Integer.parseInt(tableModel.getValueAt(selectedRow,0).toString());
             menu.setId(productId);
             try {

@@ -14,7 +14,7 @@ public class DishType {
         this.userRoleTable.put(5,"dessert");
     }
 
-    public String getDishType(int key){
+    public String getDishType(Integer key){
         return userRoleTable.get(key);
     }
 

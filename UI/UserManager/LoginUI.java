@@ -15,6 +15,7 @@ import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
 import static UI.NavBar.CustomerNavBar.generateCustomerNavBar;
+import static UI.NavBar.OwnerNavBar.generateOwnerNavBar;
 
 public class LoginUI  {
     Connect connect = new Connect();
@@ -81,26 +82,11 @@ public class LoginUI  {
                     if (userRole.getUserRole((int) userRoleNum).equals("customer")){
                         frame.dispose();
                         generateCustomerNavBar(userId);
-//                        JFrame customerMenuFrame = new JFrame();
-//                        TransactionHistUI transactionHistUI = new TransactionHistUI(userId);
-//                        transactionHistUI.setMainFrame(customerMenuFrame);
-//                        CustomerMenuUI customerMenuUI = new CustomerMenuUI(userId);
-//                        customerMenuUI.setMainFrame(customerMenuFrame);
-//                        JTabbedPane tabbedPane = new JTabbedPane();
-//                        tabbedPane.add("Menu", customerMenuUI.generateCustomerUI());
-//                        tabbedPane.add("Transaction History", transactionHistUI.getUIComponent());
-//                        customerMenuFrame.add(tabbedPane);
-//                        customerMenuFrame.setTitle("Customer Menu");
-//                        customerMenuFrame.setResizable(false);
-//                        customerMenuFrame.setSize(700, 750);
-//                        customerMenuFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//                        customerMenuFrame.setVisible(true);
                     }
-
                     if (userRole.getUserRole((int) userRoleNum).equals("admin")){
-
+                        frame.dispose();
+                        generateOwnerNavBar();
                     }
-
                 } catch (SQLException ex) {
                     JOptionPane.showMessageDialog(null, ex.getMessage());
                 }

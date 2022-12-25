@@ -11,7 +11,6 @@ public class main {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         new LoginUI().generateUI();
 
     }
