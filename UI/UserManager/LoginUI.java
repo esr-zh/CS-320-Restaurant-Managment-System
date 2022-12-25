@@ -1,16 +1,20 @@
 package UI.UserManager;
 
 import UI.CustomerManager.CustomerMenuUI;
-import UI.CustomerManager.TransactionHistUI;
+import UI.TransactionHistUI;
 import database.User;
 import database.UserRole;
 import database.utils.Connect;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
+
+import static UI.NavBar.CustomerNavBar.generateCustomerNavBar;
 
 public class LoginUI  {
     Connect connect = new Connect();
@@ -21,6 +25,7 @@ public class LoginUI  {
     public  JTextField usernameInput;
     public  JButton loginButton, registerButton;
     public  JPasswordField passwordInput;
+
 
     public JFrame generateUI() {
 
@@ -75,18 +80,21 @@ public class LoginUI  {
                     System.out.println("user role =>" + userRole.getUserRole((int) userRoleNum));
                     if (userRole.getUserRole((int) userRoleNum).equals("customer")){
                         frame.dispose();
-                        JFrame customerMenuFrame = new JFrame();
-                        TransactionHistUI transactionHistUI = new TransactionHistUI(userId);
-                        CustomerMenuUI customerMenuUI = new CustomerMenuUI(userId);
-                        JTabbedPane tabbedPane = new JTabbedPane();
-                        tabbedPane.add("Menu", customerMenuUI.generateCustomerUI());
-                        tabbedPane.add("Transaction History", transactionHistUI.getUIComponent());
-                        customerMenuFrame.add(tabbedPane);
-                        customerMenuFrame.setTitle("Customer Menu");
-                        customerMenuFrame.setResizable(false);
-                        customerMenuFrame.setSize(700, 750);
-                        customerMenuFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                        customerMenuFrame.setVisible(true);
+                        generateCustomerNavBar(userId);
+//                        JFrame customerMenuFrame = new JFrame();
+//                        TransactionHistUI transactionHistUI = new TransactionHistUI(userId);
+//                        transactionHistUI.setMainFrame(customerMenuFrame);
+//                        CustomerMenuUI customerMenuUI = new CustomerMenuUI(userId);
+//                        customerMenuUI.setMainFrame(customerMenuFrame);
+//                        JTabbedPane tabbedPane = new JTabbedPane();
+//                        tabbedPane.add("Menu", customerMenuUI.generateCustomerUI());
+//                        tabbedPane.add("Transaction History", transactionHistUI.getUIComponent());
+//                        customerMenuFrame.add(tabbedPane);
+//                        customerMenuFrame.setTitle("Customer Menu");
+//                        customerMenuFrame.setResizable(false);
+//                        customerMenuFrame.setSize(700, 750);
+//                        customerMenuFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//                        customerMenuFrame.setVisible(true);
                     }
 
                     if (userRole.getUserRole((int) userRoleNum).equals("admin")){

@@ -186,13 +186,24 @@ public class TransactionHistory implements Template,Cloneable{
     }
 
 
-    private boolean doesUserHasTH(long userId) throws SQLException {
+    public boolean doesUserHasTH(long userId) throws SQLException {
         String SQL_QUERY = "SELECT * FROM transaction_history WHERE " +
                 "transaction_history.user_id = ?";
         PreparedStatement statement = conn.prepareStatement(SQL_QUERY);
         statement.setLong(1, userId);
         ResultSet rs = statement.executeQuery();
         return rs.next();
+    }
+
+    public long doesUserHasTHv2(long userId) throws SQLException {
+        String SQL_QUERY = "SELECT * FROM transaction_history WHERE " +
+                "transaction_history.user_id = ? AND transaction_history.has_paid = false";
+        PreparedStatement statement = conn.prepareStatement(SQL_QUERY);
+        statement.setLong(1, userId);
+        ResultSet rs = statement.executeQuery();
+        if (!rs.next()){return 0;}
+        System.out.println(rs.getInt(1));
+        return rs.getInt(1);
     }
 
     public boolean doesTransactionHistoryExists(long id) throws SQLException {

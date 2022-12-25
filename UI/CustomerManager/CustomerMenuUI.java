@@ -1,4 +1,5 @@
 package UI.CustomerManager;
+import UI.NavBar.CustomerNavBar;
 import database.DishType;
 import database.Menu;
 import database.OrderDetails;
@@ -15,12 +16,14 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
 
+import static UI.NavBar.CustomerNavBar.customerMenuFrame;
+
 public class CustomerMenuUI{
     public static Connect connect = new Connect();
     public static Menu menu = new Menu(connect.connection);
     public static TransactionHistory TH = new TransactionHistory(connect.connection);
     public static OrderDetails OD = new OrderDetails(connect.connection);
-    public static int yCoordinate = 50;
+    public int yCoordinate = 50;
 
     public static final int doesNotExist = -1;
     public static JPanel customerMainPanel;
@@ -47,6 +50,7 @@ public class CustomerMenuUI{
     public CustomerMenuUI(long userId) {
         this.userId = userId;
     }
+
 
     public JPanel generateCustomerUI() {
         customerMainPanel = new JPanel();
@@ -153,8 +157,12 @@ public class CustomerMenuUI{
                             throw new RuntimeException(ex);
                         }
                         tableModel.setRowCount(0);// reset table data
-                        customerMainPanel.revalidate();
-                        customerMainPanel.repaint();
+                        customerMenuFrame.dispose();
+                        try {
+                            CustomerNavBar.generateCustomerNavBar(userId);
+                        } catch (SQLException ex) {
+                            throw new RuntimeException(ex);
+                        }
                     }
                     }
                 }
@@ -250,7 +258,7 @@ public class CustomerMenuUI{
         return customerMainPanel;
     }
 
-    private static void menuLabelProperties(JLabel label) {
+    private  void menuLabelProperties(JLabel label) {
         menuPanel.add(label);
         label.setBounds(50, yCoordinate, 150, 20);
         yCoordinate+= 60;
@@ -268,23 +276,24 @@ public class CustomerMenuUI{
             JOptionPane.showMessageDialog(null, e.getMessage());
             return;
         }
-        if (results.size() == 0){
-            TH.setUserId(userId);
-            TH.setHasPaid(false);
-            try {
-                TransactionHistory createdTH = TH.createTransactionHistory();
-                transId = createdTH.getId();
-            } catch (SQLException | ClassNotFoundException e) {
-                JOptionPane.showMessageDialog(null, e.getMessage());
-                return;
+        try {
+            long tmp = TH.doesUserHasTHv2(userId);
+            System.out.println("trans id =>"+ tmp);
+            if (tmp == 0){
+                TH.setUserId(userId);
+                TH.setHasPaid(false);
+                try {
+                    TransactionHistory createdTH = TH.createTransactionHistory();
+                    transId = createdTH.getId();
+                } catch (SQLException | ClassNotFoundException e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage());
+                    return;
+                }
+            }else {
+                transId = tmp;
             }
-        }else {
-            try {
-                List<List<String>> results_ = TH.getTransactionHistoryByUserId((int) userId);
-                transId = Long.parseLong(results_.get(0).get(0));
-            } catch (SQLException | ClassNotFoundException e) {
-                throw new RuntimeException(e);
-            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
         loadData(results, tableModel);
         System.out.println("ready for war =>" +results);
@@ -372,7 +381,7 @@ public class CustomerMenuUI{
         System.out.println(res);
     }
 
-    private static void addLabelToPanel(JLabel label, JLabel priceCalculatedLabel) {
+    private void addLabelToPanel(JLabel label, JLabel priceCalculatedLabel) {
         label.setBounds(50, yCoordinate, 150, 20);
         priceCalculatedLabel.setBounds(400, yCoordinate, 150, 20);
         menuPanel.add(label);

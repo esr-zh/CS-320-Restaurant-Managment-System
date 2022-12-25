@@ -1,7 +1,6 @@
 package UI.Tests;
 
 import UI.CustomerManager.CustomerMenuUI;
-import UI.CustomerManager.TransactionHistUI;
 
 import javax.swing.*;
 
@@ -13,7 +12,6 @@ public class Test {
             e.printStackTrace();
         }
         JFrame mainFrame = new JFrame();
-        TransactionHistUI transactionHistUI = new TransactionHistUI();;
 
 //        JTabbedPane tabbedPane = new JTabbedPane();
 //        tabbedPane.add("Menu", CustomerMenuUI.generateCustomerUI(userId));
