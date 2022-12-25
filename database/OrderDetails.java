@@ -117,6 +117,26 @@ public class OrderDetails implements Template,Cloneable {
         return true;
     }
 
+    public boolean deleteOrderDetailsRow() throws SQLException {
+        String SQL_QUERY = "DELETE FROM order_details WHERE order_details.transaction_id = ? AND order_details.menu_id = ?";
+        try (
+                PreparedStatement statement = conn.prepareStatement(SQL_QUERY,
+                        Statement.RETURN_GENERATED_KEYS);
+        ) {
+            System.out.println(this);
+            statement.setLong(1, transactionId);
+            statement.setLong(2, menuId);
+
+            int affectedRows = statement.executeUpdate();
+
+            if (affectedRows == 0) {
+                throw new SQLException("deleting menu failed, no rows affected.");
+            }
+
+        }
+        return true;
+    }
+
     public Boolean findOrderDetailsById(long id) throws SQLException {
         String SQL_QUERY = "SELECT * FROM order_details WHERE order_details.id = ?;";
         PreparedStatement statement = conn.prepareStatement(SQL_QUERY);

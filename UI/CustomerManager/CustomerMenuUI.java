@@ -166,8 +166,7 @@ public class CustomerMenuUI{
                         insertedRow[2] = quantityDropdown.getSelectedItem().toString();
                         insertedRow[3] = String.valueOf(selectedItem.getPrice());
                         try {
-                            boolean t = OD.addOrderDetails();
-                            System.out.println(t);
+                            OD.addOrderDetails();
                         } catch (SQLException | ClassNotFoundException ex) {
                             JOptionPane.showMessageDialog(null, ex.getMessage());
                             return;
@@ -217,6 +216,22 @@ public class CustomerMenuUI{
         deleteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                int selectedRow = table.getSelectedRow();
+                String productName = (String) table.getValueAt(selectedRow,1);
+                long menuId = 0;
+                try {
+                    menuId = menu.getMenuByName(productName).getId();
+                } catch (SQLException | ClassNotFoundException ex) {
+                    throw new RuntimeException(ex);
+                }
+                OD.setMenuId(menuId);
+                OD.setTransactionId(transId);
+                try {
+                    OD.deleteOrderDetailsRow();
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(null, ex.getMessage());
+                    return;
+                }
                 tableModel.removeRow(table.getSelectedRow());
             }
         });
