@@ -1,4 +1,4 @@
-package UI;
+package UI.UserManager;
 
 import database.User;
 import database.utils.Connect;

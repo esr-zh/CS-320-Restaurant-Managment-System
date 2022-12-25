@@ -1,6 +1,6 @@
-package UI;
+package UI.MenuManager;
 
-import UI.EditMenu.*;
+import UI.MenuManager.OwnerMenu;
 import database.DishType;
 import database.Menu;
 import database.utils.Connect;
@@ -11,7 +11,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
-public class AddMenu {
+
+public class EditMenu {
     public static Connect connect = new Connect();
     public static database.Menu menu = new Menu(connect.connection);
     public static int yCoordinate  = 60;
@@ -21,21 +22,24 @@ public class AddMenu {
     public static long itemId;
     public static JLabel typeLabel, nameLabel, priceLabel, lb1, quantityLabel, descLabel, portionLabel;
     public static JTextField productName, productPrice, productQuantity, portionText;
-    public static JButton submitBtn;
+    public static JButton confirmBtn;
     public static JComboBox<String> productType;
+    public static String typep, name, price, quantity, portion, description;
     public static String[] type = {"appetizer","main dish","dessert","drinks"};
+
+
     public static void generateUI(){
         panel = new JPanel();
         panel.setLayout(null);
         frame = new JFrame();
-        frame.setTitle("Add Menu");
+        frame.setTitle("Edit Menu");
         frame.setSize(500,600);
         yCoordinate = 60;
         frame.add(panel);
         centerWindow(frame);
 
 
-        lb1 = new JLabel("Add the following item of your preference: ");
+        lb1 = new JLabel("Edit the following item to your preference: ");
         lb1.setBounds(5,10,300,20);
         panel.add(lb1);
 
@@ -69,8 +73,8 @@ public class AddMenu {
         descText = new JTextArea();
         addTextArea(descLabel, descText);
 
-        submitBtn = new JButton("Submit");
-        submitBtn.addActionListener(new ActionListener() {
+        confirmBtn = new JButton("Confirm");
+        confirmBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 DishType dishType = new DishType();
@@ -82,21 +86,23 @@ public class AddMenu {
                 menu.setServingAmount(Long.parseLong(portionText.getText()));
                 menu.setDishTypeId(dishType.getSalaryType((String) productType.getSelectedItem()));
                 try {
-                    menu.createMenu();
-                    JOptionPane.showMessageDialog(null, "Item added successfully!");
-                    OwnerMenu.frame.dispose();
-                    OwnerMenu.generateUI();
-                    frame.setVisible(false);
-
+                    if (menu.updateMenu()) {
+                        JOptionPane.showMessageDialog(null, "Changes to item have been saved!");
+                        OwnerMenu.frame.dispose();
+                        OwnerMenu.generateUI();
+                        frame.setVisible(false);
+                    }
                 } catch (SQLException | ClassNotFoundException ex) {
                     throw new RuntimeException(ex);
                 }
             }
         });
-        btnProperties(submitBtn);
+        btnProperties(confirmBtn);
 
         frame.setVisible(true);
     }
+
+
     public static void addToPanel(JLabel label, JTextField text){
         label.setBounds(100, yCoordinate,140, 20);
         panel.add(label);
@@ -129,10 +135,4 @@ public class AddMenu {
         frame.setLocation(x, y);
     }
 
-
-
 }
-
-
-
-

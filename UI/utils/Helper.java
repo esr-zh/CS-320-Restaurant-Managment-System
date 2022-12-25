@@ -1,13 +1,12 @@
 package UI.utils;
 
-import UI.EmployeeManeger.EmployeeTableUI;
+import UI.EmployeeManager.EmployeeTableUI;
 import database.Employee;
 import database.SalaryType;
 import database.UserRole;
 import database.utils.Connect;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package UI;
+package UI.CustomerManager;
 
 import database.TransactionHistory;
 import database.utils.Connect;

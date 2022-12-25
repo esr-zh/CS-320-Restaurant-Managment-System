@@ -1,4 +1,4 @@
-package UI.EmployeeManeger;
+package UI.EmployeeManager;
 
 import UI.utils.Helper;
 import database.Employee;

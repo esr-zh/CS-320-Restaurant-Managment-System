@@ -1,5 +1,4 @@
-import UI.EmployeeManeger.AddEmployeeUI;
-import UI.EmployeeManeger.EmployeeTableUI;
+import UI.EmployeeManager.EmployeeTableUI;
 
 import javax.swing.*;
 

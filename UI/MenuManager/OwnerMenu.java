@@ -1,4 +1,4 @@
-package UI;
+package UI.MenuManager;
 
 import database.Menu;
 import database.utils.Connect;

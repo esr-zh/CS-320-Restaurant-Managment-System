@@ -1,13 +1,10 @@
-package UI.EmployeeManeger;
+package UI.EmployeeManager;
 
 import UI.utils.Helper;
 import database.*;
 import database.utils.Connect;
 
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.Objects;
 
