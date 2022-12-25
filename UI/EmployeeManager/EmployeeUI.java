@@ -3,10 +3,8 @@ package UI.EmployeeManager;
 import database.Employee;
 import database.User;
 import database.utils.Connect;
-
 import UI.utils.Helper;
 import database.*;
-
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicComboBoxRenderer;
 import java.awt.*;

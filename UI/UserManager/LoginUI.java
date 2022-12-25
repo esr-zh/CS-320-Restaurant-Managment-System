@@ -1,14 +1,11 @@
 package UI.UserManager;
 
-import UI.CustomerManager.CustomerMenuUI;
-import UI.TransactionHistUI;
+
 import database.User;
 import database.UserRole;
 import database.utils.Connect;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -92,31 +89,25 @@ public class LoginUI  {
                 }
             }
 
-
         });
         panel.add(loginButton);
-
-
 
         registerButton = new JButton("Register");
         registerButton.setBounds(100, 110, 90, 25);
         registerButton.setForeground(Color.WHITE);
         registerButton.setBackground(Color.BLACK);
-        registerButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setInputValues();
-                user.setUserRole(1);
-                try {
-                    user.createUser();
-                    long userId = user.getId();
-                    JOptionPane.showMessageDialog(null, "Registered Successfully");
+        registerButton.addActionListener(e -> {
+            setInputValues();
+            user.setUserRole(1);
+            try {
+                user.createUser();
+                long userId = user.getId();
+                JOptionPane.showMessageDialog(null, "Registered Successfully");
 
-                } catch (SQLException ex) {
-                    JOptionPane.showMessageDialog(null, ex.getMessage());
-                } catch (ClassNotFoundException ex) {
-                    throw new RuntimeException(ex);
-                }
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage());
+            } catch (ClassNotFoundException ex) {
+                throw new RuntimeException(ex);
             }
         });
         panel.add(registerButton);

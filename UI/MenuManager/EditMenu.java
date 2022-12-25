@@ -4,11 +4,8 @@ import UI.NavBar.OwnerNavBar;
 import database.DishType;
 import database.Menu;
 import database.utils.Connect;
-
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
 
@@ -74,35 +71,30 @@ public class EditMenu {
         addTextArea(descLabel, descText);
 
         confirmBtn = new JButton("Confirm");
-        confirmBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                DishType dishType = new DishType();
-                menu.setId(itemId);
-                menu.setQuantity(Long.parseLong(productQuantity.getText()));
-                menu.setName(productName.getText());
-                menu.setPrice(Double.parseDouble(productPrice.getText()));
-                menu.setDescription(descText.getText());
-                menu.setServingAmount(Long.parseLong(portionText.getText()));
-                menu.setDishTypeId(dishType.getDishType((String) productType.getSelectedItem()));
-                try {
-                    if (menu.updateMenu()) {
-                        JOptionPane.showMessageDialog(null, "Changes to item have been saved!");
-                        OwnerNavBar.mainFrame.dispose();
-                        OwnerNavBar.generateOwnerNavBar();
-                        frame.setVisible(false);
-                    }
-                } catch (SQLException | ClassNotFoundException ex) {
-                    throw new RuntimeException(ex);
+        confirmBtn.addActionListener(e -> {
+            DishType dishType = new DishType();
+            menu.setId(itemId);
+            menu.setQuantity(Long.parseLong(productQuantity.getText()));
+            menu.setName(productName.getText());
+            menu.setPrice(Double.parseDouble(productPrice.getText()));
+            menu.setDescription(descText.getText());
+            menu.setServingAmount(Long.parseLong(portionText.getText()));
+            menu.setDishTypeId(dishType.getDishType((String) productType.getSelectedItem()));
+            try {
+                if (menu.updateMenu()) {
+                    JOptionPane.showMessageDialog(null, "Changes to item have been saved!");
+                    OwnerNavBar.mainFrame.dispose();
+                    OwnerNavBar.generateOwnerNavBar();
+                    frame.setVisible(false);
                 }
+            } catch (SQLException | ClassNotFoundException ex) {
+                throw new RuntimeException(ex);
             }
         });
         btnProperties(confirmBtn);
 
         frame.setVisible(true);
     }
-
-
     public static void addToPanel(JLabel label, JTextField text){
         label.setBounds(100, yCoordinate,140, 20);
         panel.add(label);
@@ -110,7 +102,6 @@ public class EditMenu {
         panel.add(text);
         yCoordinate+=60;
     }
-
     public static void btnProperties(JButton b){
         b.setBounds(180, yCoordinate+60,120,30);
         b.setAlignmentX(Component.CENTER_ALIGNMENT);

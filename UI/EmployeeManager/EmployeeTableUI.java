@@ -3,14 +3,11 @@ package UI.EmployeeManager;
 import UI.utils.Helper;
 import database.Employee;
 import database.utils.Connect;
-
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
-import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;

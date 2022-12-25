@@ -1,10 +1,6 @@
 package UI.NavBar;
-
 import UI.CustomerManager.CustomerMenuUI;
-import UI.EmployeeManager.EmployeeTableUI;
-import UI.MenuManager.OwnerMenu;
-import UI.TransactionHistUI;
-
+import UI.CustomerManager.TransactionHistUI;
 import javax.swing.*;
 import java.sql.SQLException;
 

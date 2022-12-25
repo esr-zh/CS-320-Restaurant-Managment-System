@@ -53,52 +53,38 @@ public class OwnerMenu implements ActionListener {
 
         buttonPanel.add(Box.createHorizontalGlue());
         addButton = new JButton("Add");
-        addButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e){
-                AddMenu.generateUI();
-            }
-
-        });
+        addButton.addActionListener(e -> AddMenu.generateUI());
         btnProperties(addButton);
         buttonPanel.add(addButton);
         buttonPanel.add(Box.createRigidArea(new Dimension(20, 0)));
 
         editButton = new JButton("Edit");
-        editButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int selectedRow = table.getSelectedRow();
-                long productId = Integer.parseInt(tableModel.getValueAt(selectedRow,0).toString());
-                String productType = (String) tableModel.getValueAt(selectedRow,1);
-                String productName = (String) tableModel.getValueAt(selectedRow,2);
-                String productPrice = (String) tableModel.getValueAt(selectedRow,3);
-                String productQuantity = (String) tableModel.getValueAt(selectedRow,4);
-                String productPortion = (String) tableModel.getValueAt(selectedRow,5);
-                String productDesc = (String) tableModel.getValueAt(selectedRow,6);
-                System.out.println(productType);
-                EditMenu.generateUI();
-                EditMenu.itemId = productId;
-                EditMenu.productType.setSelectedItem(productType);
-                EditMenu.productName.setText(productName);
-                EditMenu.productPrice.setText(productPrice);
-                EditMenu.productQuantity.setText(productQuantity);
-                EditMenu.portionText.setText(productPortion);
-                EditMenu.descText.setText(productDesc);
-            }
+        editButton.addActionListener(e -> {
+            int selectedRow = table.getSelectedRow();
+            long productId = Integer.parseInt(tableModel.getValueAt(selectedRow,0).toString());
+            String productType = (String) tableModel.getValueAt(selectedRow,1);
+            String productName = (String) tableModel.getValueAt(selectedRow,2);
+            String productPrice = (String) tableModel.getValueAt(selectedRow,3);
+            String productQuantity = (String) tableModel.getValueAt(selectedRow,4);
+            String productPortion = (String) tableModel.getValueAt(selectedRow,5);
+            String productDesc = (String) tableModel.getValueAt(selectedRow,6);
+            System.out.println(productType);
+            EditMenu.generateUI();
+            EditMenu.itemId = productId;
+            EditMenu.productType.setSelectedItem(productType);
+            EditMenu.productName.setText(productName);
+            EditMenu.productPrice.setText(productPrice);
+            EditMenu.productQuantity.setText(productQuantity);
+            EditMenu.portionText.setText(productPortion);
+            EditMenu.descText.setText(productDesc);
         });
         btnProperties(editButton);
         buttonPanel.add(editButton);
-
-
         buttonPanel.add(Box.createRigidArea(new Dimension(20, 0)));
-
         deleteButton = new JButton("Delete");
         btnProperties(deleteButton);
         buttonPanel.add(deleteButton);
         buttonPanel.add(Box.createHorizontalGlue());
-
-
 
         thisPanel.add(tablePanel, BorderLayout.CENTER);
         thisPanel.add(buttonPanel, BorderLayout.PAGE_END);
@@ -142,15 +128,7 @@ public class OwnerMenu implements ActionListener {
             } catch (SQLException | ClassNotFoundException ex) {
                 throw new RuntimeException(ex);
             }
-
         }
-    }
-    public static void centerWindow(Window frame) {
-        Rectangle bounds = frame.getGraphicsConfiguration().getBounds();
-        Dimension dimension = bounds.getSize();
-        int x = (int) (((dimension.getWidth() - frame.getWidth()) / 2) + bounds.getMinX());
-        int y = (int) (((dimension.getHeight() - frame.getHeight()) / 2) + bounds.getMinY());
-        frame.setLocation(x, y);
     }
 
 }

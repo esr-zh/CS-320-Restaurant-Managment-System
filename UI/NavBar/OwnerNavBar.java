@@ -1,8 +1,6 @@
 package UI.NavBar;
-
 import UI.EmployeeManager.EmployeeTableUI;
 import UI.MenuManager.OwnerMenu;
-
 import javax.swing.*;
 import java.sql.SQLException;
 

@@ -4,7 +4,6 @@ import UI.NavBar.OwnerNavBar;
 import database.DishType;
 import database.Menu;
 import database.utils.Connect;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -128,9 +127,6 @@ public class AddMenu {
         int y = (int) (((dimension.getHeight() - frame.getHeight()) / 2) + bounds.getMinY());
         frame.setLocation(x, y);
     }
-
-
-
 }
 
 

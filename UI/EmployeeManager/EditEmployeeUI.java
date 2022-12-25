@@ -2,17 +2,12 @@ package UI.EmployeeManager;
 
 import database.*;
 import UI.utils.Helper;
-
 import javax.swing.*;
 import java.sql.SQLException;
 import java.util.Objects;
 
 public class EditEmployeeUI extends EmployeeUI {
     private long empUserID;// you have to pass this id first
-
-    public long getEmpUserID() {
-        return empUserID;
-    }
 
     public void setEmpUserID(long empUserID) {
         System.out.println("passed => " + empUserID);

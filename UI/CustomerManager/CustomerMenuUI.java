@@ -5,7 +5,6 @@ import database.Menu;
 import database.OrderDetails;
 import database.TransactionHistory;
 import database.utils.Connect;
-
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -24,7 +23,6 @@ public class CustomerMenuUI{
     public static TransactionHistory TH = new TransactionHistory(connect.connection);
     public static OrderDetails OD = new OrderDetails(connect.connection);
     public int yCoordinate = 50;
-
     public static final int doesNotExist = -1;
     public static JPanel customerMainPanel;
     public static JPanel menuPanel, cartPanel;
@@ -39,19 +37,14 @@ public class CustomerMenuUI{
     public static String[] options = {"No", "Yes"}, productTypes;
 
     public static DefaultTableModel tableModel;
-
     public static final int userWantsReceipt = 1;
     // Column Names
     static String[] columnNames = {"Menu Type", "Product", "Quantity", "Price"};
     long userId;
-
     long transId;
-
     public CustomerMenuUI(long userId) {
         this.userId = userId;
     }
-
-
     public JPanel generateCustomerUI() {
         customerMainPanel = new JPanel();
         setFrameProperties();
