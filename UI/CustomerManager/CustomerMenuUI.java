@@ -33,11 +33,22 @@ public class CustomerMenuUI{
     public static JButton addButton, deleteButton, checkoutButton, transactionButton;
 
     public static List<List<String>> data = new ArrayList<>();
-    public static String[] options = {"Yes", "No"}, productTypes;
+    public static String[] options = {"No", "Yes"}, productTypes;
 
     public static DefaultTableModel tableModel;
 
-    public static JPanel generateCustomerUI() {
+    public static final int userWantsReceipt = 1;
+    // Column Names
+    static String[] columnNames = {"Menu Type", "Product", "Quantity", "Price"};
+    long userId;
+
+    long transId;
+
+    public CustomerMenuUI(long userId) {
+        this.userId = userId;
+    }
+
+    public JPanel generateCustomerUI() {
         customerMainPanel = new JPanel();
         setFrameProperties();
 
@@ -46,7 +57,7 @@ public class CustomerMenuUI{
 
         menuPanel.setLayout(null);
         cartPanel.setLayout(null);
-        transactionButton=new JButton("Transaction History");
+        transactionButton = new JButton("Transaction History");
         menuPanel.setBorder(BorderFactory.createTitledBorder("Menu"));
         cartPanel.setBorder(BorderFactory.createTitledBorder("Cart"));
         cartPanel.setBounds(0, 370, 700, 500);
@@ -88,44 +99,47 @@ public class CustomerMenuUI{
         checkoutButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                    int response = JOptionPane.showOptionDialog(null,
-                            "Do you want a receipt?",
-                            "Checkout Success",
-                            JOptionPane.DEFAULT_OPTION,
-                            JOptionPane.QUESTION_MESSAGE,
-                            null,
-                            options,
-                            options[0]);
+                System.out.println("this is from checkout menu ui =>" + userId);
 
-                    if (response == 0) {  // 1 is the index of the "Yes" option in the options array
-                        // Create a new panel with today's date
-                        JPanel datePanel = new JPanel();
-                        datePanel.setLayout(new BoxLayout(datePanel, BoxLayout.PAGE_AXIS));
-                        String today = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
-                        datePanel.add(new JLabel("Transaction date: "+today));
-                        datePanel.add(table);
+                int response = JOptionPane.showOptionDialog(null,
+                        "Do you want a receipt?",
+                        "Checkout Success",
+                        JOptionPane.DEFAULT_OPTION,
+                        JOptionPane.QUESTION_MESSAGE,
+                        null,
+                        options,
+                        options[0]);
 
-                        double totalPrice = 0;
-                        for (int i = 0; i < table.getRowCount(); i++) {
-                            Object quantity = table.getValueAt(i, 2);
-                            Object price = table.getValueAt(i, 3);
-                            totalPrice = totalPrice + (Double.parseDouble(quantity.toString()) * Double.parseDouble(price.toString()));
-
+                if (response == userWantsReceipt) {
+                    JPanel datePanel = new JPanel();
+                    datePanel.setLayout(new BoxLayout(datePanel, BoxLayout.PAGE_AXIS));
+                    String today = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+                    datePanel.add(new JLabel("Transaction date: "+today));
+                    datePanel.add(new JTable(tableModel));// this line is important
+                    double totalPrice = 0;
+                    for (int i = 0; i < table.getRowCount(); i++) {
+                        Object quantity = table.getValueAt(i, 2);
+                        Object price = table.getValueAt(i, 3);
+                        totalPrice = totalPrice + (Double.parseDouble(quantity.toString()) * Double.parseDouble(price.toString()));
+                    }
+                    datePanel.add(new JLabel("Price to be paid: "+totalPrice));
+                    // Show the panel in a new dialog window
+                    int result = JOptionPane.showConfirmDialog(null, datePanel, "Your receipt:", JOptionPane.OK_CANCEL_OPTION);
+                    if (result == 0) {
+                        System.out.println(tableModel.getRowCount());
+                        TH.setId(transId);
+                        TH.setId(userId);
+                        try {
+                            TH.updatePaidStatus();
+                        } catch (SQLException ex) {
+                            JOptionPane.showMessageDialog(null, ex.getMessage());
+                            return;
                         }
-
-                        datePanel.add(new JLabel("Price to be paid: "+totalPrice));
-
-                        // Show the panel in a new dialog window
-                        JOptionPane.showMessageDialog(null, datePanel, "Your receipt:", JOptionPane.PLAIN_MESSAGE);
+                        tableModel.setRowCount(0);// reset table data
+                    }
                     }
                 }
-//                try {
-//                    TH.setUserId(4);
-//                    TH.setHasPaid(false);
-//                    TH.createTransactionHistory();
-//                } catch (SQLException | ClassNotFoundException ex) {
-//                    throw new RuntimeException(ex);
-//                }
+
         });
         btnProperties(checkoutButton);
         checkoutButton.setBounds(260, 280, 150, 25);
@@ -141,15 +155,50 @@ public class CustomerMenuUI{
                     Object[] insertedRow = new Object[4];
                     // check if product item already exists in the cart table
                     int exists = checkIfAlreadyExists(tableModel,productDropdown.getSelectedItem().toString());
+
+                    OD.setMenuId(selectedItem.getId());
+                    OD.setTransactionId(transId);
+                    OD.setQuantity(Long.parseLong(quantityDropdown.getSelectedItem().toString()));
+
                     if (exists == doesNotExist){
                         insertedRow[0] = menuDropdown.getSelectedItem().toString();
                         insertedRow[1] = productDropdown.getSelectedItem().toString();
                         insertedRow[2] = quantityDropdown.getSelectedItem().toString();
                         insertedRow[3] = String.valueOf(selectedItem.getPrice());
+                        try {
+                            boolean t = OD.addOrderDetails();
+                            System.out.println(t);
+                        } catch (SQLException | ClassNotFoundException ex) {
+                            JOptionPane.showMessageDialog(null, ex.getMessage());
+                            return;
+                        }
                         tableModel.addRow(insertedRow);
                     }else {
+                        try {
+                            OD.updateOrderDetails();
+                        } catch (SQLException | ClassNotFoundException ex) {
+                            JOptionPane.showMessageDialog(null, ex.getMessage());
+                            return;
+                        }
                         tableModel.setValueAt(quantityDropdown.getSelectedItem().toString(), exists, 2);
                     }
+
+//                    for (int i = 0; i < tableModel.getRowCount(); i++) {
+//                        String productName = (String) tableModel.getValueAt(i,1);
+//                        long productQuantity =  Integer.parseInt(tableModel.getValueAt(i,2).toString());
+//                        try {
+//                            menu.getMenuByName(productName);
+//                            OD.setMenuId(menu.getId());
+//                            OD.setQuantity(productQuantity);
+//                            OD.addOrderDetails(); // stored order details
+//                            menu.setQuantity(menu.getQuantity() - productQuantity);
+//                            menu.updateMenu();// update Quantity
+//                        } catch (SQLException | ClassNotFoundException ex) {
+//                            throw new RuntimeException(ex);
+//                        }
+//                    }
+
+
                 }
             }
 
@@ -190,15 +239,57 @@ public class CustomerMenuUI{
     }
 
 
-    private static void addTable() {
-        // Column Names
-        String[] columnNames = {"Menu Type", "Product", "Quantity", "Price"};
+    private void addTable() {
+
         tableModel = new DefaultTableModel(null, columnNames);
+        // load data
+        List<List<String>> results = null;
+        try {
+            results = TH.getAddToCartTableByUserId((int) userId);
+        } catch (SQLException | ClassNotFoundException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+            return;
+        }
+        if (results.size() == 0){
+            TH.setUserId(userId);
+            TH.setHasPaid(false);
+            try {
+                TransactionHistory createdTH = TH.createTransactionHistory();
+                transId = createdTH.getId();
+            } catch (SQLException | ClassNotFoundException e) {
+                JOptionPane.showMessageDialog(null, e.getMessage());
+                return;
+            }
+        }else {
+            try {
+                List<List<String>> results_ = TH.getTransactionHistoryByUserId((int) userId);
+                transId = Long.parseLong(results_.get(0).get(0));
+            } catch (SQLException | ClassNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        loadData(results, tableModel);
+        System.out.println("ready for war =>" +results);
         table = new JTable(tableModel);
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); //prevent a user from selecting multiple rows
         JScrollPane sp = new JScrollPane(table);
         sp.setBounds(10, 20, 660, 200);
         cartPanel.add(sp);
+    }
+
+    public static void loadData(List<List<String>> results, DefaultTableModel tableModel) {
+        for (List<String> row : results) {
+            Object[] insertedRow = new Object[row.size()];
+            for (int i = 0; i < row.size(); i++) {
+                if (i == 0){
+                    insertedRow[i] = new DishType().getDishType(Integer.parseInt(row.get(i)));
+                }else {
+                    insertedRow[i] = row.get(i);
+                }
+
+            }
+            tableModel.addRow(insertedRow);
+        }
     }
 
     private static void updateProductDropdown(JComboBox<String> watchingDropdown, JComboBox<String> changeDropdown) {

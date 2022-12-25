@@ -64,6 +64,12 @@ public class OrderDetails implements Template,Cloneable {
     // create order details
     public boolean addOrderDetails() throws SQLException, ClassNotFoundException {
         String SQL_QUERY = "INSERT INTO order_details(transaction_id,quantity,menu_id) VALUES (?, ?, ?)";
+        System.out.println(this);
+        return checkForTransId(SQL_QUERY, transactionId, quantity);
+
+    }
+
+    private boolean checkForTransId(String SQL_QUERY, long transactionId, long quantity) throws SQLException, ClassNotFoundException {
         new TransactionHistory(conn).doesTransactionHistoryExists(transactionId);
         new Menu(conn).getMenuByIdBool(menuId);
         try (
@@ -73,8 +79,14 @@ public class OrderDetails implements Template,Cloneable {
                 statement.setLong(1, transactionId);
                 statement.setLong(2, quantity);
                 statement.setLong(3, menuId);
+                statement.executeUpdate();
                 return true;
             }
+    }
+
+    public boolean updateOrderDetails() throws SQLException, ClassNotFoundException {
+        String SQL_QUERY = "UPDATE order_details SET quantity = ? WHERE order_details.transaction_id = ? AND order_details.menu_id = ?";
+        return checkForTransId(SQL_QUERY, quantity, transactionId);
 
     }
 
@@ -136,4 +148,14 @@ public class OrderDetails implements Template,Cloneable {
         }
     }
 
+    @Override
+    public String toString() {
+        return "OrderDetails{" +
+                "conn=" + conn +
+                ", id=" + id +
+                ", transactionId=" + transactionId +
+                ", quantity=" + quantity +
+                ", menuId=" + menuId +
+                '}';
+    }
 }

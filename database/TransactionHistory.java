@@ -1,7 +1,6 @@
 package database;
 
 import database.utils.Connect;
-import database.utils.Helper;
 import database.utils.Template;
 
 import java.sql.*;
@@ -86,15 +85,14 @@ public class TransactionHistory implements Template,Cloneable{
     // list transaction history by user id
     public List<List<String>> getTransactionHistoryByUserId(int userId) throws SQLException, ClassNotFoundException {
 
-        String SQL_QUERY = "SELECT * FROM transaction_history WHERE transaction_history.user_id = ? AND transaction_history.has_paid = true";
+        String SQL_QUERY = "SELECT transaction_history.id FROM transaction_history WHERE transaction_history.user_id = ?";
         return getLists(userId, SQL_QUERY);
     }
 
     // get add to card table
     public List<List<String>> getAddToCartTableByUserId(int userId) throws SQLException, ClassNotFoundException {
 
-        String SQL_QUERY = "SELECT TH.id, name,price,od.quantity from transaction_history as TH JOIN order_details od ON od.transaction_id = TH.id\n" +
-                "JOIN menu m ON m.id = od.menu_id where TH.user_id = ? AND has_paid = false;";
+        String SQL_QUERY = "SELECT m.dish_type_id,name,OD.quantity,price from transaction_history as TH JOIN order_details OD ON OD.transaction_id = TH.id JOIN menu m ON m.id = OD.menu_id where user_id = ? AND has_paid = false;";
         return getLists(userId, SQL_QUERY);
     }
 
@@ -142,7 +140,7 @@ public class TransactionHistory implements Template,Cloneable{
 
     // create transaction history
     // user should not create any new history if the user didn't pay the previous one
-    public boolean createTransactionHistory() throws SQLException, ClassNotFoundException {
+    public TransactionHistory createTransactionHistory() throws SQLException, ClassNotFoundException {
         String SQL_QUERY = "INSERT INTO transaction_history(user_id,created_at,has_paid,paid_at) VALUES (?, ?, ?, ?)";
         if (!doesUserPaidAll(userId)){
             try (
@@ -154,7 +152,19 @@ public class TransactionHistory implements Template,Cloneable{
                 statement.setLong(2, currentDate);
                 statement.setLong(3, hasPaid ? 1 : 0);
                 statement.setLong(4, paidAt);
-                return true;
+
+                statement.executeUpdate();
+
+                try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                    System.out.println(generatedKeys);
+                    if (generatedKeys.next()) {
+                        this.setId(generatedKeys.getLong(1));
+                    } else {
+                        throw new SQLException("Creating transaction history, no ID obtained.");
+                    }
+                }
+
+                return this;
             }
         }
 
@@ -174,6 +184,7 @@ public class TransactionHistory implements Template,Cloneable{
         return rs.next();
 
     }
+
 
     private boolean doesUserHasTH(long userId) throws SQLException {
         String SQL_QUERY = "SELECT * FROM transaction_history WHERE " +

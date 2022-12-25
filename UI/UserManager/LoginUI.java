@@ -77,8 +77,9 @@ public class LoginUI  {
                         frame.dispose();
                         JFrame customerMenuFrame = new JFrame();
                         TransactionHistUI transactionHistUI = new TransactionHistUI(userId);
+                        CustomerMenuUI customerMenuUI = new CustomerMenuUI(userId);
                         JTabbedPane tabbedPane = new JTabbedPane();
-                        tabbedPane.add("Menu", CustomerMenuUI.generateCustomerUI());
+                        tabbedPane.add("Menu", customerMenuUI.generateCustomerUI());
                         tabbedPane.add("Transaction History", transactionHistUI.getUIComponent());
                         customerMenuFrame.add(tabbedPane);
                         customerMenuFrame.setTitle("Customer Menu");
@@ -87,6 +88,11 @@ public class LoginUI  {
                         customerMenuFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                         customerMenuFrame.setVisible(true);
                     }
+
+                    if (userRole.getUserRole((int) userRoleNum).equals("admin")){
+
+                    }
+
                 } catch (SQLException ex) {
                     JOptionPane.showMessageDialog(null, ex.getMessage());
                 }

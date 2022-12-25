@@ -57,16 +57,4 @@ public class TransactionHistUI{
         return scrollPane;
     }
 
-    public static void main(String args[]){
-        JMenu menu, TH;
-        JFrame frame = new JFrame("Transaction History");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        TransactionHistUI transactionHistUI = new TransactionHistUI();
-        frame.add(transactionHistUI.getUIComponent());
-        frame.setSize(800,800);
-        frame.setVisible(true);
-
-    }
-
-
 }

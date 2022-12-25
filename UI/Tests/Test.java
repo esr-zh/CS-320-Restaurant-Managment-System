@@ -15,14 +15,14 @@ public class Test {
         JFrame mainFrame = new JFrame();
         TransactionHistUI transactionHistUI = new TransactionHistUI();;
 
-        JTabbedPane tabbedPane = new JTabbedPane();
-        tabbedPane.add("Menu", CustomerMenuUI.generateCustomerUI());
-        tabbedPane.add("Transaction History", transactionHistUI.getUIComponent());
-        mainFrame.add(tabbedPane);
-        mainFrame.setTitle("Welcome");
-        mainFrame.setResizable(false);
-        mainFrame.setSize(700, 750);
-        mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        mainFrame.setVisible(true);
+//        JTabbedPane tabbedPane = new JTabbedPane();
+//        tabbedPane.add("Menu", CustomerMenuUI.generateCustomerUI(userId));
+//        tabbedPane.add("Transaction History", transactionHistUI.getUIComponent());
+//        mainFrame.add(tabbedPane);
+//        mainFrame.setTitle("Welcome");
+//        mainFrame.setResizable(false);
+//        mainFrame.setSize(700, 750);
+//        mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        mainFrame.setVisible(true);
     }
 }

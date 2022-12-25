@@ -1,5 +1,6 @@
 package UI.MenuManager;
 
+import UI.CustomerManager.CustomerMenuUI;
 import database.Menu;
 import database.utils.Connect;
 
@@ -42,13 +43,7 @@ public class OwnerMenu implements ActionListener {
 
         List<List<String>> result = menu.listAllMenu();
 
-        for(List<String> row : result){
-            Object[] insertedRow = new Object[row.size()];
-            for (int i = 0; i < row.size(); i++) {
-                insertedRow[i] = row.get(i);
-            }
-            tableModel.addRow(insertedRow);
-        }
+        CustomerMenuUI.loadData(result, tableModel);
         System.out.println(result);
 
         table = new JTable(tableModel);
