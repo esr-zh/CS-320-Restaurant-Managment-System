@@ -1,6 +1,5 @@
 package UI.EmployeeManeger;
 
-import UI.EmployeeManeger.EditEmployeeUI;
 import UI.utils.Helper;
 import database.Employee;
 import database.utils.Connect;
@@ -11,8 +10,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
-import java.util.List;
-import java.util.Objects;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -74,14 +71,14 @@ public class EmployeeTableUI {
                     int row = dataTable.getSelectedRow();
                     if (dataTable.getSelectedRow() != -1) {
                         //edit employee based on ID:
-                        EditEmployeeUI2 editEmployeeUI2 = new EditEmployeeUI2(Integer.parseInt(dataTable.getModel().getValueAt(row, 0).toString()));
+                        EditEmployeeUI editEmployeeUI = new EditEmployeeUI(Integer.parseInt(dataTable.getModel().getValueAt(row, 0).toString()));
 
-                        editEmployeeUI2.changeName(dataTable.getModel().getValueAt(row, 1).toString());
-                        editEmployeeUI2.roleList.setSelectedItem(dataTable.getModel().getValueAt(row, 2).toString());
-                        editEmployeeUI2.contractList.setSelectedItem(dataTable.getModel().getValueAt(row, 3).toString());
-                        editEmployeeUI2.fromList.setSelectedItem(dataTable.getModel().getValueAt(row, 4).toString()+":00");
-                        editEmployeeUI2.toList.setSelectedItem(dataTable.getModel().getValueAt(row, 5).toString()+":00");
-                        editEmployeeUI2.inputSalary.setText(dataTable.getModel().getValueAt(row, 6).toString());
+                        editEmployeeUI.changeName(dataTable.getModel().getValueAt(row, 1).toString());
+                        editEmployeeUI.roleList.setSelectedItem(dataTable.getModel().getValueAt(row, 2).toString());
+                        editEmployeeUI.contractList.setSelectedItem(dataTable.getModel().getValueAt(row, 3).toString());
+                        editEmployeeUI.fromList.setSelectedItem(dataTable.getModel().getValueAt(row, 4).toString()+":00");
+                        editEmployeeUI.toList.setSelectedItem(dataTable.getModel().getValueAt(row, 5).toString()+":00");
+                        editEmployeeUI.inputSalary.setText(dataTable.getModel().getValueAt(row, 6).toString());
                     }
                 }
             });
