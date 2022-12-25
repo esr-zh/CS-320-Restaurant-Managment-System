@@ -84,7 +84,7 @@ public class EditMenu {
                 menu.setPrice(Double.parseDouble(productPrice.getText()));
                 menu.setDescription(descText.getText());
                 menu.setServingAmount(Long.parseLong(portionText.getText()));
-                menu.setDishTypeId(dishType.getSalaryType((String) productType.getSelectedItem()));
+                menu.setDishTypeId(dishType.getDishType((String) productType.getSelectedItem()));
                 try {
                     if (menu.updateMenu()) {
                         JOptionPane.showMessageDialog(null, "Changes to item have been saved!");

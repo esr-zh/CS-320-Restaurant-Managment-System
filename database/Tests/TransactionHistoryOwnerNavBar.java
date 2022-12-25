@@ -76,7 +76,8 @@ public class TransactionHistoryOwnerNavBar extends DBTestable{
     public void createTransactionHistory() throws SQLException, ClassNotFoundException {
         TH.setUserId(3);
         TH.setHasPaid(false);
-        Assertions.assertTrue(TH.createTransactionHistory());
+        TransactionHistory TH_ = TH.createTransactionHistory();
+        Assertions.assertEquals(3,TH_.getUserId());
     }
 
     @Test
