@@ -1,6 +1,6 @@
 package UI.Tests;
 
-import UI.CustomerMenuUI;
+import UI.CustomerManager.CustomerMenuUI;
 import UI.TransactionHistUI;
 
 import javax.swing.*;

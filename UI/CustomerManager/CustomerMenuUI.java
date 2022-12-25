@@ -1,4 +1,4 @@
-package UI;
+package UI.CustomerManager;
 import database.DishType;
 import database.Menu;
 import database.OrderDetails;

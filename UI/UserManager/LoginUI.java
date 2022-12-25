@@ -1,6 +1,7 @@
 package UI.UserManager;
 
 import database.User;
+import database.UserRole;
 import database.utils.Connect;
 
 import javax.swing.*;
@@ -12,6 +13,7 @@ import java.sql.SQLException;
 public class LoginUI  {
     Connect connect = new Connect();
     User user = new User(connect.connection);
+    UserRole userRole = new UserRole();
 
     public  JLabel password_label, username_label;
     public  JTextField usernameInput;
@@ -61,6 +63,12 @@ public class LoginUI  {
                 try {
                     user.authUser();
                     long userId = user.getId();
+                    long userRoleNum = user.getUserRole();
+                    System.out.println("user id =>" + userId);
+                    System.out.println("user role =>" + userRole.getUserRole((int) userRoleNum));
+                    if (userRole.getUserRole((int) userRoleNum).equals("customer")){
+                        frame.dispose();
+                    }
                     JOptionPane.showMessageDialog(null, "Login Successful");
                 } catch (SQLException ex) {
                     JOptionPane.showMessageDialog(null, ex.getMessage());
