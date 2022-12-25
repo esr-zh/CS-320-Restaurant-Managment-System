@@ -14,7 +14,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import static org.junit.Assert.assertEquals;
-
+//import static org.testng.Assert.assertTrue;
+//import static org.testng.AssertJUnit.assertEquals;
 
 public class UserTest extends database.Tests.DBTestable {
     User user;
@@ -77,5 +78,12 @@ public class UserTest extends database.Tests.DBTestable {
         }catch (Exception e){
             assertEquals("user not found!",e.getMessage());
         }
+    }
+
+    @Test
+    public void getUserByUsernameTest() throws SQLException, ClassNotFoundException {
+        String username = "diamond2";
+        User currentUser = user.getUserByUsername(username);
+        assertEquals(4,currentUser.getId());
     }
 }

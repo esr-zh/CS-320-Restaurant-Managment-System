@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
 public class LoginUI implements ActionListener {
+
     public static JLabel password_label, username_label;
     public static JTextField username_input;
     public static JButton login_button, register_button;
@@ -47,7 +48,9 @@ public class LoginUI implements ActionListener {
         login_button.setBounds(200, 110, 90, 25);
         login_button.setForeground(Color.WHITE);
         login_button.setBackground(Color.BLACK);
+
         login_button.addActionListener((ActionListener) new LoginUI());
+
         panel.add(login_button);
 
         register_button = new JButton("Register");

@@ -1,15 +1,17 @@
-import UI.OwnerMenu;
+import UI.EmployeeManeger.AddEmployeeUI;
+import UI.EmployeeManeger.EmployeeTableUI;
 
 import javax.swing.*;
-import java.sql.SQLException;
 
 public class main {
-    public static void main(String args[]) throws SQLException {
+    public static void main(String args[]) {
         try {
             UIManager.setLookAndFeel( UIManager.getCrossPlatformLookAndFeelClassName() );
         } catch (Exception e) {
             e.printStackTrace();
         }
-        OwnerMenu.generateUI();
+        EmployeeTableUI.generateUI();
+//        EmployeeTableUI.generateUI();
+//        new AddEmployeeUI();
     }
 }

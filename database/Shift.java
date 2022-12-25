@@ -1,9 +1,6 @@
 package database;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class Shift {
     private Connection conn;
@@ -14,6 +11,18 @@ public class Shift {
 
     public Shift(Connection conn) {
         this.conn = conn;
+    }
+
+    public Shift(long id, long userId, long workingFrom, long workingTo){
+        this.id = id;
+        this.userId = userId;
+        this.workingFrom = workingFrom;
+        this.workingTo = workingTo;
+    }
+
+    public Shift(long workingFrom, long workingTo) {
+        this.workingFrom = workingFrom;
+        this.workingTo = workingTo;
     }
 
     public long getId() {
@@ -97,4 +106,49 @@ public class Shift {
 
         return 0;
     }
+
+    public Shift getShiftByUserId(long userId) throws SQLException {
+        String SQL_QUERY = "SELECT * FROM shift WHERE shift.user_id = ?";
+        PreparedStatement statement = conn.prepareStatement(SQL_QUERY);
+        statement.setLong(1, userId);
+        ResultSet rs = statement.executeQuery();
+        if (!rs.next()){
+            throw new SQLException("shift info not found!");
+        }
+
+        return new Shift(rs.getLong(1),rs.getLong(2),rs.getLong(3),rs.getLong(4) );
+
+    }
+
+    public Boolean updateShift() throws SQLException { // only updates username and user role
+        String SQL_QUERY = "UPDATE shift SET working_from = ?, working_to = ? WHERE shift.user_id = ?";
+        Shift currentShift = getShiftByUserId(userId);
+        try (PreparedStatement statement = conn.prepareStatement(SQL_QUERY, Statement.RETURN_GENERATED_KEYS)) {
+            if (workingTo != currentShift.getWorkingTo()) {
+                setWorkingTo(workingTo);
+            }else {
+                setWorkingTo(currentShift.getWorkingTo());
+            }
+            if (workingFrom != currentShift.getWorkingFrom()) {
+                setWorkingFrom(workingFrom);
+            }else {
+                setWorkingFrom(currentShift.getWorkingFrom());
+            }
+
+            statement.setLong(1,workingFrom);
+            statement.setLong(2,workingTo);
+            statement.setLong(3,userId);
+
+            int affectedRows = statement.executeUpdate();
+
+            if (affectedRows == 0) {
+                throw new SQLException("deleting menu failed, no rows affected.");
+            }
+
+            return true;
+        }
+
+
+    }
+
 }
