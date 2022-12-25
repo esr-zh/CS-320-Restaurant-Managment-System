@@ -31,9 +31,9 @@ public class EditEmployeeUI2 extends EmployeeUI {
         employee.setUserId(x);// this is passed from edit employee ui
         button.addActionListener(e -> { // we had a scope issue here for emp user id
                     try {
-                        long userRoleNum = userRole.getUserRole(inputRole.getText());
+                        long userRoleNum = userRole.getUserRole(roleList.getSelectedItem().toString().toLowerCase());
                         String username = getNameInputText();
-                        long salaryTypeNum = salaryType.getSalaryType(Objects.requireNonNull(contractList.getSelectedItem()).toString());
+                        long salaryTypeNum = salaryType.getSalaryType(Objects.requireNonNull(contractList.getSelectedItem()).toString().toLowerCase());
                         employee.setSalary(Long.parseLong(inputSalary.getText()));
                         employee.setSalaryType(salaryTypeNum);
                         int workingFromIndex = Objects.requireNonNull(fromList.getSelectedItem()).toString().indexOf(":");
