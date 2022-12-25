@@ -16,12 +16,12 @@ import javax.swing.table.DefaultTableModel;
 public class OwnerMenu implements ActionListener {
     public static Connect connect = new Connect();
     public static Menu menu = new Menu(connect.connection);
-    public static JFrame frame;
+    static JPanel thisPanel;
     public static JTable table;
     public static JButton editButton, deleteButton, addButton;
     public static DefaultTableModel tableModel;
 
-    public static void generateUI() throws SQLException {
+    public static Component generateUI() throws SQLException {
         JPanel tablePanel = new JPanel();
         JPanel buttonPanel = new JPanel();
 
@@ -34,8 +34,8 @@ public class OwnerMenu implements ActionListener {
         tablePanel.setBorder(BorderFactory.createTitledBorder("Menu Table"));
         buttonPanel.setBorder(BorderFactory.createTitledBorder("Select and Manage Menu Items"));
 
-        frame = new JFrame();
-        setFrameProperties();
+        thisPanel = new JPanel();
+        thisPanel.setLayout(new BorderLayout());
 
         String[] columnNames = {"Id","Type", "Name", "Price", "Quantity", "Portion", "Description"};
         tableModel = new DefaultTableModel(null, columnNames);
@@ -104,22 +104,13 @@ public class OwnerMenu implements ActionListener {
         buttonPanel.add(deleteButton);
         buttonPanel.add(Box.createHorizontalGlue());
 
-        frame.add(tablePanel, BorderLayout.CENTER);
-        frame.add(buttonPanel, BorderLayout.PAGE_END);
-        frame.pack();
 
 
+        thisPanel.add(tablePanel, BorderLayout.CENTER);
+        thisPanel.add(buttonPanel, BorderLayout.PAGE_END);
+
+        return thisPanel;
     }
-
-    public static void setFrameProperties() {
-        frame.setLayout(new BorderLayout());
-        frame.setTitle("Edit Menu");
-        frame.setSize(700,700);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        centerWindow(frame);
-        frame.setVisible(true);
-    }
-
     private static void btnProperties(JButton button) {
         button.setForeground(Color.WHITE);
         button.setBackground(Color.BLACK);
