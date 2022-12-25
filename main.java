@@ -10,6 +10,7 @@ public class main {
         } catch (Exception e) {
             e.printStackTrace();
         }
+//        AddEmployeeUI.generateAddUI();
         EmployeeTableUI.generateUI();
     }
 }

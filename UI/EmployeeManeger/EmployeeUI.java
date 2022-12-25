@@ -25,13 +25,16 @@ public class EmployeeUI extends BasicComboBoxRenderer{
     public static int yCoordinate = 60;
     JPanel employeePanel;
     public JLabel nameLabel, roleLabel, workingHourLabel, contractLabel, salaryLabel;
-    private JTextField inputName;
+    public static JTextField inputName;
     public JTextField inputRole;
     public JTextField inputWorkingHourFrom;
     public JTextField inputWorkingHourTo;
     public JTextField inputContract;
-    public JTextField inputSalary;
-    public JComboBox<String> contractList, roleList, toList, fromList;
+    public static JTextField inputSalary;
+    public static JComboBox<String> contractList;
+    public static JComboBox<String> roleList;
+    public static JComboBox<String> toList;
+    public static JComboBox<String> fromList;
     JButton button;
 
     public JButton getBtn() {
