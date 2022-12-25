@@ -1,4 +1,5 @@
 import UI.EmployeeManager.EmployeeTableUI;
+import UI.UserManager.LoginUI;
 
 import javax.swing.*;
 
@@ -9,9 +10,6 @@ public class main {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        EmployeeTableUI.generateUI();
-//        EmployeeTableUI.generateUI();
-//        new AddEmployeeUI();
-        // test one two three
+        new LoginUI().generateUI();
     }
 }
