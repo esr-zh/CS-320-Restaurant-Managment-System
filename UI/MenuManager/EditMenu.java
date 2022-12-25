@@ -1,6 +1,7 @@
 package UI.MenuManager;
 
 import UI.MenuManager.OwnerMenu;
+import UI.Test.Test2;
 import database.DishType;
 import database.Menu;
 import database.utils.Connect;
@@ -88,8 +89,8 @@ public class EditMenu {
                 try {
                     if (menu.updateMenu()) {
                         JOptionPane.showMessageDialog(null, "Changes to item have been saved!");
-                        OwnerMenu.frame.dispose();
-                        OwnerMenu.generateUI();
+                        Test2.mainFrame.dispose();
+                        Test2.generateTabbedPane();
                         frame.setVisible(false);
                     }
                 } catch (SQLException | ClassNotFoundException ex) {

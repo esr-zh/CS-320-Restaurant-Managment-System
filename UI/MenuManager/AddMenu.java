@@ -1,5 +1,6 @@
 package UI.MenuManager;
 
+import UI.Test.Test2;
 import database.DishType;
 import database.Menu;
 import database.utils.Connect;
@@ -83,8 +84,8 @@ public class AddMenu {
                 try {
                     menu.createMenu();
                     JOptionPane.showMessageDialog(null, "Item added successfully!");
-                    OwnerMenu.frame.dispose();
-                    OwnerMenu.generateUI();
+                    Test2.mainFrame.dispose();
+                    Test2.generateTabbedPane();
                     frame.setVisible(false);
 
                 } catch (SQLException | ClassNotFoundException ex) {
