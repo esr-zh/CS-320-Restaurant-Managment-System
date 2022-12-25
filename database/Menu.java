@@ -209,7 +209,7 @@ public class Menu {
         String SQL_QUERY = "UPDATE menu SET name = ?, description = ?,serving_amount = ?," +
                 "price = ?,dish_type_id = ?,quantity = ? WHERE menu.id = ?";
         Menu current = getMenuById(id);
-        try (PreparedStatement statement = conn.prepareStatement(SQL_QUERY, Statement.RETURN_GENERATED_KEYS);) {
+        try (PreparedStatement statement = conn.prepareStatement(SQL_QUERY, Statement.RETURN_GENERATED_KEYS)) {
                 statement.setLong(7, id);
 
             if (name == null)

@@ -128,14 +128,33 @@ public class CustomerMenuUI{
                     if (result == 0) {
                         System.out.println(tableModel.getRowCount());
                         TH.setId(transId);
-                        TH.setId(userId);
+                        TH.setUserId(userId);
                         try {
                             TH.updatePaidStatus();
+                            // update product quantity
+                           for (int i = 0; i < tableModel.getRowCount(); i++) {
+                                String productName = (String) tableModel.getValueAt(i,1);
+                                long selectedProductQuantity =  Integer.parseInt(tableModel.getValueAt(i,2).toString());
+                                try {
+                                    Menu productDB = menu.getMenuByName(productName);
+                                    menu.setName(productName);
+                                    menu.setPrice(productDB.getPrice());
+                                    menu.setDescription(productDB.getDescription());
+                                    menu.setServingAmount(productDB.getServingAmount());
+                                    menu.setId(productDB.getId());
+                                    menu.setDishTypeId(productDB.getDishTypeId());
+                                    menu.setQuantity(productDB.getQuantity() - selectedProductQuantity);
+                                    menu.updateMenu();// update Quantity
+                                } catch (ClassNotFoundException | SQLException ex) {
+                                    throw new RuntimeException(ex);
+                                }
+                           }
                         } catch (SQLException ex) {
-                            JOptionPane.showMessageDialog(null, ex.getMessage());
-                            return;
+                            throw new RuntimeException(ex);
                         }
                         tableModel.setRowCount(0);// reset table data
+                        customerMainPanel.revalidate();
+                        customerMainPanel.repaint();
                     }
                     }
                 }
@@ -181,22 +200,6 @@ public class CustomerMenuUI{
                         }
                         tableModel.setValueAt(quantityDropdown.getSelectedItem().toString(), exists, 2);
                     }
-
-//                    for (int i = 0; i < tableModel.getRowCount(); i++) {
-//                        String productName = (String) tableModel.getValueAt(i,1);
-//                        long productQuantity =  Integer.parseInt(tableModel.getValueAt(i,2).toString());
-//                        try {
-//                            menu.getMenuByName(productName);
-//                            OD.setMenuId(menu.getId());
-//                            OD.setQuantity(productQuantity);
-//                            OD.addOrderDetails(); // stored order details
-//                            menu.setQuantity(menu.getQuantity() - productQuantity);
-//                            menu.updateMenu();// update Quantity
-//                        } catch (SQLException | ClassNotFoundException ex) {
-//                            throw new RuntimeException(ex);
-//                        }
-//                    }
-
 
                 }
             }
