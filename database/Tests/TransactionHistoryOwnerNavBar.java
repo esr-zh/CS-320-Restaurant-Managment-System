@@ -10,9 +10,9 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-public class TransactionHistoryTest2 extends DBTestable{
+public class TransactionHistoryOwnerNavBar extends DBTestable{
     TransactionHistory TH;
-    public TransactionHistoryTest2() throws SQLException, ClassNotFoundException {
+    public TransactionHistoryOwnerNavBar() throws SQLException, ClassNotFoundException {
         super();
     }
 

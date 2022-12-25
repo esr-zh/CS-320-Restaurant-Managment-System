@@ -1,4 +1,4 @@
-package UI.Test;
+package UI.NavBar;
 
 import UI.EmployeeManager.EmployeeTableUI;
 import UI.MenuManager.OwnerMenu;
@@ -6,13 +6,12 @@ import UI.MenuManager.OwnerMenu;
 import javax.swing.*;
 import java.sql.SQLException;
 
-public class Test2 {
+public class OwnerNavBar {
     public static JFrame mainFrame;
     public static void main(String[] args) throws SQLException {
-        generateTabbedPane();
+        generateOwnerNavBar();
     }
-
-    public static void generateTabbedPane() throws SQLException {
+    public static void generateOwnerNavBar() throws SQLException {
         try {
             UIManager.setLookAndFeel( UIManager.getCrossPlatformLookAndFeelClassName() );
         } catch (Exception e) {
