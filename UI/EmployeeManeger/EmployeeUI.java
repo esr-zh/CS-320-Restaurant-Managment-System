@@ -16,11 +16,11 @@ import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.Objects;
 public class EmployeeUI extends BasicComboBoxRenderer{
-    private static Connect connect = new Connect();
-    public static Employee employee = new Employee(connect.connection);
+    private Connect connect = new Connect();
+    public Employee employee = new Employee(connect.connection);
     User user = new User(connect.connection);
-    public static JFrame addEmployeeFrame = new JFrame();
-    public static SalaryType salaryType = new SalaryType();
+    public JFrame addEmployeeFrame = new JFrame();
+    public  SalaryType salaryType = new SalaryType();
     public static UserRole userRole = new UserRole();
     public static int yCoordinate = 60;
     JPanel employeePanel;
@@ -30,11 +30,11 @@ public class EmployeeUI extends BasicComboBoxRenderer{
     public JTextField inputWorkingHourFrom;
     public JTextField inputWorkingHourTo;
     public JTextField inputContract;
-    public static JTextField inputSalary;
-    public static JComboBox<String> contractList;
-    public static JComboBox<String> roleList;
-    public static JComboBox<String> toList;
-    public static JComboBox<String> fromList;
+    public JTextField inputSalary;
+    public JComboBox<String> contractList;
+    public JComboBox<String> roleList;
+    public JComboBox<String> toList;
+    public JComboBox<String> fromList;
     JButton button;
 
     public JButton getBtn() {
@@ -86,8 +86,6 @@ public class EmployeeUI extends BasicComboBoxRenderer{
         addTimeDropDown(workingHourLabel, fromTime, toTime);
         addContractDropDown(contractLabel, contact);
         addComponentToPanel(salaryLabel, inputSalary);
-        // or we can make a method that adding a button to this frame
-        // we should the button here
         btnProperties(button);
         employeePanel.add(button);// this is where we link it with the panel;
         addEmployeeFrame.setVisible(true);
@@ -100,10 +98,6 @@ public class EmployeeUI extends BasicComboBoxRenderer{
         button.setOpaque(true);
         button.setBorderPainted(false);
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
-    }
-
-    public void addButton(){
-        employeePanel.add(button);
     }
 
     public void addTimeDropDown(JLabel label, String[] fromTime, String[] toTime){

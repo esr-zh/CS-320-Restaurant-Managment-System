@@ -45,30 +45,15 @@ public class EmployeeTableUI {
             employeeFrame = new JFrame();
             setFrameProperties();
 
-            // Data to be displayed in the JTable
-
             // Column Names
-
             String[] columnNames = {"ID", "Name", "Role", "Contract", "Working From","Working To", "Salary"};
             tableModel = new DefaultTableModel(null, columnNames);
-            try {
-                List<List<String>> results = employee.getAllEmployees();
-                for (List<String> row : results) {
-                    Object[] insertedRow = new Object[row.size()];
-                    for (int i = 0; i < row.size(); i++) {
-                        insertedRow[i] = row.get(i);
-                    }
-                    tableModel.addRow(insertedRow);
-                }
-                System.out.println(results);
-            } catch (Exception e){
-                // show error info pop up
-            }
+            Helper.loadTableData(); // loading data for the table
             dataTable = new JTable(tableModel);
             dataTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); //prevent a user from selecting multiple rows
             JScrollPane sp = new JScrollPane(dataTable);
             tablePanel.add(sp);
-
+            buttonPanel.add(Box.createHorizontalGlue());
             JButton addEmployeeBtn = new JButton("Add");
             btnProperties(addEmployeeBtn);
 
@@ -80,7 +65,7 @@ public class EmployeeTableUI {
             });
 
             buttonPanel.add(addEmployeeBtn);
-            buttonPanel.add(Box.createHorizontalGlue());
+            buttonPanel.add(Box.createRigidArea(new Dimension(20, 0))); //space between the two buttons of 20 pixels.
             editButton = new JButton("Edit");
             editButton.addActionListener(new ActionListener() {
                 @Override

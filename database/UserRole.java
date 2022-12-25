@@ -15,7 +15,8 @@ public class UserRole {
         this.userRoleTable.put(4,"waiter");
     }
 
-    public String getUserRole(int key){
+    public String getUserRole(Integer key){
+        System.out.println(key);
         return userRoleTable.get(key);
     }
 

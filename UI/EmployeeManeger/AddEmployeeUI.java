@@ -1,5 +1,6 @@
 package UI.EmployeeManeger;
 
+import UI.utils.Helper;
 import database.*;
 import database.utils.Connect;
 
@@ -26,10 +27,6 @@ public class AddEmployeeUI extends EmployeeUI{
             long workingFrom = Long.parseLong(Objects.requireNonNull(fromList.getSelectedItem()).toString().split(":")[0]);
             long workingTo = Long.parseLong(Objects.requireNonNull(toList.getSelectedItem()).toString().split(":")[0]);
 
-//            if(workingFrom >= workingTo){
-//                JOptionPane.showMessageDialog(null, "Enter valid time!");
-//                return;
-//            }
 
             shift.setWorkingFrom(workingFrom);
             shift.setWorkingTo(workingTo);
@@ -60,6 +57,7 @@ public class AddEmployeeUI extends EmployeeUI{
             } catch (SQLException ex) {
                 JOptionPane.showMessageDialog(null, ex.getMessage());
             }
+            Helper.loadTableData();
             this.closeWindow();
         });
         this.setBtn(button);

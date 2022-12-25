@@ -2,6 +2,7 @@ package UI.EmployeeManeger;
 
 import database.*;
 import database.utils.Connect;
+import UI.utils.Helper;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -26,7 +27,6 @@ public class EditEmployeeUI2 extends EmployeeUI {
     }
 
     public EditEmployeeUI2(long x) {
-        setEmpUserID(x);
         JButton button = new JButton("Submit");
         employee.setUserId(x);// this is passed from edit employee ui
         button.addActionListener(e -> { // we had a scope issue here for emp user id
@@ -42,21 +42,7 @@ public class EditEmployeeUI2 extends EmployeeUI {
                         int workingTo =Integer.parseInt(toList.getSelectedItem().toString().substring(0,workingToIndex));
                         Shift newShift = new Shift(workingFrom,workingTo);
                         if (employee.updateEmployee(username,userRoleNum,newShift)) {
-//                            JOptionPane.showMessageDialog(null, "Changes to item have been saved!");
-                            EmployeeTableUI.tableModel.setRowCount(0);
-                            try {
-                                List<List<String>> results = employee.getAllEmployees();
-                                System.out.println(results);
-                                for (List<String> row : results) {
-                                    Object[] insertedRow = new Object[row.size()];
-                                    for (int i = 0; i < row.size(); i++) {
-                                        insertedRow[i] = row.get(i);
-                                    }
-                                    EmployeeTableUI.tableModel.addRow(insertedRow);
-                                }
-                            } catch (Exception ex){
-                                // show error info pop up
-                            }
+                            Helper.loadTableData();
                             this.closeWindow();
                         }
                     } catch (SQLException | ClassNotFoundException ex) {
@@ -66,4 +52,6 @@ public class EditEmployeeUI2 extends EmployeeUI {
         this.setBtn(button);
         this.generateUI();
     }
+
+
 }
