@@ -10,13 +10,18 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
-public class TransactionHistUI extends JFrame {
+public class TransactionHistUI{
     Connection connection;
     TransactionHistory transactionHistory;
     JTable table;
     String[] columns = {"Transaction ID","Name","Price","Quantity"};
     DefaultTableModel model = new DefaultTableModel(null,columns);
 
+    long userId;
+
+    public TransactionHistUI(long userId) {
+        this.userId = userId;
+    }
 
     public TransactionHistUI() {
         // we call db statements
@@ -43,7 +48,6 @@ public class TransactionHistUI extends JFrame {
     }
 
     public JScrollPane getUIComponent(){
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         table = new JTable(model);
         System.out.println(model.getDataVector());
         table.setBounds(200,200,200,200);
@@ -56,11 +60,9 @@ public class TransactionHistUI extends JFrame {
     public static void main(String args[]){
         JMenu menu, TH;
         JFrame frame = new JFrame("Transaction History");
-
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         TransactionHistUI transactionHistUI = new TransactionHistUI();
         frame.add(transactionHistUI.getUIComponent());
-
-
         frame.setSize(800,800);
         frame.setVisible(true);
 

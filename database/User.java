@@ -102,9 +102,8 @@ public class User {
         PreparedStatement statement = conn.prepareStatement(SQL_INSERT);
         statement.setString(1, username);
         statement.setString(2, salt(password, "never_hack_me"));
-
         ResultSet rs = statement.executeQuery();
-
+        System.out.println(this);
         if (!rs.next())
             throw new SQLException("user not found!");
         setId(rs.getLong(1));

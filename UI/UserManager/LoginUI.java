@@ -1,5 +1,7 @@
 package UI.UserManager;
 
+import UI.CustomerManager.CustomerMenuUI;
+import UI.CustomerManager.TransactionHistUI;
 import database.User;
 import database.UserRole;
 import database.utils.Connect;
@@ -20,16 +22,19 @@ public class LoginUI  {
     public  JButton loginButton, registerButton;
     public  JPasswordField passwordInput;
 
-    public void generateUI() {
-        JPanel panel = new JPanel();
-        panel.setLayout(null);
+    public JFrame generateUI() {
+
 
         JFrame frame = new JFrame();
         frame.setTitle("LOGIN PAGE");
         frame.setLocation(new Point(500, 300));
-        frame.add(panel);
+
         frame.setSize(new Dimension(400, 200));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        JPanel panel = new JPanel();
+        panel.setLayout(null);
+        frame.add(panel);
 
         username_label = new JLabel("Username");
         username_label.setBounds(100, 8, 70, 20);
@@ -47,19 +52,21 @@ public class LoginUI  {
         passwordInput.setBounds(100, 75, 193, 28);
         panel.add(passwordInput);
 
-        String currentUsername = usernameInput.getText().trim();
-        String currentPassword = String.valueOf(passwordInput.getPassword());
+
 
         loginButton = new JButton("Login");
         loginButton.setBounds(200, 110, 90, 25);
         loginButton.setForeground(Color.WHITE);
         loginButton.setBackground(Color.BLACK);
 
+
+
+
         loginButton.addActionListener(new ActionListener() {
+
             @Override
             public void actionPerformed(ActionEvent e) {
-                user.setUsername(currentUsername);
-                user.setPassword(currentPassword);
+                setInputValues();
                 try {
                     user.authUser();
                     long userId = user.getId();
@@ -68,12 +75,24 @@ public class LoginUI  {
                     System.out.println("user role =>" + userRole.getUserRole((int) userRoleNum));
                     if (userRole.getUserRole((int) userRoleNum).equals("customer")){
                         frame.dispose();
+                        JFrame customerMenuFrame = new JFrame();
+                        TransactionHistUI transactionHistUI = new TransactionHistUI(userId);
+                        JTabbedPane tabbedPane = new JTabbedPane();
+                        tabbedPane.add("Menu", CustomerMenuUI.generateCustomerUI());
+                        tabbedPane.add("Transaction History", transactionHistUI.getUIComponent());
+                        customerMenuFrame.add(tabbedPane);
+                        customerMenuFrame.setTitle("Customer Menu");
+                        customerMenuFrame.setResizable(false);
+                        customerMenuFrame.setSize(700, 750);
+                        customerMenuFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                        customerMenuFrame.setVisible(true);
                     }
-                    JOptionPane.showMessageDialog(null, "Login Successful");
                 } catch (SQLException ex) {
                     JOptionPane.showMessageDialog(null, ex.getMessage());
                 }
             }
+
+
         });
         panel.add(loginButton);
 
@@ -86,8 +105,7 @@ public class LoginUI  {
         registerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                user.setUsername(currentUsername);
-                user.setPassword(currentPassword);
+                setInputValues();
                 user.setUserRole(1);
                 try {
                     user.createUser();
@@ -103,6 +121,14 @@ public class LoginUI  {
         });
         panel.add(registerButton);
         frame.setVisible(true);
+        return frame;
+    }
+
+    private void setInputValues() {
+        String currentUsername = usernameInput.getText();
+        String currentPassword = String.valueOf(passwordInput.getPassword());
+        user.setUsername(currentUsername);
+        user.setPassword(currentPassword);
     }
 
 }

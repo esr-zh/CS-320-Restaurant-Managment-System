@@ -79,7 +79,7 @@ public class AddMenu {
                 menu.setPrice(Double.parseDouble(productPrice.getText()));
                 menu.setDescription(descText.getText());
                 menu.setServingAmount(Long.parseLong(portionText.getText()));
-                menu.setDishTypeId(dishType.getSalaryType((String) productType.getSelectedItem()));
+                menu.setDishTypeId(dishType.getDishType((String) productType.getSelectedItem()));
                 try {
                     menu.createMenu();
                     JOptionPane.showMessageDialog(null, "Item added successfully!");
