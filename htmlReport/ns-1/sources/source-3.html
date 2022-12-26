@@ -1,0 +1,204 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > MenuTest</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">database.Tests</a>
+</div>
+
+<h1>Coverage Summary for Class: MenuTest (database.Tests)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">MenuTest</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (9/9)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    95.3%
+  </span>
+  <span class="absValue">
+    (41/43)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package database.Tests;
+&nbsp;
+&nbsp;import database.utils.Connect;
+&nbsp;import database.Menu;
+&nbsp;import org.junit.jupiter.api.AfterEach;
+&nbsp;import org.junit.jupiter.api.BeforeEach;
+&nbsp;import org.junit.jupiter.api.Test;
+&nbsp;
+&nbsp;import java.sql.Connection;
+&nbsp;import java.sql.SQLException;
+&nbsp;import java.sql.Statement;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;import static org.junit.Assert.assertEquals;
+&nbsp;import static org.junit.Assert.assertTrue;
+&nbsp;
+&nbsp;//import static org.testng.Assert.assertTrue;
+&nbsp;//import static org.testng.AssertJUnit.assertEquals;
+&nbsp;
+&nbsp;class MenuTest extends database.Tests.DBTestable {
+&nbsp;    Menu menu;
+&nbsp;    public MenuTest() throws SQLException, ClassNotFoundException {
+<b class="fc">&nbsp;       super();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @BeforeEach
+&nbsp;    void setUp() throws SQLException {
+<b class="fc">&nbsp;        connection.setAutoCommit(false);</b>
+<b class="fc">&nbsp;        menu = new Menu(connection);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @AfterEach
+&nbsp;    void tearDown() throws SQLException {
+<b class="fc">&nbsp;        connection.rollback();</b>
+<b class="fc">&nbsp;        connection.setAutoCommit(true);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    void listAllMenu() throws SQLException {
+<b class="fc">&nbsp;        Menu menu = new Menu(connection);</b>
+<b class="fc">&nbsp;        List&lt;List&lt;String&gt;&gt; result = menu.listAllMenu();</b>
+<b class="fc">&nbsp;        assertTrue(result.get(0).get(1).contains(&quot;water&quot;));</b>
+<b class="fc">&nbsp;        assertTrue(result.get(1).get(1).contains(&quot;cola&quot;));</b>
+<b class="fc">&nbsp;        assertTrue(result.get(2).get(1).contains(&quot;ice tea&quot;));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    void getMenuByName() throws SQLException, ClassNotFoundException {
+<b class="fc">&nbsp;        Menu menu_ = menu.getMenuByName(&quot;water&quot;);</b>
+<b class="fc">&nbsp;        System.out.println(menu_);</b>
+<b class="fc">&nbsp;        assertEquals(5,menu_.getDishTypeId());</b>
+<b class="fc">&nbsp;        assertEquals(1,menu_.getPrice(),1.00);</b>
+<b class="fc">&nbsp;        assertEquals(5,menu_.getId());</b>
+<b class="fc">&nbsp;        assertEquals(&quot;Chocolate cake&quot;,menu_.getDescription());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    void createMenu() throws SQLException, ClassNotFoundException {
+<b class="fc">&nbsp;        menu.setName(&quot;penne&quot;);</b>
+<b class="fc">&nbsp;        menu.setDescription(&quot;penne from dorm 4&quot;);</b>
+<b class="fc">&nbsp;        menu.setPrice(55);</b>
+<b class="fc">&nbsp;        menu.setDishTypeId(1);</b>
+<b class="fc">&nbsp;        menu.setServingAmount(20);</b>
+<b class="fc">&nbsp;        menu.setQuantity(10);</b>
+<b class="fc">&nbsp;        Menu createdMenu = menu.createMenu();</b>
+&nbsp;
+<b class="fc">&nbsp;        assertEquals(&quot;penne&quot;, createdMenu.getName());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    void createMenuWithSameName()  {
+<b class="fc">&nbsp;        menu.setName(&quot;burger&quot;);</b>
+<b class="fc">&nbsp;        menu.setDescription(&quot;burger from dorm 4&quot;);</b>
+<b class="fc">&nbsp;        menu.setPrice(65);</b>
+<b class="fc">&nbsp;        menu.setDishTypeId(1);</b>
+<b class="fc">&nbsp;        menu.setServingAmount(20);</b>
+<b class="fc">&nbsp;        menu.setQuantity(10);</b>
+&nbsp;        try {
+<b class="fc">&nbsp;            menu.createMenu();</b>
+<b class="nc">&nbsp;        }catch (Exception e){</b>
+<b class="nc">&nbsp;            assertEquals(&quot;menu item already exists&quot;, e.getMessage());</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    void deleteMenu() throws SQLException, ClassNotFoundException {
+<b class="fc">&nbsp;        menu.setId(5);</b>
+<b class="fc">&nbsp;        assertTrue(menu.deleteMenu());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    void updateMenu() throws SQLException, ClassNotFoundException {
+<b class="fc">&nbsp;        menu.setId(5); // you passing existing id</b>
+<b class="fc">&nbsp;        menu.setName(&quot;burger small&quot;);</b>
+<b class="fc">&nbsp;        menu.setDescription(&quot;nice&quot;);</b>
+<b class="fc">&nbsp;        menu.setQuantity(10);</b>
+<b class="fc">&nbsp;        assertTrue(menu.updateMenu());</b>
+<b class="fc">&nbsp;        assertEquals(75,menu.getPrice(),75.0);</b>
+<b class="fc">&nbsp;        assertEquals(10,menu.getQuantity());</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2022-12-26 14:30</div>
+</div>
+</body>
+</html>

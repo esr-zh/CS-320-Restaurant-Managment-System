@@ -65,7 +65,7 @@ public class TransactionHistoryTest2 extends DBTestable{
     @Test
     public void doesTransactionHistoryDoesntExistsTest()  {
         try {
-            assertFalse(TH.doesTransactionHistoryExists(25));
+            assertFalse(TH.doesTransactionHistoryExists(285));
         }catch (Exception e){
             Assertions.assertEquals("transaction id does not exist",e.getMessage());
         }

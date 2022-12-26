@@ -11,8 +11,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
-import static org.testng.Assert.assertTrue;
-import static org.testng.AssertJUnit.assertEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+//import static org.testng.Assert.assertTrue;
+//import static org.testng.AssertJUnit.assertEquals;
 
 class MenuTest extends database.Tests.DBTestable {
     Menu menu;
@@ -36,18 +39,19 @@ class MenuTest extends database.Tests.DBTestable {
     void listAllMenu() throws SQLException {
         Menu menu = new Menu(connection);
         List<List<String>> result = menu.listAllMenu();
-        assertTrue(result.get(0).get(1).contains("burger"));
-        assertTrue(result.get(1).get(1).contains("USA"));
-        assertTrue(result.get(2).get(1).contains("Tr"));
+        assertTrue(result.get(0).get(1).contains("water"));
+        assertTrue(result.get(1).get(1).contains("cola"));
+        assertTrue(result.get(2).get(1).contains("ice tea"));
     }
 
     @Test
     void getMenuByName() throws SQLException, ClassNotFoundException {
-        Menu menu_ = menu.getMenuByName("burger USA");
-        assertEquals(1,menu_.getDishTypeId());
-        assertEquals(165,menu_.getPrice());
-        assertEquals(3,menu_.getId());
-        assertEquals("burger from USA",menu_.getDescription());
+        Menu menu_ = menu.getMenuByName("water");
+        System.out.println(menu_);
+        assertEquals(5,menu_.getDishTypeId());
+        assertEquals(1,menu_.getPrice(),1.00);
+        assertEquals(5,menu_.getId());
+        assertEquals("Chocolate cake",menu_.getDescription());
     }
 
     @Test
@@ -86,12 +90,12 @@ class MenuTest extends database.Tests.DBTestable {
 
     @Test
     void updateMenu() throws SQLException, ClassNotFoundException {
-        menu.setId(1); // you passing existing id
+        menu.setId(5); // you passing existing id
         menu.setName("burger small");
         menu.setDescription("nice");
         menu.setQuantity(10);
         assertTrue(menu.updateMenu());
-        assertEquals(75.0,menu.getPrice());
+        assertEquals(75,menu.getPrice(),75.0);
         assertEquals(10,menu.getQuantity());
     }
 }

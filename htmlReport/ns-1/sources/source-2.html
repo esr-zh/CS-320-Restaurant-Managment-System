@@ -1,0 +1,170 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > EmployeeTest</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">database.Tests</a>
+</div>
+
+<h1>Coverage Summary for Class: EmployeeTest (database.Tests)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">EmployeeTest</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (7/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    91.7%
+  </span>
+  <span class="absValue">
+    (22/24)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package database.Tests;
+&nbsp;
+&nbsp;import database.Employee;
+&nbsp;import database.SalaryType;
+&nbsp;import org.junit.After;
+&nbsp;import org.junit.Before;
+&nbsp;import org.junit.Test;
+&nbsp;
+&nbsp;import java.sql.SQLException;
+&nbsp;
+&nbsp;import static org.junit.Assert.assertEquals;
+&nbsp;
+&nbsp;//import static org.testng.Assert.assertTrue;
+&nbsp;//import static org.testng.AssertJUnit.assertEquals;
+&nbsp;
+&nbsp;public class EmployeeTest extends DBTestable{
+&nbsp;    Employee employee;
+&nbsp;    public EmployeeTest() throws SQLException, ClassNotFoundException {
+<b class="fc">&nbsp;        super();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Before
+&nbsp;    public void init() throws SQLException {
+<b class="fc">&nbsp;        connection.setAutoCommit(false);</b>
+<b class="fc">&nbsp;        employee = new Employee(connection);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @After
+&nbsp;    public void tearDown() throws SQLException {
+<b class="fc">&nbsp;        connection.rollback();</b>
+<b class="fc">&nbsp;        connection.setAutoCommit(true);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void createEmployeeTest() throws SQLException {
+<b class="fc">&nbsp;        employee.setUserId(17);</b>
+<b class="fc">&nbsp;        employee.setSalary(30);</b>
+<b class="fc">&nbsp;        SalaryType salaryType = new SalaryType();</b>
+<b class="fc">&nbsp;        employee.setSalaryType(salaryType.getSalaryType(&quot;monthly&quot;));</b>
+<b class="fc">&nbsp;        employee.createEmployee();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void createEmployeeTest2() {
+<b class="fc">&nbsp;        employee.setUserId(17);</b>
+<b class="fc">&nbsp;        employee.setSalary(30);</b>
+<b class="fc">&nbsp;        SalaryType salaryType = new SalaryType();</b>
+<b class="fc">&nbsp;        employee.setSalaryType(salaryType.getSalaryType(&quot;monthly&quot;));</b>
+&nbsp;        try {
+<b class="fc">&nbsp;            employee.createEmployee();</b>
+<b class="nc">&nbsp;        }catch (Exception e){</b>
+<b class="nc">&nbsp;            assertEquals(&quot;employee already exists!&quot;,e.getMessage());</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;    @Test
+&nbsp;    public void getEmployeeIdTest() throws SQLException {
+<b class="fc">&nbsp;        Employee e = employee.getEmployeeId(51);</b>
+<b class="fc">&nbsp;        assertEquals(2,e.getSalaryType());</b>
+<b class="fc">&nbsp;        assertEquals(1500,e.getSalary());</b>
+&nbsp;    }
+&nbsp;    @Test
+&nbsp;    public void updateSalaryByUserIdTest() throws SQLException {
+<b class="fc">&nbsp;        employee.setSalary(50);</b>
+<b class="fc">&nbsp;        employee.setUserId(51);</b>
+<b class="fc">&nbsp;        employee.updateSalaryByUserId();</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2022-12-26 14:30</div>
+</div>
+</body>
+</html>

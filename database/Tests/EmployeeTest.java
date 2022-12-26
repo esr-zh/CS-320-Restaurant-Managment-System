@@ -8,8 +8,10 @@ import org.junit.Test;
 
 import java.sql.SQLException;
 
-import static org.testng.Assert.assertTrue;
-import static org.testng.AssertJUnit.assertEquals;
+import static org.junit.Assert.assertEquals;
+
+//import static org.testng.Assert.assertTrue;
+//import static org.testng.AssertJUnit.assertEquals;
 
 public class EmployeeTest extends DBTestable{
     Employee employee;
@@ -40,7 +42,7 @@ public class EmployeeTest extends DBTestable{
 
     @Test
     public void createEmployeeTest2() {
-        employee.setUserId(16);
+        employee.setUserId(17);
         employee.setSalary(30);
         SalaryType salaryType = new SalaryType();
         employee.setSalaryType(salaryType.getSalaryType("monthly"));
@@ -52,14 +54,14 @@ public class EmployeeTest extends DBTestable{
     }
     @Test
     public void getEmployeeIdTest() throws SQLException {
-        Employee e = employee.getEmployeeId(15);
+        Employee e = employee.getEmployeeId(51);
         assertEquals(2,e.getSalaryType());
-        assertEquals(15,e.getSalary());
+        assertEquals(1500,e.getSalary());
     }
     @Test
     public void updateSalaryByUserIdTest() throws SQLException {
         employee.setSalary(50);
-        employee.setUserId(15);
+        employee.setUserId(51);
         employee.updateSalaryByUserId();
     }
 }

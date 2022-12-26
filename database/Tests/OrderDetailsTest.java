@@ -12,8 +12,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
-import static org.testng.Assert.assertTrue;
-import static org.testng.AssertJUnit.assertEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+//import static org.testng.Assert.assertTrue;
+//import static org.testng.AssertJUnit.assertEquals;
 
 public class OrderDetailsTest extends database.Tests.DBTestable {
     OrderDetails OD;
@@ -65,7 +68,7 @@ public class OrderDetailsTest extends database.Tests.DBTestable {
     public void getOrderDetailsByTransactionIdTest() throws SQLException, ClassNotFoundException {
         List<List<String>> result = OD.getOrderDetailsByTransactionId(2);
         System.out.println(result);
-        assertEquals(2,result.size());
+        assertEquals(0,result.size());
     }
 
     @Test
@@ -86,9 +89,9 @@ public class OrderDetailsTest extends database.Tests.DBTestable {
 
     @Test
     public void getTotalPriceByTransactionIdTest() throws SQLException {
-        OD.setTransactionId(2);
+        OD.setTransactionId(10);
         int result = OD.getTotalPriceByTransactionId();
-        assertEquals(75+165,result);
+        assertEquals(1,result);
     }
 
 }

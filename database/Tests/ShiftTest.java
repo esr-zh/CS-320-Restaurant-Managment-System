@@ -9,8 +9,11 @@ import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;
 
-import static org.testng.Assert.assertTrue;
-import static org.testng.AssertJUnit.assertEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+//import static org.testng.Assert.assertTrue;
+//import static org.testng.AssertJUnit.assertEquals;
 
 public class ShiftTest extends DBTestable{
 
@@ -33,7 +36,7 @@ public class ShiftTest extends DBTestable{
 
     @Test
     public void createShiftTimeTest() throws SQLException {
-        shift.setUserId(15);
+        shift.setUserId(51);
         shift.setWorkingFrom(8);
         shift.setWorkingTo(11);
         assertTrue(shift.createShiftTime());
@@ -41,7 +44,7 @@ public class ShiftTest extends DBTestable{
 
     @Test
     public void createShiftTimeTest2() throws SQLException {
-        shift.setUserId(16);
+        shift.setUserId(51);
         shift.setWorkingFrom(6);
         shift.setWorkingTo(11);
         assertTrue(shift.createShiftTime());
@@ -49,18 +52,18 @@ public class ShiftTest extends DBTestable{
 
     @Test
     public void getHowManyWorkingHoursByUserIdTest() throws SQLException {
-        int res = shift.getHowManyWorkingHoursByUserId(15);
+        int res = shift.getHowManyWorkingHoursByUserId(70);
         assertEquals(8, res);
     }
 
     @Test
     public void calculateExpensePerEmployeeMonthlyTest1() throws SQLException {
-        int result = shift.calculateExpensePerEmployeeMonthly(15);
-        assertEquals(8*15*30,result);
+        int result = shift.calculateExpensePerEmployeeMonthly(70);
+        assertEquals(30000,result);
     }
     @Test
     public void calculateExpensePerEmployeeMonthlyTest2() throws SQLException {
-        int result = shift.calculateExpensePerEmployeeMonthly(16);
-        assertEquals(50*30,result);
+        int result = shift.calculateExpensePerEmployeeMonthly(76);
+        assertEquals(45000,result);
     }
 }
